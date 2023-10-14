@@ -230,7 +230,8 @@ export const projects = [
     date: "September 2023 - now",
     description:
       "Current portfolio website. It was created using React Js and styled components. It is fully responsive and it is using dark mode.",
-    image: "http://www.w3.org/2000/svg",
+    image:
+      "https://images.pexels.com/photos/14936128/pexels-photo-14936128.jpeg?cs=srgb&dl=pexels-ann-h-14936128.jpg&fm=jpg",
     tags: ["Javascript", "React JS", "HTML", "CSS", "Styled Components"],
     category: "web app",
     github: "https://github.com/Olszewski-Jakub/portfolio",
