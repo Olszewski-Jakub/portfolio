@@ -239,7 +239,7 @@ export const projects = [
   },
   {
     id: 1,
-    title: "Kalkulator w Recepturze - Sold to DOZ in 2023 ",
+    title: "Kalkulator w Recepturze - Sold in 2023 ",
     date: "September 2019 - September 2022",
     description:
       "Kalkulator w Recepturze was a simple app made for pharmacists to help them be more accurate when prepring medicines in pharmacies. It includes many diffrent formulas for dufrent subsatnces ",
