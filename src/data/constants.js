@@ -217,7 +217,7 @@ export const education = [
     school:
       "I Liceum Ogólnokształcące Dwujęzyczne im. E. Dembowskiego, Gliwice, Poland",
     date: "September 2019 - May 2023",
-    grade: "75%",
+    grade: "average percentile: 75%",
     desc: "I completed my high school education at I Liceum Ogólnokształcące Dwujęzyczne im. E. Dembowskiego , Gliwice, where I studied Maths and Physics.",
     degree: "high school leaving certificate",
   },
