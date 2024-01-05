@@ -105,7 +105,18 @@ const Tag = styled.div`
         font-size: 12px;
     }
 `;
-
+const Status = styled.div`
+    font-size: 16px;
+    font-weight: 400;
+    color: ${({ theme }) => theme.primary};
+    margin: 4px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.primary + 20};
+    @media only screen and (max-width: 600px) {
+        font-size: 12px;
+    }
+`;
 const Members = styled.div`
     display: flex;
     flex-direction: column;
@@ -227,10 +238,22 @@ const index = ({ openModal, setOpenModal }) => {
                         </>
                     )}
                     <ButtonGroup>
-                        <Button dull href={project?.github} target='new'>View Code</Button>
+                        <Button dull href={project?.github } target='new'>View Code</Button>
                         
                         <Button href={project?.webapp} target='new'>
-                           {project?.category === "android app" ? 'Go to Google Play' : 'View Live App'}
+                        {
+                            project?.webapp===""
+                                ? 'Project not available'
+                                : 
+                            project?.category === "android app" 
+                                ? 'Go to Google Play' 
+                                : project?.category === "ios app" 
+                                ? 'Go to App Store' 
+                                : project?.category === "web app" 
+                                    ? 'View Live App' 
+                                    : 'View Project'
+
+                        }
                         </Button>
                         
                     </ButtonGroup>

@@ -182,7 +182,22 @@ export const skills = [
 export const experiences = [
   {
     id: 0,
-    img: "https://dozsa.pl/upload/pmk7yc_logonaminiature.png",
+    img: "https://i.imgur.com/83DsYER.png",
+    role: "Programming Coach for children and teenagers",
+    company: "Coding Giants",
+    date: "December 2023 - now",
+    desc: "I am currently working as a programming coach for children and teenagers.",
+    skills: [
+      "c#",
+      "Python",
+      "Scratch",
+      "MIT App Creator",
+      "Minecraft Education Edition",
+    ],
+  },
+  {
+    id: 1,
+    img: "https://i.imgur.com/AbC9492.png",
     role: "Software Developer Assistant",
     company: "DOZ S.A",
     date: "June 2023 - September 2023",
@@ -226,6 +241,62 @@ export const education = [
 export const projects = [
   {
     id: 0,
+    title: "Crowdeo Dashboard",
+    date: "September 2023 - now",
+    description:
+      "Crowdeo Dashboard is a web application created for Crowdeo. It is a platform for access to Panda devices. It allws users to manage Panda device, analyse that it gathered and much more. It was created using React Js and styled components",
+    image: "https://i.imgur.com/XaXVvlk.png",
+    tags: [
+      "Javascript",
+      "React JS",
+      "HTML",
+      "CSS",
+      "Styled Components",
+      "Firebase",
+      "Panda API",
+    ],
+    category: "web app",
+    github: "https://github.com/Olszewski-Jakub/Crowdeo-Dashboard",
+    webapp: "",
+    status: "Work in progress",
+  },
+  {
+    id: 1,
+    title: "Bamboo",
+    date: "September 2023 - now",
+    description:
+      "Bamboo is responsible for connecting the Crowdeo Dashboard with the 'Panda' device. The API facilitates seamless data transmission between the crowd tracking system and the dashboard, enabling real-time visualization and analysis of crowd movement data.",
+    image:
+      "https://camo.githubusercontent.com/77cbb483c5f13dabce1b583e84c7164719f046b2e4426f3056351a95689885ff/68747470733a2f2f692e696d6775722e636f6d2f627a55423173532e6a706567",
+    tags: [
+      "Java",
+      "Spring Boot",
+      "Firebase",
+      "Docker",
+      "CI/CD pipelines",
+      "Swagger",
+      "PostgreSQL",
+    ],
+    category: "api",
+    github: "https://github.com/Olszewski-Jakub/Bamboo",
+    webapp: "",
+    status: "Work in progress",
+  },
+  {
+    id: 2,
+    title: "Panda",
+    date: "September 2023 - now",
+    description:
+      "Panda is software for a devices that use BLE technlogy to calculate how many people are in its range. It woul allow to collect and share data about people movement. It is based on Raspberry Pi Pico and software is made in MicroPython.",
+    image: "https://i.imgur.com/ZdlKvpQ.png",
+    tags: ["MicroPython", "Raspberry Pi Pico", "BLE"],
+    category: "microcontrollers",
+    github: "https://github.com/Olszewski-Jakub/Panda",
+    webapp: "",
+    status: "Work in progress",
+  },
+  {
+    id: 3,
     title: "Portfolio",
     date: "September 2023 - now",
     description:
@@ -236,10 +307,11 @@ export const projects = [
     category: "web app",
     github: "https://github.com/Olszewski-Jakub/portfolio",
     webapp: "#about",
+    status: "Deployed",
   },
   {
-    id: 1,
-    title: "Kalkulator w Recepturze - Sold in 2023 ",
+    id: 4,
+    title: "Kalkulator w Recepturze",
     date: "September 2019 - September 2022",
     description:
       "Kalkulator w Recepturze was a simple app made for pharmacists to help them be more accurate when prepring medicines in pharmacies. It includes many diffrent formulas for dufrent subsatnces ",
@@ -250,10 +322,11 @@ export const projects = [
     github: "https://github.com/Olszewski-Jakub/kalkulatorRecepturowy",
     webapp:
       "https://play.google.com/store/apps/details?id=com.jakubolszewski.kalkulatorrecepturowy",
+    status: "Sold in 2023",
   },
   {
-    id: 2,
-    title: "1LO Glwice - EOS",
+    id: 5,
+    title: "1LO Glwice",
     date: "September 2019 - November 2021",
     description:
       "1LO Glwice was an application created for my high school. It was created to help students and teachers with their daily school life. It was created using java and Firebase. It was my first android application. It's main purpose was to make students life easier.",
@@ -264,6 +337,7 @@ export const projects = [
     github: "https://github.com/Olszewski-Jakub/1LO-Glwice-v2",
     webapp:
       "https://play.google.com/store/apps/details?id=com.jakubolszewski.lo1gliwice",
+    status: "End of support",
   },
 ];
 

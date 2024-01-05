@@ -122,6 +122,15 @@ const Avatar = styled.img`
     border: 3px solid ${({ theme }) => theme.card};
 `
 
+const Status = styled.span`
+    font-size: 14px;
+    font-weight: 400;
+    color: ${({ theme }) => theme.primary};
+    background-color: ${({ theme }) => theme.primary + 15};
+    padding: 2px 8px;
+    border-radius: 10px;
+`
+
 const ProjectCards = ({project,setOpenModal}) => {
     return (
         <Card onClick={() => setOpenModal({state: true, project: project})}>
@@ -133,8 +142,12 @@ const ProjectCards = ({project,setOpenModal}) => {
             </Tags>
             <Details>
                 <Title>{project.title}</Title>
-                <Date>{project.date}</Date>
-                <Description>{project.description}</Description>
+                <Tags>
+                <Status>{project.status}</Status>
+                </Tags>
+            <Date>{project.date}</Date>
+                
+            <Description>{project.description}</Description>
             </Details>
             <Members>
                 {project.member?.map((member) => (
