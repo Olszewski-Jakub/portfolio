@@ -255,7 +255,7 @@ export const projects = [
       "Firebase",
       "Panda API",
     ],
-    category: "web app",
+    category: ["web app","crowdeo"],
     github: "https://github.com/Olszewski-Jakub/Crowdeo-Dashboard",
     webapp: "",
     status: "Work in progress",
@@ -277,7 +277,7 @@ export const projects = [
       "Swagger",
       "PostgreSQL",
     ],
-    category: "api",
+    category: ["api","crowdeo"],
     github: "https://github.com/Olszewski-Jakub/Bamboo",
     webapp: "",
     status: "Work in progress",
@@ -289,8 +289,8 @@ export const projects = [
     description:
       "Panda is software for a devices that use BLE technlogy to calculate how many people are in its range. It woul allow to collect and share data about people movement. It is based on Raspberry Pi Pico and software is made in MicroPython.",
     image: "https://i.imgur.com/ZdlKvpQ.png",
-    tags: ["MicroPython", "Raspberry Pi Pico", "BLE"],
-    category: "microcontrollers",
+    tags: ["MicroPython", "Raspberry Pi Pico", "BLE", "Panda API"],
+    category: ["microcontrollers","crowdeo"],
     github: "https://github.com/Olszewski-Jakub/Panda",
     webapp: "",
     status: "Work in progress",
@@ -304,7 +304,7 @@ export const projects = [
     image:
       "https://images.pexels.com/photos/14936128/pexels-photo-14936128.jpeg?cs=srgb&dl=pexels-ann-h-14936128.jpg&fm=jpg",
     tags: ["Javascript", "React JS", "HTML", "CSS", "Styled Components"],
-    category: "web app",
+    category: ["web app"],
     github: "https://github.com/Olszewski-Jakub/portfolio",
     webapp: "#about",
     status: "Deployed",
@@ -318,7 +318,7 @@ export const projects = [
     image:
       "https://play-lh.googleusercontent.com/rcZCp0l8tEvbzmhwrGVB1XUbRhMYG22Ftci974FyG0ZqnAlkNB0Tjbuxv62oWvV7jIkQ=w240-h480-rw",
     tags: ["Java", "Firebase", "XML"],
-    category: "android app",
+    category: ["android app"],
     github: "https://github.com/Olszewski-Jakub/kalkulatorRecepturowy",
     webapp:
       "https://play.google.com/store/apps/details?id=com.jakubolszewski.kalkulatorrecepturowy",
@@ -333,7 +333,7 @@ export const projects = [
     image:
       "https://play-lh.googleusercontent.com/ibqxWu9DTjwaXvpMse_wRPpGA7VJLyYz9MpZ3eUlUE6k1ehpC-YHeH0-CPLArkV81OQ=w240-h480-rw",
     tags: ["Java", "Firebase", "XML"],
-    category: "android app",
+    category: ["android app"],
     github: "https://github.com/Olszewski-Jakub/1LO-Glwice-v2",
     webapp:
       "https://play.google.com/store/apps/details?id=com.jakubolszewski.lo1gliwice",

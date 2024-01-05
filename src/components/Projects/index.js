@@ -91,6 +91,20 @@ const Projects = ({ openModal, setOpenModal }) => {
               MICROCONTROLLERS
             </ToggleButton>
           )}
+          <Divider />
+          {toggle === "crowdeo" ? (
+            <ToggleButton
+              active
+              value="crowdeo"
+              onClick={() => setToggle("crowdeo")}
+            >
+              CROWDEO
+            </ToggleButton>
+          ) : (
+            <ToggleButton value="crowdeo" onClick={() => setToggle("crowdeo")}>
+              CROWDEO
+            </ToggleButton>
+          )}
         </ToggleButtonGroup>
         <CardContainer>
           {toggle === "all" &&
@@ -102,7 +116,7 @@ const Projects = ({ openModal, setOpenModal }) => {
               />
             ))}
           {projects
-            .filter((item) => item.category == toggle)
+            .filter((item) => item.category.includes(toggle) == true)
             .map((project) => (
               <ProjectCard
                 project={project}
