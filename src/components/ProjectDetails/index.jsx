@@ -105,18 +105,7 @@ const Tag = styled.div`
         font-size: 12px;
     }
 `;
-const Status = styled.div`
-    font-size: 16px;
-    font-weight: 400;
-    color: ${({ theme }) => theme.primary};
-    margin: 4px;
-    padding: 4px 8px;
-    border-radius: 8px;
-    background-color: ${({ theme }) => theme.primary + 20};
-    @media only screen and (max-width: 600px) {
-        font-size: 12px;
-    }
-`;
+
 const Members = styled.div`
     display: flex;
     flex-direction: column;
