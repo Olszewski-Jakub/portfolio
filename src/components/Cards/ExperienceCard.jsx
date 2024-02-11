@@ -157,7 +157,7 @@ const ExperienceCard = ({ experience }) => {
             </Top>
             <Description>
                 {experience?.desc &&
-                    <Span>{experience?.desc}</Span>
+                    <Span dangerouslySetInnerHTML={{ __html: experience?.desc.replace(/\n/g, '<br />') }} />
 
                 }
                 {experience?.skills &&

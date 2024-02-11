@@ -13,6 +13,8 @@
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
     "emailjs": "^4.0.2",
+    "firebase": "^10.8.0",
+    "ga-4-react": "^0.1.281",
     "gh-pages": "^3.2.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
