@@ -182,6 +182,23 @@ export const skills = [
 export const experiences = [
   {
     id: 0,
+    img: "https://i.imgur.com/AbC9492.png",
+    role: "Android Developer Internship",
+    company: "DOZ S.A",
+    date: "May 2024 - now",
+    desc: "",
+    skills: [
+      "Kotlin",
+      "Kotlin Multiplatform",
+      "Azure AAD",
+      "Koin",
+      "MVVM",
+      "Docker",
+      "CI/CD pipelines",
+    ],
+  },
+  {
+    id: 1,
     img: "https://i.imgur.com/83DsYER.png",
     role: "Programming Coach for children and teenagers",
     company: "Coding Giants",
@@ -202,7 +219,7 @@ export const experiences = [
     ],
   },
   {
-    id: 1,
+    id: 2,
     img: "https://i.imgur.com/AbC9492.png",
     role: "Software Developer Assistant",
     company: "DOZ S.A",
@@ -261,7 +278,7 @@ export const projects = [
       "Firebase",
       "Panda API",
     ],
-    category: ["web app","crowdeo"],
+    category: ["web app", "crowdeo"],
     github: "https://github.com/Olszewski-Jakub/Crowdeo-Dashboard",
     webapp: "",
     status: "Work in progress",
@@ -283,7 +300,7 @@ export const projects = [
       "Swagger",
       "PostgreSQL",
     ],
-    category: ["api","crowdeo"],
+    category: ["api", "crowdeo"],
     github: "https://github.com/Olszewski-Jakub/Bamboo",
     webapp: "",
     status: "Work in progress",
@@ -296,7 +313,7 @@ export const projects = [
       "Panda is software for a devices that use BLE technlogy to calculate how many people are in its range. It woul allow to collect and share data about people movement. It is based on Raspberry Pi Pico and software is made in MicroPython.",
     image: "https://i.imgur.com/ZdlKvpQ.png",
     tags: ["MicroPython", "Raspberry Pi Pico", "BLE", "Panda API"],
-    category: ["microcontrollers","crowdeo"],
+    category: ["microcontrollers", "crowdeo"],
     github: "https://github.com/Olszewski-Jakub/Panda",
     webapp: "",
     status: "Work in progress",
@@ -346,4 +363,3 @@ export const projects = [
     status: "End of support",
   },
 ];
-
