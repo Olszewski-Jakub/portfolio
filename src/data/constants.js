@@ -1,8 +1,9 @@
 export const Bio = {
   name: "Jakub Olszewski",
   roles: [
-    "Full Stack Developer",
+    "Mobile Dveloper",
     "Android Developer",
+    "iOS Developer",
     "Backend Developer",
     "Programmer",
   ],
@@ -182,10 +183,29 @@ export const skills = [
 export const experiences = [
   {
     id: 0,
-    img: "https://i.imgur.com/AbC9492.png",
-    role: "Android Developer Internship",
+    img: "https://i.imgur.com/c6wNgb0.png",
+    role: "Kotlin Multiplatform Developer",
     company: "DOZ S.A",
-    date: "May 2024 - now",
+    date: "August 2024 - Now",
+    desc: "",
+    skills: [
+      "Kotlin",
+      "Swift",
+      "Kotlin Multiplatform",
+      "Ktor",
+      "Koin",
+      "MVVM",
+      "Docker",
+      "CI/CD pipelines",
+      "Github Actions",
+    ],
+  },
+  {
+    id: 1,
+    img: "https://i.imgur.com/AbC9492.png",
+    role: "Mobile Developer",
+    company: "DOZ S.A",
+    date: "May 2024 - August 2024",
     desc: "",
     skills: [
       "Kotlin",
@@ -198,7 +218,7 @@ export const experiences = [
     ],
   },
   {
-    id: 1,
+    id: 2,
     img: "https://i.imgur.com/83DsYER.png",
     role: "Programming Coach for children and teenagers",
     company: "Coding Giants",
@@ -219,7 +239,7 @@ export const experiences = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     img: "https://i.imgur.com/AbC9492.png",
     role: "Software Developer Assistant",
     company: "DOZ S.A",
