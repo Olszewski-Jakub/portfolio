@@ -185,7 +185,7 @@ export const experiences = [
     id: 0,
     img: "https://i.imgur.com/c6wNgb0.png",
     role: "Kotlin Multiplatform Developer",
-    company: "DOZ S.A",
+    company: "Magnate",
     date: "August 2024 - Now",
     desc: "",
     skills: [
