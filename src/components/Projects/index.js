@@ -75,34 +75,34 @@ const Projects = ({ openModal, setOpenModal }) => {
             </ToggleButton>
           )}
           <Divider />
-          {toggle === "microcontrollers" ? (
+          {toggle === "RMS" ? (
             <ToggleButton
               active
-              value="microcontrollers"
-              onClick={() => setToggle("microcontrollers")}
+              value="RMS"
+              onClick={() => setToggle("RMS")}
             >
-              MICROCONTROLLERS
+              RMS
             </ToggleButton>
           ) : (
             <ToggleButton
-              value="microcontrollers"
-              onClick={() => setToggle("microcontrollers")}
+              value="RMS"
+              onClick={() => setToggle("RMS")}
             >
-              MICROCONTROLLERS
+              RMS
             </ToggleButton>
           )}
           <Divider />
-          {toggle === "crowdeo" ? (
+          {toggle === "Bus Hive" ? (
             <ToggleButton
               active
-              value="crowdeo"
+              value="Bus Hive"
               onClick={() => setToggle("crowdeo")}
             >
-              CROWDEO
+              Bus Hive
             </ToggleButton>
           ) : (
-            <ToggleButton value="crowdeo" onClick={() => setToggle("crowdeo")}>
-              CROWDEO
+            <ToggleButton value="Bus Hive" onClick={() => setToggle("Bus Hive")}>
+              Bus Hive
             </ToggleButton>
           )}
         </ToggleButtonGroup>

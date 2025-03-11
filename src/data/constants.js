@@ -182,11 +182,22 @@ export const skills = [
 export const experiences = [
   {
     id: 0,
+    img: "https://images.seeklogo.com/logo-png/35/1/tractive-logo-png_seeklogo-354786.png",
+    role: "Android Developer",
+    company: "Tractive",
+    date: "May 2025 - Septmeber 2025",
+    desc: "",
+    skills: [
+      "Kotlin"
+    ],
+  },
+  {
+    id: 1,
     img: "https://i.imgur.com/c6wNgb0.png",
     role: "Kotlin Multiplatform Developer",
     company: "Magnate",
-    date: "August 2024 - Now",
-    desc: "",
+    date: "August 2024 - February 2025",
+    desc: '•	Architected and launched scalable modules, improving system stability by 40% and reducing downtime.\n\•	Applied MVVM with Clean Architecture principles to develop a cross-platform mobile app using Kotlin and Swift, ensuring a clean codebase that enhanced maintainability and improved user experience.\n•	Oversaw a high-performing team, streamlining communication protocols and increasing overall productivity by 25%.\n•	Architected and implemented robust features for Android and iOS platforms using Kotlin Multiplatform, optimizing resource allocation to enhance performance by 30%.\n•	Coordinated streamlined deployment pipelines, successfully managing app releases on both the App Store and Google Play, achieving a 98% success rate in on-time releases.',
     skills: [
       "Kotlin",
       "Swift",
@@ -200,7 +211,7 @@ export const experiences = [
     ],
   },
   {
-    id: 1,
+    id: 2,
     img: "https://i.imgur.com/AbC9492.png",
     role: "Mobile Developer",
     company: "DOZ S.A",
@@ -217,7 +228,7 @@ export const experiences = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     img: "https://i.imgur.com/83DsYER.png",
     role: "Programming Coach for children and teenagers",
     company: "Coding Giants",
@@ -238,7 +249,7 @@ export const experiences = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     img: "https://i.imgur.com/AbC9492.png",
     role: "Software Developer Assistant",
     company: "DOZ S.A",
@@ -283,11 +294,11 @@ export const education = [
 export const projects = [
   {
     id: 0,
-    title: "Crowdeo Dashboard",
-    date: "September 2023 - now",
+    title: "RMS",
+    date: "September 2024 - now",
     description:
-      "Crowdeo Dashboard is a web application created for Crowdeo. It is a platform for access to Panda devices. It allws users to manage Panda device, analyse that it gathered and much more. It was created using React Js and styled components",
-    image: "https://i.imgur.com/XaXVvlk.png",
+      "A comprehensive solution that transforms how restaurants operate. Our system bridges the gap between customers and restaurant management with powerful, intuitive interfaces.",
+    image: "https://avatars.githubusercontent.com/u/182916697?s=200&v=4",
     tags: [
       "Javascript",
       "React JS",
@@ -295,50 +306,60 @@ export const projects = [
       "CSS",
       "Styled Components",
       "Firebase",
-      "Panda API",
+      "RMS API",
     ],
-    category: ["web app", "crowdeo"],
-    github: "https://github.com/Olszewski-Jakub/Crowdeo-Dashboard",
-    webapp: "",
+    category: ["web app", "RMS"],
+    github: "https://github.com/Unemployed-CS-Majors/RMS",
+    webapp: "https://restaurant-management-sy-1a0cd.web.app/#Home",
     status: "Work in progress",
   },
   {
     id: 1,
-    title: "Bamboo",
-    date: "September 2023 - now",
+    title: "RMS API",
+    date: "September 2024 - now",
     description:
-      "Bamboo is responsible for connecting the Crowdeo Dashboard with the 'Panda' device. The API facilitates seamless data transmission between the crowd tracking system and the dashboard, enabling real-time visualization and analysis of crowd movement data.",
+      "A comprehensive solution that transforms how restaurants operate. Our system bridges the gap between customers and restaurant management with powerful, intuitive interfaces.",
     image:
-      "https://camo.githubusercontent.com/77cbb483c5f13dabce1b583e84c7164719f046b2e4426f3056351a95689885ff/68747470733a2f2f692e696d6775722e636f6d2f627a55423173532e6a706567",
+      "https://avatars.githubusercontent.com/u/182916697?s=200&v=4",
     tags: [
-      "Java",
-      "Spring Boot",
-      "Firebase",
+      "JavaScript",
+      "Node JS",
+      "Express",
       "Docker",
       "CI/CD pipelines",
-      "Swagger",
-      "PostgreSQL",
+      "Swagger"
     ],
-    category: ["api", "crowdeo"],
-    github: "https://github.com/Olszewski-Jakub/Bamboo",
-    webapp: "",
+    category: ["api", "RMS"],
+    github: "https://github.com/Unemployed-CS-Majors/RMS-API",
+    webapp: "https://bump.sh/olszewski/doc/rms-api/",
     status: "Work in progress",
   },
   {
     id: 2,
-    title: "Panda",
-    date: "September 2023 - now",
-    description:
-      "Panda is software for a devices that use BLE technlogy to calculate how many people are in its range. It woul allow to collect and share data about people movement. It is based on Raspberry Pi Pico and software is made in MicroPython.",
-    image: "https://i.imgur.com/ZdlKvpQ.png",
-    tags: ["MicroPython", "Raspberry Pi Pico", "BLE", "Panda API"],
-    category: ["microcontrollers", "crowdeo"],
-    github: "https://github.com/Olszewski-Jakub/Panda",
-    webapp: "",
+    title: "The Bouncer",
+    date: "January 2025 - now",
+    description: "The Bouncer is an authentication API based on JWT that allows users to create accounts using email and password or third-party authentication providers such as Google. The API also supports role-based access control (RBAC) with router-based privileges, including wildcard privileges for flexible access management. Additionally, it incorporates a custom authentication plugin for the Kong API Gateway, enhancing security and access control.",
+    image: "https://avatars.githubusercontent.com/u/199120511?s=200&v=4",
+    tags: ["Kotlin", "Ktor Server", "Koin", "JWT","Docker", "Docker Compose", "PostgreSQL"],
+    category: ["api", "Bus Hive"],
+    github: "https://github.com/Bus-Hive/The-Bouncer",
+    webapp: "https://bump.sh/olszewski/doc/the-bouncer/",
     status: "Work in progress",
   },
   {
     id: 3,
+    title: "The Keg",
+    date: "January 2025 - now",
+    description: "The KEG is a GTFS-based API designed for efficient fetching and management of GTFS data for a real-time public transport tracking app. It uses a PostgreSQL database for data storage and integrates OpenTripPlanner to help users find optimal trips. Authentication is handled by The Bouncer API, meaning Keg relies on it and does not require project-specific authentication implementations.",
+    image: "https://avatars.githubusercontent.com/u/199120511?s=200&v=4",
+    tags: ["Kotlin", "Ktor Server", "Koin", "GTFS", "OpenTripPlanner", "Docker", "Docker Compose", "PostgreSQL"],
+    category: ["api", "Bus Hive"],
+    github: "https://github.com/Bus-Hive/The-Bouncer",
+    webapp: "https://bump.sh/olszewski/doc/the-keg/",
+    status: "Work in progress",
+  },
+  {
+    id: 4,
     title: "Portfolio",
     date: "September 2023 - now",
     description:
@@ -352,7 +373,7 @@ export const projects = [
     status: "Deployed",
   },
   {
-    id: 4,
+    id: 5,
     title: "Kalkulator w Recepturze",
     date: "September 2019 - September 2022",
     description:
@@ -367,7 +388,7 @@ export const projects = [
     status: "Sold in 2023",
   },
   {
-    id: 5,
+    id: 6,
     title: "1LO Glwice",
     date: "September 2019 - November 2021",
     description:
