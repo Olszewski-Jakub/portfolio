@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Wrapper,
@@ -9,124 +8,105 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Divider,
+  EmptyProjectsMessage
 } from "./ProjectsStyle";
 import ProjectCard from "../Cards/ProjectCards";
 import { projects } from "../../data/constants";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Projects = ({ openModal, setOpenModal }) => {
   const [toggle, setToggle] = useState("all");
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [visibleProjects, setVisibleProjects] = useState([]);
+  const [showMore, setShowMore] = useState(false);
+  const projectsPerPage = 6;
+
+  // Filter projects based on selected category
+  useEffect(() => {
+    if (toggle === "all") {
+      setFilteredProjects(projects);
+    } else {
+      setFilteredProjects(projects.filter(item => item.category.includes(toggle)));
+    }
+  }, [toggle]);
+
+  // Handle pagination
+  useEffect(() => {
+    if (showMore) {
+      setVisibleProjects(filteredProjects);
+    } else {
+      setVisibleProjects(filteredProjects.slice(0, projectsPerPage));
+    }
+  }, [filteredProjects, showMore]);
+
+  // Get unique categories for filter buttons
+  const categories = ["all", ...new Set(projects.flatMap(project => project.category))];
+
   return (
-    <Container id="projects">
-      <Wrapper>
-        <Title>Projects</Title>
-        <Desc>
-          I have worked on a wide range of projects. From web apps to android
-          apps. Here are some of my projects.
-        </Desc>
-        <ToggleButtonGroup>
-          {toggle === "all" ? (
-            <ToggleButton active value="all" onClick={() => setToggle("all")}>
-              All
-            </ToggleButton>
-          ) : (
-            <ToggleButton value="all" onClick={() => setToggle("all")}>
-              All
-            </ToggleButton>
-          )}
-          <Divider />
-          {toggle === "web app" ? (
-            <ToggleButton
-              active
-              value="web app"
-              onClick={() => setToggle("web app")}
-            >
-              WEB APP'S
-            </ToggleButton>
-          ) : (
-            <ToggleButton value="web app" onClick={() => setToggle("web app")}>
-              WEB APP'S
-            </ToggleButton>
-          )}
-          <Divider />
-          {toggle === "android app" ? (
-            <ToggleButton
-              active
-              value="android app"
-              onClick={() => setToggle("android app")}
-            >
-              ANDROID APP'S
-            </ToggleButton>
-          ) : (
-            <ToggleButton
-              value="android app"
-              onClick={() => setToggle("android app")}
-            >
-              ANDROID APP'S
-            </ToggleButton>
-          )}
-          <Divider />
-          {toggle === "api" ? (
-            <ToggleButton active value="api" onClick={() => setToggle("api")}>
-              API'S
-            </ToggleButton>
-          ) : (
-            <ToggleButton value="api" onClick={() => setToggle("api")}>
-              API'S
-            </ToggleButton>
-          )}
-          <Divider />
-          {toggle === "RMS" ? (
-            <ToggleButton
-              active
-              value="RMS"
-              onClick={() => setToggle("RMS")}
-            >
-              RMS
-            </ToggleButton>
-          ) : (
-            <ToggleButton
-              value="RMS"
-              onClick={() => setToggle("RMS")}
-            >
-              RMS
-            </ToggleButton>
-          )}
-          <Divider />
-          {toggle === "Bus Hive" ? (
-            <ToggleButton
-              active
-              value="Bus Hive"
-              onClick={() => setToggle("crowdeo")}
-            >
-              Bus Hive
-            </ToggleButton>
-          ) : (
-            <ToggleButton value="Bus Hive" onClick={() => setToggle("Bus Hive")}>
-              Bus Hive
-            </ToggleButton>
-          )}
-        </ToggleButtonGroup>
-        <CardContainer>
-          {toggle === "all" &&
-            projects.map((project) => (
-              <ProjectCard
-                project={project}
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-              />
+      <Container id="projects">
+        <Wrapper>
+          <Title>Projects</Title>
+          <Desc>
+            I've worked on a variety of projects ranging from web applications to mobile apps and APIs.
+            Here's a showcase of my recent work and ongoing projects.
+          </Desc>
+
+          <ToggleButtonGroup>
+            {categories.map((category) => (
+                <React.Fragment key={category}>
+                  {category !== categories[0] && <Divider />}
+                  <ToggleButton
+                      active={toggle === category}
+                      onClick={() => setToggle(category)}
+                  >
+                    {category === "all" ? "ALL" :
+                        category === "web app" ? "WEB APPS" :
+                            category === "android app" ? "ANDROID APPS" :
+                                category === "api" ? "APIs" :
+                                    category.toUpperCase()}
+                  </ToggleButton>
+                </React.Fragment>
             ))}
-          {projects
-            .filter((item) => item.category.includes(toggle) == true)
-            .map((project) => (
-              <ProjectCard
-                project={project}
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-              />
-            ))}
-        </CardContainer>
-      </Wrapper>
-    </Container>
+          </ToggleButtonGroup>
+
+          <CardContainer>
+            <AnimatePresence>
+              {visibleProjects.length > 0 ? (
+                  visibleProjects.map((project, index) => (
+                      <motion.div
+                          key={project.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 20 }}
+                          transition={{ duration: 0.3, delay: index * 0.1 }}
+                      >
+                        <ProjectCard
+                            project={project}
+                            openModal={openModal}
+                            setOpenModal={setOpenModal}
+                            index={index}
+                        />
+                      </motion.div>
+                  ))
+              ) : (
+                  <EmptyProjectsMessage>
+                    No projects found in this category. Check back soon!
+                  </EmptyProjectsMessage>
+              )}
+            </AnimatePresence>
+          </CardContainer>
+
+          {filteredProjects.length > projectsPerPage && (
+              <ToggleButton
+                  className="show-more"
+                  onClick={() => setShowMore(!showMore)}
+                  style={{ marginTop: '40px' }}
+              >
+                {showMore ? "Show Less" : "Show More"}
+              </ToggleButton>
+          )}
+        </Wrapper>
+      </Container>
   );
 };
 
