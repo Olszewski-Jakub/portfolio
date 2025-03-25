@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import ExperienceCard from '../Cards/ExperienceCard';
 import {experiences} from '../../data/constants';
 import {motion} from 'framer-motion';
-import {FaAngleRight, FaAppStore, FaBriefcase, FaCog, FaGithub, FaGlobe, FaGooglePlay} from 'react-icons/fa';
+import {FaAngleRight, FaBriefcase} from 'react-icons/fa';
 
 const fadeIn = keyframes`
     from {
@@ -104,11 +104,16 @@ const TabsContainer = styled.div`
         border-right: none;
         border-bottom: 1px solid ${({theme}) => `${theme.text_primary}20`};
         margin-bottom: 20px;
-        overflow-x: auto;
         padding-bottom: 10px;
-        display: grid;
-        grid-template-columns: repeat(${({numTabs}) => numTabs}, 1fr);
-        gap: 8px;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        &::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
     }
 `;
 
@@ -183,17 +188,15 @@ const contentVariants = {
     }
 };
 
-
 const Experience = () => {
     const [activeTab, setActiveTab] = useState(0);
     const [currentExperience, setCurrentExperience] = useState(experiences[0]);
-
 
     // For managing additional resources
     const [resources, setResources] = useState([]);
 
     // Load resources when tab changes
-    React.useEffect(() => {
+    useEffect(() => {
         if (experiences[activeTab]?.additionalResources) {
             setResources(
                 experiences[activeTab].additionalResources.map(resource => ({
@@ -215,21 +218,6 @@ const Experience = () => {
         if (icon === "FaGithub") return "github";
         return "website";
     };
-
-    // Get icon component based on resource type
-    const getIconForType = (type) => {
-        switch (type) {
-            case "playstore":
-                return <FaGooglePlay size={14}/>;
-            case "appstore":
-                return <FaAppStore size={14}/>;
-            case "github":
-                return <FaGithub size={14}/>;
-            default:
-                return <FaGlobe size={14}/>;
-        }
-    };
-
 
     const handleTabClick = (index) => {
         setActiveTab(index);
