@@ -211,7 +211,7 @@ export const experiences = [
     company: "Magnate",
     companyUrl: "https://magnate-software.com",
     date: "August 2024 - February 2025",
-    location: "On-site, New York",
+    location: "Hybrid, Galway, Ireland",
     desc: '•	Architected and launched scalable modules, improving system stability by 40% and reducing downtime.\n\•	Applied MVVM with Clean Architecture principles to develop a cross-platform mobile app using Kotlin and Swift, ensuring a clean codebase that enhanced maintainability and improved user experience.\n•	Oversaw a high-performing team, streamlining communication protocols and increasing overall productivity by 25%.\n•	Architected and implemented robust features for Android and iOS platforms using Kotlin Multiplatform, optimizing resource allocation to enhance performance by 30%.\n•	Coordinated streamlined deployment pipelines, successfully managing app releases on both the App Store and Google Play, achieving a 98% success rate in on-time releases.',
     skills: [
       "Kotlin",
