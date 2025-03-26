@@ -1,4 +1,4 @@
-import {FaAppStore, FaGithub, FaGlobe, FaGooglePlay} from "react-icons/fa";
+import {FaAppStore, FaGooglePlay} from "react-icons/fa";
 
 export const Bio = {
   name: "Jakub Olszewski",
@@ -336,6 +336,24 @@ export const education = [
 export const projects = [
   {
     id: 0,
+    title: "Path Tracer - Pathfinding Algorithm Visualizer",
+    date: "March 2025 - now",
+    description:
+        "Path Tracer is an interactive web application that visualizes popular pathfinding algorithms. It provides an intuitive interface to help users understand how different algorithms navigate through a grid from start to end points while avoiding obstacles.",
+    image: "https://i.imgur.com/lTKCEkl.png",
+    tags: [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "Tailwind CSS"
+    ],
+    category: ["web app", "visualization"],
+    github: "https://github.com/Olszewski-Jakub/path-tracer",
+    webapp: "https://path-tracer.jakubolszewski.dev/",
+    status: "Work in progress",
+  },
+  {
+    id: 1,
     title: "3D Gravity Simulator",
     date: "March 2025 - now",
     description:
@@ -356,7 +374,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 1,
+    id: 2,
     title: "RMS",
     date: "September 2024 - now",
     description:
@@ -377,7 +395,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 2,
+    id: 3,
     title: "RMS API",
     date: "September 2024 - now",
     description:
@@ -398,7 +416,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 3,
+    id: 4,
     title: "The Bouncer",
     date: "January 2025 - now",
     description: "The Bouncer is an authentication API based on JWT that allows users to create accounts using email and password or third-party authentication providers such as Google. The API also supports role-based access control (RBAC) with router-based privileges, including wildcard privileges for flexible access management. Additionally, it incorporates a custom authentication plugin for the Kong API Gateway, enhancing security and access control.",
@@ -410,7 +428,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 4,
+    id: 5,
     title: "The Keg",
     date: "January 2025 - now",
     description: "The KEG is a GTFS-based API designed for efficient fetching and management of GTFS data for a real-time public transport tracking app. It uses a PostgreSQL database for data storage and integrates OpenTripPlanner to help users find optimal trips. Authentication is handled by The Bouncer API, meaning Keg relies on it and does not require project-specific authentication implementations.",
@@ -422,7 +440,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 5,
+    id: 6,
     title: "Portfolio",
     date: "September 2023 - now",
     description:
@@ -436,7 +454,7 @@ export const projects = [
     status: "Deployed",
   },
   {
-    id: 6,
+    id: 7,
     title: "Kalkulator w Recepturze",
     date: "September 2019 - September 2022",
     description:
@@ -451,7 +469,7 @@ export const projects = [
     status: "Sold in 2023",
   },
   {
-    id: 7,
+    id: 8,
     title: "1LO Glwice",
     date: "September 2019 - November 2021",
     description:
@@ -466,10 +484,6 @@ export const projects = [
     status: "End of support",
   },
 ];
-
-// Add this to your constants.js file
-
-// Add this to your constants.js file
 
 export const certificates = [
   {
