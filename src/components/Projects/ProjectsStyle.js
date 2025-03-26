@@ -1,15 +1,30 @@
-import styled from 'styled-components';
-import _default from '../../themes/default';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
 
 export const Container = styled.div`
-    background: linear-gradient(343.07deg, rgba(132, 59, 206, 0.06) 5.71%, rgba(132, 59, 206, 0) 64.83%);
+    background: linear-gradient(
+            343.07deg,
+            rgba(132, 59, 206, 0.06) 5.71%,
+            rgba(132, 59, 206, 0) 64.83%
+    );
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
     z-index: 1;
     align-items: center;
-    clip-path: polygon(0 0, 100% 0, 100% 100%,100% 98%, 0 100%);
+    padding: 80px 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 98%, 0 100%);
 `;
 
 export const Wrapper = styled.div`
@@ -22,31 +37,39 @@ export const Wrapper = styled.div`
     max-width: 1350px;
     padding: 10px 0px 100px 0;
     gap: 12px;
+    animation: ${fadeIn} 0.5s ease-in-out;
+
     @media (max-width: 960px) {
-        flex-direction: column;
+        padding: 0px 0px 80px 0;
     }
 `;
 
-export const Title = styled.div`
-font-size: 42px;
-text-align: center;
-font-weight: 600;
-margin-top: 20px;
-  color: ${({ theme }) => theme.text_primary};
-  @media (max-width: 768px) {
-      margin-top: 12px;
-      font-size: 32px;
-  }
-`;
-
-export const Desc = styled.div`
-    font-size: 18px;
+export const Title = styled.h2`
+    font-size: 42px;
+    font-weight: 700;
     text-align: center;
-    max-width: 600px;
-    color: ${({ theme }) => theme.text_secondary};
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: ${({ theme }) => theme.text_primary};
+
     @media (max-width: 768px) {
         margin-top: 12px;
+        font-size: 36px;
+    }
+`;
+
+export const Desc = styled.p`
+    font-size: 18px;
+    text-align: center;
+    max-width: 800px;
+    color: ${({ theme }) => theme.text_secondary};
+    line-height: 1.5;
+    margin-bottom: 40px;
+
+    @media (max-width: 768px) {
+        margin: 12px 0 30px;
         font-size: 16px;
+        padding: 0 16px;
     }
 `;
 
@@ -57,49 +80,89 @@ export const ToggleButtonGroup = styled.div`
     font-size: 16px;
     border-radius: 12px;
     font-weight: 500;
-    margin: 22px 0px;
+    margin: 22px 0px 40px 0px;
+    overflow: hidden;
+
     @media (max-width: 768px) {
         font-size: 12px;
+        margin-bottom: 30px;
+        border-radius: 10px;
     }
-`
+
+    &.show-more {
+        margin: 40px auto 0;
+        width: auto;
+        border-radius: 20px;
+    }
+`;
 
 export const ToggleButton = styled.div`
     padding: 8px 18px;
-    border-radius: 6px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    
     ${({ active, theme }) =>
-        active && `
-    background: ${theme.primary + 20};
-    `
-    }
+    active && `
+            background: ${theme.primary};
+            color: ${theme.white};
+        `
+}
+    
     &:hover {
-        background: ${({ theme }) => theme.primary + 8};
+        background: ${({ theme, active }) => active ? theme.primary : `${theme.primary}22`};
+        color: ${({ theme, active }) => active ? theme.white : theme.primary};
     }
+    
     @media (max-width: 768px) {
-        padding: 6px 8px;
+        padding: 6px 12px;
         border-radius: 4px;
     }
-`
+    
+    &.show-more {
+        background: transparent;
+        color: ${({ theme }) => theme.primary};
+        border: 1.5px solid ${({ theme }) => theme.primary};
+        border-radius: 20px;
+        padding: 10px 24px;
+        transition: all 0.3s ease-in-out;
+        margin: 0 auto;
+        
+        &:hover {
+            background: ${({ theme }) => theme.primary};
+            color: ${({ theme }) => theme.white};
+            transform: translateY(-3px);
+        }
+    }
+`;
+
 export const Divider = styled.div`
     width: 1.5px;
     background: ${({ theme }) => theme.primary};
-`
-
+`;
 
 export const CardContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 28px;
     flex-wrap: wrap;
-    // display: grid;
-    // grid-template-columns: repeat(3, 1fr);
-    // grid-gap: 32px;
-    // grid-auto-rows: minmax(100px, auto);
-    // @media (max-width: 960px) {
-    //     grid-template-columns: repeat(2, 1fr);
-    // }
-    // @media (max-width: 640px) {
-    //     grid-template-columns: repeat(1, 1fr);
-    // }
+    gap: 28px;
+    
+    @media (max-width: 768px) {
+        gap: 20px;
+    }
+`;
+
+export const EmptyProjectsMessage = styled.div`
+    text-align: center;
+    color: ${({ theme }) => theme.text_secondary};
+    font-size: 18px;
+    margin: 50px 0;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px dashed ${({ theme }) => theme.text_secondary};
+    animation: ${fadeIn} 0.5s ease-in-out;
 `;

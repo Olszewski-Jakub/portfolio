@@ -1,3 +1,5 @@
+import {FaAppStore, FaGooglePlay} from "react-icons/fa";
+
 export const Bio = {
   name: "Jakub Olszewski",
   roles: [
@@ -10,7 +12,7 @@ export const Bio = {
     "I am a motivated and versatile individual, always eager to take on new challenges. With a passion for learning I am dedicated to delivering high-quality results. With a positive attitude and a growth mindset, I am ready to make a meaningful contribution and achieve great things.",
   github: "https://github.com/Olszewski-Jakub",
   resume:
-    "https://drive.google.com/file/d/1aywkSqH7xTcLVBV0mWMruLfbXC5snOKu/view?usp=sharing",
+    "https://drive.google.com/file/d/1Mc8z4KKP4jYNVINUufJUJesAkpjKWGee/view?usp=sharing",
   linkedin: "https://www.linkedin.com/in/j-olszewski/",
 };
 
@@ -185,18 +187,31 @@ export const experiences = [
     img: "https://images.seeklogo.com/logo-png/35/1/tractive-logo-png_seeklogo-354786.png",
     role: "Android Developer",
     company: "Tractive",
-    date: "May 2025 - Septmeber 2025",
+    companyUrl: "https://tractive.com",
+    date: "May 2025 - September 2025",
+    location: "On-site, Linz, Austria",
     desc: "",
     skills: [
       "Kotlin"
     ],
+    pdf: "", 
+    additionalImage: "",
+    additionalResources: [
+      {
+        title: "Google Play Store",
+        url: "https://play.google.com/store/apps/details?id=com.tractive.android.gps",
+        icon: <FaGooglePlay size={14} />
+      }
+    ]
   },
   {
     id: 1,
     img: "https://i.imgur.com/c6wNgb0.png",
-    role: "Kotlin Multiplatform Developer",
+    role: "Lead Mobile Developer",
     company: "Magnate",
+    companyUrl: "https://magnate-software.com",
     date: "August 2024 - February 2025",
+    location: "Hybrid, Galway, Ireland",
     desc: '•	Architected and launched scalable modules, improving system stability by 40% and reducing downtime.\n\•	Applied MVVM with Clean Architecture principles to develop a cross-platform mobile app using Kotlin and Swift, ensuring a clean codebase that enhanced maintainability and improved user experience.\n•	Oversaw a high-performing team, streamlining communication protocols and increasing overall productivity by 25%.\n•	Architected and implemented robust features for Android and iOS platforms using Kotlin Multiplatform, optimizing resource allocation to enhance performance by 30%.\n•	Coordinated streamlined deployment pipelines, successfully managing app releases on both the App Store and Google Play, achieving a 98% success rate in on-time releases.',
     skills: [
       "Kotlin",
@@ -209,13 +224,29 @@ export const experiences = [
       "CI/CD pipelines",
       "Github Actions",
     ],
+    pdf: "", 
+    additionalImage: "",
+    additionalResources: [
+      {
+        title: "Google Play Store",
+        url: "https://play.google.com/store/apps/details?id=com.magnatesoftware.magnate.release&pli=1",
+        icon: <FaGooglePlay size={14} />
+      },
+      {
+        title: "App Store",
+        url: "https://apps.apple.com/ie/app/magnate-software/id6670550097",
+        icon: <FaAppStore size={14} />
+      }
+    ]
   },
   {
     id: 2,
     img: "https://i.imgur.com/AbC9492.png",
     role: "Mobile Developer",
     company: "DOZ S.A",
+    companyUrl: "https://dozsa.pl",
     date: "May 2024 - August 2024",
+    location: "On-site, Warsaw, Poland",
     desc: "",
     skills: [
       "Kotlin",
@@ -226,13 +257,17 @@ export const experiences = [
       "Docker",
       "CI/CD pipelines",
     ],
+    pdf: "", 
+    additionalImage: "",
   },
   {
     id: 3,
     img: "https://i.imgur.com/83DsYER.png",
     role: "Programming Coach for children and teenagers",
     company: "Coding Giants",
-    date: "December 2023 - now",
+    companyUrl: "https://codinggiants.com",
+    date: "December 2023 - Present",
+    location: "Remote, Poland",
     desc: "As a Programming Coach at Coding Giants, I have the privilege of inspiring and educating young minds in the fields of programming, graphic design, and new technologies. In this role, I am responsible for delivering engaging curriculum tailored to the diverse interests and learning styles of children and teenagers aged 7-19.\n\nKey Responsibilities:\n\n- Develop and lead interactive classes, workshops, and projects to introduce students to the fundamentals of programming, graphic design, and emerging technologies.\n\n- Collaborate with colleagues to enhance and refine training materials, lesson plans, and presentations, ensuring they remain current and relevant in an ever-evolving technological landscape.\n\n- Foster a supportive and inclusive learning environment where students feel empowered to explore, create, and innovate.\n\n- Adapt teaching methods and strategies to accommodate both in-person and online learning environments, leveraging digital tools and resources to enhance engagement and accessibility.",
     skills: [
       "c#",
@@ -247,14 +282,18 @@ export const experiences = [
       "Teamwork",
       "Teaching",
     ],
+    pdf: "", 
+    additionalImage: "",
   },
   {
     id: 4,
     img: "https://i.imgur.com/AbC9492.png",
-    role: "Software Developer Assistant",
+    role: "Android Developer",
     company: "DOZ S.A",
+    companyUrl: "https://dozsa.pl",
     date: "June 2023 - September 2023",
-    desc: "As a Software Developer Assistant at DOZ S.A., I spearheaded the conception, development, and execution of independent project aimed at revolutionizing operations within the pharmaceutical sector.\n\nKey Responsibilities:\n\n- Led the conception, development, and execution of an independent project aimed at revolutionizing operations within the pharmaceutical sector.\n\n- Worked closely with pharmacists to identify key pain points and introduced advanced functionalities that markedly improved efficiency and precision in day-to-day activities.\n\n- Meticulously documented each initiative, providing comprehensive user manuals, system diagrams, and flowcharts to facilitate seamless knowledge transfer and support ongoing maintenance efforts.\n\n- Leveraged automation to streamline development workflows, significantly reducing manual labor while optimizing processes for enhanced performance.\n\nAchievements:\n- Successfully revolutionized pharmaceutical operations through the introduction of advanced functionalities, resulting in tangible improvements in efficiency and precision.\n\n- Implemented automation solutions that streamlined development workflows, resulting in significant reductions in manual labor and enhanced overall performance.",
+    location: "Warsaw, Poland",
+    desc: "As a Android Developer at DOZ S.A., I spearheaded the conception, development, and execution of independent project aimed at revolutionizing operations within the pharmaceutical sector.\n\nKey Responsibilities:\n\n- Led the conception, development, and execution of an independent project aimed at revolutionizing operations within the pharmaceutical sector.\n\n- Worked closely with pharmacists to identify key pain points and introduced advanced functionalities that markedly improved efficiency and precision in day-to-day activities.\n\n- Meticulously documented each initiative, providing comprehensive user manuals, system diagrams, and flowcharts to facilitate seamless knowledge transfer and support ongoing maintenance efforts.\n\n- Leveraged automation to streamline development workflows, significantly reducing manual labor while optimizing processes for enhanced performance.\n\nAchievements:\n- Successfully revolutionized pharmaceutical operations through the introduction of advanced functionalities, resulting in tangible improvements in efficiency and precision.\n\n- Implemented automation solutions that streamlined development workflows, resulting in significant reductions in manual labor and enhanced overall performance.",
     skills: [
       "Kotlin",
       "Azure AAD",
@@ -266,6 +305,8 @@ export const experiences = [
       "Docker",
       "CI/CD pipelines",
     ],
+    pdf: "", 
+    additionalImage: "",
   },
 ];
 
@@ -275,29 +316,69 @@ export const education = [
     img: "https://universityofgalway.ie/cdn/images/email/university_of_galway_logo__positive_landscape1.jpg",
     school: "University Of Galway, Galway, Ireland",
     date: "September 2023 - May 2027",
-    desc: "I am currently pursuing a Bachelor's degree in Computer Science and Information Technology at University of Galway, Ireland.",
-    degree:
-      "Bachelor of Scince - BSc, Computer Science and Information Technology",
+    desc: "I am currently pursuing a Bachelor's degree in Computer Science and Information Technology at University of Galway, Ireland. My coursework includes Data Structures, Algorithms, Database Management, Web Development, and Software Engineering practices. I've participated in various hackathons and coding competitions organized by the university.",
+    degree: "Bachelor of Science - BSc, Computer Science and Information Technology",
+    website: "https://universityofgalway.ie/",
+    grade: "Current grade: 1.1 (First Class Honours)"
   },
   {
     id: 1,
     img: "http://www.lo1.gliwice.pl/wp-content/uploads/2015/04/logo_zso10.png",
-    school:
-      "I Liceum Ogólnokształcące Dwujęzyczne im. E. Dembowskiego, Gliwice, Poland",
+    school: "I Liceum Ogólnokształcące Dwujęzyczne im. E. Dembowskiego, Gliwice, Poland",
     date: "September 2019 - May 2023",
-    grade: "average percentile: 75%",
-    desc: "I completed my high school education at I Liceum Ogólnokształcące Dwujęzyczne im. E. Dembowskiego , Gliwice, where I studied Maths and Physics.",
-    degree: "high school leaving certificate",
-  },
+    grade: "Average percentile: 75%",
+    desc: "I completed my high school education at I Liceum Ogólnokształcące Dwujęzyczne im. E. Dembowskiego, Gliwice, where I studied Maths and Physics. During my time there, I participated in the school's programming club and mathematics olympiad, developing a strong foundation in analytical thinking and problem-solving.",
+    degree: "High School Leaving Certificate, Mathematics and Physics",
+    website: "http://www.lo1.gliwice.pl/"
+  }
 ];
 
 export const projects = [
   {
     id: 0,
+    title: "Path Tracer - Pathfinding Algorithm Visualizer",
+    date: "March 2025 - now",
+    description:
+        "Path Tracer is an interactive web application that visualizes popular pathfinding algorithms. It provides an intuitive interface to help users understand how different algorithms navigate through a grid from start to end points while avoiding obstacles.",
+    image: "https://i.imgur.com/lTKCEkl.png",
+    tags: [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "Tailwind CSS"
+    ],
+    category: ["web app", "visualization"],
+    github: "https://github.com/Olszewski-Jakub/path-tracer",
+    webapp: "https://path-tracer.jakubolszewski.dev/",
+    status: "Work in progress",
+  },
+  {
+    id: 1,
+    title: "3D Gravity Simulator",
+    date: "March 2025 - now",
+    description:
+        "A modern, interactive 3D simulation of Newtonian gravitational physics. Users can create, edit, and observe celestial bodies in space with real-time orbit visualization and accurate physics calculations. Built with React, Three.js, and Tailwind CSS, this web application offers an intuitive interface for exploring gravitational interactions between planets, stars, and black holes.",
+    image: "https://images.pexels.com/photos/5439/earth-space.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    tags: [
+      "React JS",
+      "Three.js",
+      "React Three Fiber",
+      "JavaScript",
+      "Tailwind CSS",
+      "Physics Engine",
+      "Next.js"
+    ],
+    category: ["web app", "simulation"],
+    github: "https://github.com/Olszewski-Jakub/3d-gravity-simulation",
+    webapp: "https://gravity-simulator.jakubolszewski.dev/",
+    status: "Work in progress",
+  },
+  {
+    id: 2,
     title: "RMS",
     date: "September 2024 - now",
     description:
-      "A comprehensive solution that transforms how restaurants operate. Our system bridges the gap between customers and restaurant management with powerful, intuitive interfaces.",
+        "A comprehensive solution that transforms how restaurants operate. Our system bridges the gap between customers and restaurant management with powerful, intuitive interfaces.",
     image: "https://avatars.githubusercontent.com/u/182916697?s=200&v=4",
     tags: [
       "Javascript",
@@ -314,13 +395,13 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 1,
+    id: 3,
     title: "RMS API",
     date: "September 2024 - now",
     description:
-      "A comprehensive solution that transforms how restaurants operate. Our system bridges the gap between customers and restaurant management with powerful, intuitive interfaces.",
+        "A comprehensive solution that transforms how restaurants operate. Our system bridges the gap between customers and restaurant management with powerful, intuitive interfaces.",
     image:
-      "https://avatars.githubusercontent.com/u/182916697?s=200&v=4",
+        "https://avatars.githubusercontent.com/u/182916697?s=200&v=4",
     tags: [
       "JavaScript",
       "Node JS",
@@ -335,7 +416,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 2,
+    id: 4,
     title: "The Bouncer",
     date: "January 2025 - now",
     description: "The Bouncer is an authentication API based on JWT that allows users to create accounts using email and password or third-party authentication providers such as Google. The API also supports role-based access control (RBAC) with router-based privileges, including wildcard privileges for flexible access management. Additionally, it incorporates a custom authentication plugin for the Kong API Gateway, enhancing security and access control.",
@@ -347,7 +428,7 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 3,
+    id: 5,
     title: "The Keg",
     date: "January 2025 - now",
     description: "The KEG is a GTFS-based API designed for efficient fetching and management of GTFS data for a real-time public transport tracking app. It uses a PostgreSQL database for data storage and integrates OpenTripPlanner to help users find optimal trips. Authentication is handled by The Bouncer API, meaning Keg relies on it and does not require project-specific authentication implementations.",
@@ -359,13 +440,13 @@ export const projects = [
     status: "Work in progress",
   },
   {
-    id: 4,
+    id: 6,
     title: "Portfolio",
     date: "September 2023 - now",
     description:
-      "Current portfolio website. It was created using React Js and styled components. It is fully responsive and it is using dark mode.",
+        "Current portfolio website. It was created using React Js and styled components. It is fully responsive and it is using dark mode.",
     image:
-      "https://images.pexels.com/photos/14936128/pexels-photo-14936128.jpeg?cs=srgb&dl=pexels-ann-h-14936128.jpg&fm=jpg",
+        "https://images.pexels.com/photos/14936128/pexels-photo-14936128.jpeg?cs=srgb&dl=pexels-ann-h-14936128.jpg&fm=jpg",
     tags: ["Javascript", "React JS", "HTML", "CSS", "Styled Components"],
     category: ["web app"],
     github: "https://github.com/Olszewski-Jakub/portfolio",
@@ -373,33 +454,81 @@ export const projects = [
     status: "Deployed",
   },
   {
-    id: 5,
+    id: 7,
     title: "Kalkulator w Recepturze",
     date: "September 2019 - September 2022",
     description:
-      "Kalkulator w Recepturze was a simple app made for pharmacists to help them be more accurate when prepring medicines in pharmacies. It includes many diffrent formulas for dufrent subsatnces ",
+        "Kalkulator w Recepturze was a simple app made for pharmacists to help them be more accurate when prepring medicines in pharmacies. It includes many diffrent formulas for dufrent subsatnces ",
     image:
-      "https://play-lh.googleusercontent.com/rcZCp0l8tEvbzmhwrGVB1XUbRhMYG22Ftci974FyG0ZqnAlkNB0Tjbuxv62oWvV7jIkQ=w240-h480-rw",
+        "https://play-lh.googleusercontent.com/rcZCp0l8tEvbzmhwrGVB1XUbRhMYG22Ftci974FyG0ZqnAlkNB0Tjbuxv62oWvV7jIkQ=w240-h480-rw",
     tags: ["Java", "Firebase", "XML"],
     category: ["android app"],
     github: "https://github.com/Olszewski-Jakub/kalkulatorRecepturowy",
     webapp:
-      "https://play.google.com/store/apps/details?id=com.jakubolszewski.kalkulatorrecepturowy",
+        "https://play.google.com/store/apps/details?id=com.jakubolszewski.kalkulatorrecepturowy",
     status: "Sold in 2023",
   },
   {
-    id: 6,
+    id: 8,
     title: "1LO Glwice",
     date: "September 2019 - November 2021",
     description:
-      "1LO Glwice was an application created for my high school. It was created to help students and teachers with their daily school life. It was created using java and Firebase. It was my first android application. It's main purpose was to make students life easier.",
+        "1LO Glwice was an application created for my high school. It was created to help students and teachers with their daily school life. It was created using java and Firebase. It was my first android application. It's main purpose was to make students life easier.",
     image:
-      "https://play-lh.googleusercontent.com/ibqxWu9DTjwaXvpMse_wRPpGA7VJLyYz9MpZ3eUlUE6k1ehpC-YHeH0-CPLArkV81OQ=w240-h480-rw",
+        "https://play-lh.googleusercontent.com/ibqxWu9DTjwaXvpMse_wRPpGA7VJLyYz9MpZ3eUlUE6k1ehpC-YHeH0-CPLArkV81OQ=w240-h480-rw",
     tags: ["Java", "Firebase", "XML"],
     category: ["android app"],
     github: "https://github.com/Olszewski-Jakub/1LO-Glwice-v2",
     webapp:
-      "https://play.google.com/store/apps/details?id=com.jakubolszewski.lo1gliwice",
+        "https://play.google.com/store/apps/details?id=com.jakubolszewski.lo1gliwice",
     status: "End of support",
   },
+];
+
+export const certificates = [
+  {
+    title: "Certificate in Advanced English (CAE)",
+    category: "language",
+    date: "September 2022",
+    issuer: "Cambridge English",
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    skills: ["English Language", "Advanced Communication", "C1 Level"],
+    score: "Score: 195"
+  },
+  {
+    title: "IELTS Academic",
+    category: "language",
+    date: "September 2022",
+    issuer: "IELTS Official",
+    image: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    skills: ["English Proficiency", "Academic English", "International Communication"],
+    score: "Score: 7.0"
+  },
+  {
+    title: "Java (Basic)",
+    category: "programming",
+    date: "October 2022",
+    issuer: "HackerRank",
+    image: "https://images.unsplash.com/photo-1588239034647-25783cbfcfc1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    url: "https://www.hackerrank.com/certificates/6cdba8fac6d0", // Replace with your actual certificate link
+    skills: ["Java", "Object-Oriented Programming", "Problem Solving"]
+  },
+  {
+    title: "Introduction to R",
+    category: "datascience",
+    date: "September 2024",
+    issuer: "DataCamp",
+    image: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2047&q=80",
+    url: "https://www.datacamp.com/completed/statement-of-accomplishment/course/e1a3bfdfa2d4cf5eefe980273ae5f28a7b011bba", // Replace with your actual certificate link
+    skills: ["R Programming", "Data Analysis", "Statistical Computing"]
+  },
+  {
+    title: "Kotlin Essential Training: Object-Oriented and Async Code",
+    category: "programming",
+    date: "March 2025",
+    issuer: "LinkedIn Learning",
+    image: "https://images.unsplash.com/photo-1588239034647-25783cbfcfc1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    url: "https://www.linkedin.com/learning/certificates/9cfedc92cfd366a9efd004f234b4c96e54d86b38bb38bded77e0b9969dc0c05e?trk=share_certificate",
+    skills: ["Kotlin", "Object-Oriented Programming", "Asynchronous Programming"]
+  }
 ];
