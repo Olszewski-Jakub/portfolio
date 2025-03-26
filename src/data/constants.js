@@ -507,5 +507,14 @@ export const certificates = [
     image: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2047&q=80",
     url: "https://www.datacamp.com/completed/statement-of-accomplishment/course/e1a3bfdfa2d4cf5eefe980273ae5f28a7b011bba", // Replace with your actual certificate link
     skills: ["R Programming", "Data Analysis", "Statistical Computing"]
+  },
+  {
+    title: "Kotlin Essential Training: Object-Oriented and Async Code",
+    category: "programming",
+    date: "October 2023",
+    issuer: "LinkedIn Learning",
+    image: "https://images.unsplash.com/photo-1588239034647-25783cbfcfc1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    url: "https://www.linkedin.com/learning/certificates/9cfedc92cfd366a9efd004f234b4c96e54d86b38bb38bded77e0b9969dc0c05e?trk=share_certificate",
+    skills: ["Kotlin", "Object-Oriented Programming", "Asynchronous Programming"]
   }
 ];
