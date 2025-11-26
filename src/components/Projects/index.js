@@ -11,11 +11,12 @@ import {
   EmptyProjectsMessage
 } from "./ProjectsStyle";
 import ProjectCard from "../Cards/ProjectCards";
-import { projects } from "../../data/constants";
+import useContent from "../../hooks/useContent";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Projects = ({ openModal, setOpenModal }) => {
   const [toggle, setToggle] = useState("all");
+  const { data: projectsData, loading } = useContent('projects');
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [visibleProjects, setVisibleProjects] = useState([]);
   const [showMore, setShowMore] = useState(false);
@@ -23,12 +24,13 @@ const Projects = ({ openModal, setOpenModal }) => {
 
   // Filter projects based on selected category
   useEffect(() => {
+    const src = projectsData || [];
     if (toggle === "all") {
-      setFilteredProjects(projects);
+      setFilteredProjects(src);
     } else {
-      setFilteredProjects(projects.filter(item => item.category.includes(toggle)));
+      setFilteredProjects(src.filter(item => (Array.isArray(item.category) ? item.category : [item.category]).includes(toggle)));
     }
-  }, [toggle]);
+  }, [toggle, projectsData]);
 
   // Handle pagination
   useEffect(() => {
@@ -40,7 +42,7 @@ const Projects = ({ openModal, setOpenModal }) => {
   }, [filteredProjects, showMore]);
 
   // Get unique categories for filter buttons
-  const categories = ["all", ...new Set(projects.flatMap(project => project.category))];
+  const categories = ["all", ...new Set((projectsData || []).flatMap(project => Array.isArray(project.category) ? project.category : [project.category]).filter(Boolean))];
 
   return (
       <Container id="projects">
@@ -71,7 +73,7 @@ const Projects = ({ openModal, setOpenModal }) => {
 
           <CardContainer>
             <AnimatePresence>
-              {visibleProjects.length > 0 ? (
+              {loading ? null : visibleProjects.length > 0 ? (
                   visibleProjects.map((project, index) => (
                       <motion.div
                           key={project.id}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { certificates } from '../../data/constants';
+import useContent from '../../hooks/useContent';
 import { motion } from 'framer-motion';
 import { FaCertificate, FaExternalLinkAlt, FaFilter, FaTimes } from 'react-icons/fa';
 
@@ -358,9 +358,10 @@ const containerVariants = {
 
 const Certificates = () => {
     const [activeFilter, setActiveFilter] = useState('all');
+    const { data: certificates = [], loading } = useContent('certificates');
 
     // Extract unique categories from certificates
-    const categories = ['all', ...new Set(certificates.map(cert => cert.category))];
+    const categories = ['all', ...new Set((certificates || []).map(cert => cert.category).filter(Boolean))];
 
     // Filter certificates based on selected category
     const filteredCertificates = activeFilter === 'all'
@@ -396,7 +397,7 @@ const Certificates = () => {
                     )}
                 </FilterContainer>
 
-                {filteredCertificates.length > 0 ? (
+                {!loading && filteredCertificates.length > 0 ? (
                     <CertificatesGrid
                         as={motion.div}
                         variants={containerVariants}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { education } from '../../data/constants';
+import useContent from '../../hooks/useContent';
 import { motion } from 'framer-motion';
 import EducationCard from '../Cards/EducationCard';
 import { FaGraduationCap, FaAngleRight, FaSchool } from 'react-icons/fa';
@@ -190,6 +190,7 @@ const contentVariants = {
 
 const Education = () => {
     const [activeTab, setActiveTab] = useState(0);
+    const { data: education = [], loading } = useContent('education');
 
     const handleTabClick = (index) => {
         setActiveTab(index);
@@ -217,7 +218,7 @@ const Education = () => {
                                     edu.degree?.toLowerCase().includes('master') ?
                                         <FaGraduationCap /> : <FaSchool />}
                                 </TabIcon>
-                                {edu.school.split(',')[0]} {/* Display only the school name without city */}
+                                {(edu.school || '').split(',')[0]}
                                 {activeTab === index && <FaAngleRight style={{ marginLeft: 'auto' }} />}
                             </Tab>
                         ))}
@@ -231,7 +232,9 @@ const Education = () => {
                         variants={contentVariants}
                     >
                         <CardContainer>
-                            <EducationCard education={education[activeTab]} />
+                            {!loading && education[activeTab] && (
+                              <EducationCard education={education[activeTab]} />
+                            )}
                         </CardContainer>
                     </TabContent>
                 </EducationContainer>

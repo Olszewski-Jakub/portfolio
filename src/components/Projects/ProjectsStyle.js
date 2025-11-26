@@ -14,8 +14,8 @@ const fadeIn = keyframes`
 export const Container = styled.div`
     background: linear-gradient(
             343.07deg,
-            rgba(132, 59, 206, 0.06) 5.71%,
-            rgba(132, 59, 206, 0) 64.83%
+            ${({ theme }) => theme.gradients.projects.violetLight} 5.71%,
+            ${({ theme }) => theme.gradients.projects.violetZero} 64.83%
     );
     display: flex;
     flex-direction: column;
