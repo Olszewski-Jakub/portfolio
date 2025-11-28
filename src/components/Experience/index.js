@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import ExperienceCard from '../Cards/ExperienceCard';
-import {experiences} from '../../data/constants';
+import useContent from '../../hooks/useContent';
 import {motion} from 'framer-motion';
 import {FaAngleRight, FaBriefcase} from 'react-icons/fa';
 
@@ -190,7 +190,8 @@ const contentVariants = {
 
 const Experience = () => {
     const [activeTab, setActiveTab] = useState(0);
-    const [currentExperience, setCurrentExperience] = useState(experiences[0]);
+    const { data: experiences = [], loading } = useContent('experience');
+    const currentExperience = experiences[activeTab] || experiences[0];
 
     // For managing additional resources
     const [resources, setResources] = useState([]);
@@ -208,7 +209,7 @@ const Experience = () => {
         } else {
             setResources([]);
         }
-    }, [activeTab]);
+    }, [activeTab, experiences]);
 
     // Helper to determine resource type from icon
     const getResourceType = (resource) => {
@@ -221,7 +222,6 @@ const Experience = () => {
 
     const handleTabClick = (index) => {
         setActiveTab(index);
-        setCurrentExperience(experiences[index]);
     };
 
     return (
@@ -246,7 +246,7 @@ const Experience = () => {
                                 <TabIcon>
                                     <FaBriefcase/>
                                 </TabIcon>
-                                {experience.company}
+                                {experience.company || experience.title}
                                 {activeTab === index && <FaAngleRight style={{marginLeft: 'auto'}}/>}
                             </Tab>
                         ))}
@@ -260,7 +260,9 @@ const Experience = () => {
                         variants={contentVariants}
                     >
                         <CardContainer>
-                            <ExperienceCard experience={currentExperience}/>
+                            {!loading && currentExperience && (
+                              <ExperienceCard experience={currentExperience}/>
+                            )}
                         </CardContainer>
                     </TabContent>
                 </ExperienceContainer>

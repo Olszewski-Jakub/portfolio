@@ -66,7 +66,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             <a style={{
               display: "flex",
               alignItems: "center",
-              color: "white",
+              color: theme.text_primary,
               cursor: 'pointer',
               textDecoration: 'none'
             }}>

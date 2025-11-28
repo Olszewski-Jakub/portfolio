@@ -130,12 +130,13 @@ const Status = styled.span`
 `;
 
 const ProjectCards = ({ project, setOpenModal }) => {
+  const imageSrc = project?.imageUrl || project?.image || project?.img || "";
   return (
     <Card onClick={() => setOpenModal({ state: true, project: project })}>
-      <Image src={project.image} />
+      <Image src={imageSrc} alt={project?.title || "project image"} loading="lazy" />
       <Tags>
         {project.tags?.map((tag, index) => (
-          <Tag>{tag}</Tag>
+          <Tag key={index}>{tag}</Tag>
         ))}
       </Tags>
       <Details>

@@ -16,9 +16,11 @@ import Education from "./components/Education";
 import Certificates from "./components/Certificates"; // Import the new component
 import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./components/ScrollToTop";
+import AdminApp from "./admin/AdminApp";
 import styled from "styled-components";
-import { initializeApp } from "firebase/app";
+import GlobalStyles from "./styles/GlobalStyles";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { app } from "./services/firebase";
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -30,31 +32,18 @@ const Body = styled.div`
 const Wrapper = styled.div`
   background: linear-gradient(
       38.73deg,
-      rgba(204, 0, 187, 0.15) 0%,
-      rgba(201, 32, 184, 0) 50%
+      ${({ theme }) => theme.gradients.wrapper.pinkLight} 0%,
+      ${({ theme }) => theme.gradients.wrapper.pinkZero} 50%
   ),
   linear-gradient(
       141.27deg,
-      rgba(0, 70, 209, 0) 50%,
-      rgba(0, 70, 209, 0.15) 100%
+      ${({ theme }) => theme.gradients.wrapper.blueZero} 50%,
+      ${({ theme }) => theme.gradients.wrapper.blueLight} 100%
   );
   width: 100%;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 98%, 0 100%);
 `;
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 function App() {
@@ -85,41 +74,53 @@ function App() {
     logEvent(analytics, "page_view");
   }, []);
 
+  // Admin is available only via the admin subdomain.
+  const isAdmin = (() => {
+    if (typeof window === 'undefined') return false;
+    const host = window.location.hostname || '';
+    const adminPrefix = (process.env.REACT_APP_ADMIN_SUBDOMAIN || 'admin') + '.';
+    return host.toLowerCase().startsWith(adminPrefix.toLowerCase());
+  })();
+
   return (
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <Router>
-          <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-          <Body>
-            <ScrollToTop />
-            <HeroSection />
-            <Wrapper>
-              <Skills />
-              <Experience />
-            </Wrapper>
-            <Projects openModal={openModal} setOpenModal={setOpenModal} />
-            <Wrapper>
-              <Education />
-              <Certificates /> {/* Add the Certificates component here */}
-              <Contact />
-            </Wrapper>
-            <Footer />
-            {openModal.state && (
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <GlobalStyles />
+      <Router>
+        {isAdmin ? (
+          <AdminApp />
+        ) : (
+          <>
+            <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            <Body>
+              <ScrollToTop />
+              <HeroSection />
+              <Wrapper>
+                <Skills />
+                <Experience />
+              </Wrapper>
+              <Projects openModal={openModal} setOpenModal={setOpenModal} />
+              <Wrapper>
+                <Education />
+                <Certificates />
+                <Contact />
+              </Wrapper>
+              <Footer />
+              {openModal.state && (
                 <ProjectDetails
-                    openModal={openModal}
-                    setOpenModal={(newModalState) => {
-                      setOpenModal(newModalState);
-                      // Ensure body scroll is restored when modal closes
-                      if (!newModalState.state) {
-                        setTimeout(() => {
-                          document.body.style.overflow = '';
-                        }, 100);
-                      }
-                    }}
+                  openModal={openModal}
+                  setOpenModal={(newModalState) => {
+                    setOpenModal(newModalState);
+                    if (!newModalState.state) {
+                      setTimeout(() => { document.body.style.overflow = ''; }, 100);
+                    }
+                  }}
                 />
-            )}
-          </Body>
-        </Router>
-      </ThemeProvider>
+              )}
+            </Body>
+          </>
+        )}
+      </Router>
+    </ThemeProvider>
   );
 }
 
