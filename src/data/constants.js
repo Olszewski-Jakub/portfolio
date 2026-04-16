@@ -10,6 +10,11 @@ export const Bio = {
   ],
   description:
     "I build mobile apps and backend systems that combine clean architecture with intuitive user experiences. Specialising in Android, iOS, and full-stack development — I turn ideas into polished, production-ready products.",
+  stats: [
+    { value: 12, suffix: "+", label: "Projects Built" },
+    { value: 20, suffix: "+", label: "Technologies" },
+    { value: 3,  suffix: "+", label: "Years Coding"  },
+  ],
   github: "https://github.com/Olszewski-Jakub",
   resume:
     "https://drive.google.com/file/d/1Mc8z4KKP4jYNVINUufJUJesAkpjKWGee/view?usp=sharing",

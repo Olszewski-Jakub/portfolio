@@ -1,14 +1,16 @@
 import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+`;
+
+const auroraShift = keyframes`
+    0%   { transform: translate(0%,   0%)   scale(1);    }
+    25%  { transform: translate(-4%,  5%)   scale(1.06); }
+    50%  { transform: translate(5%,  -3%)   scale(0.97); }
+    75%  { transform: translate(-2%, -5%)   scale(1.04); }
+    100% { transform: translate(0%,   0%)   scale(1);    }
 `;
 
 // Combined float + glow in one keyframe — eliminates the jitter from
@@ -46,7 +48,21 @@ const bounce = keyframes`
 
 export const HeroSectionWrapper = styled.div`
     position: relative;
-    padding-top: 80px; // Account for the fixed navbar
+    padding-top: 80px;
+    overflow: hidden;
+`;
+
+export const AuroraBg = styled.div`
+    position: absolute;
+    inset: -40%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 80% 60% at 15% 45%, rgba(47, 129, 247, 0.26) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 80% at 85% 25%, rgba(14, 165, 233, 0.2)  0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 55% 80%, rgba(99, 102, 241, 0.14) 0%, transparent 60%);
+    animation: ${auroraShift} 18s ease-in-out infinite alternate;
+    will-change: transform;
 `;
 
 export const HeroContainer = styled.div`
@@ -341,8 +357,70 @@ export const ScrollDownIcon = styled.div`
   color: ${({ theme }) => theme.text_secondary};
   cursor: pointer;
   transition: color 0.3s ease-in-out;
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
   }
+`;
+
+/* ── Hero stats ── */
+
+export const StatsRow = styled.div`
+  display: flex;
+  gap: 36px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+
+  @media (max-width: 960px) {
+    justify-content: center;
+    gap: 28px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 20px;
+  }
+`;
+
+export const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -18px;
+    top: 8px;
+    height: 32px;
+    width: 1px;
+    background: ${({ theme }) => `${theme.text_primary}20`};
+
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 960px) {
+    align-items: center;
+  }
+`;
+
+export const StatNumber = styled.div`
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
+
+export const StatLabel = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.text_secondary};
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 `;

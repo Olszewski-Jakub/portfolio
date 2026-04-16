@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ExperienceCard from '../Cards/ExperienceCard';
 import useContent from '../../hooks/useContent';
-import {motion} from 'framer-motion';
-import {FaAngleRight, FaBriefcase} from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from '../SectionTitle';
 
 const Container = styled.div`
@@ -24,166 +23,105 @@ const Container = styled.div`
 const Wrapper = styled.div`
     position: relative;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     width: 100%;
     max-width: 1100px;
-    padding: 40px 0;
-    gap: 12px;
-
-    @media (max-width: 960px) {
-        flex-direction: column;
-    }
+    padding: 0 20px;
+    gap: 0;
 `;
 
+/* ── Timeline ── */
 
-const ExperienceContainer = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0 16px;
-
-    @media (max-width: 960px) {
-        flex-direction: column;
-        align-items: center;
-    }
-`;
-
-const TabsContainer = styled.div`
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid ${({theme}) => `${theme.text_primary}20`};
-
-    @media (max-width: 960px) {
-    width: 100%;
-        max-width: 600px;
-        border-right: none;
-        border-bottom: 1px solid ${({theme}) => `${theme.text_primary}20`};
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Firefox */
-        &::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Edge */
-        }
-    }
-`;
-
-const Tab = styled.div`
-    padding: 16px 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+const Timeline = styled.div`
     position: relative;
-    font-size: 16px;
-    color: ${({active, theme}) => active ? theme.primary : theme.text_secondary};
-    border-left: 3px solid ${({active, theme}) => active ? theme.primary : 'transparent'};
-    background-color: ${({active, theme}) => active ? `${theme.primary}10` : 'transparent'};
-    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, border-color 0.25s ease-in-out;
+    width: 100%;
+    padding: 48px 0 0;
 
-    &:hover {
-        color: ${({theme}) => theme.primary};
-        background-color: ${({theme}) => `${theme.primary}10`};
+    /* Vertical centre line */
+    &::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        transform: translateX(-50%);
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            ${({ theme }) => theme.primary}70 6%,
+            ${({ theme }) => theme.primary}70 94%,
+            transparent
+        );
     }
 
-    @media (max-width: 960px) {
-        padding: 10px 12px;
-        font-size: 14px;
-        border-left: none;
-        border-bottom: 3px solid ${({active, theme}) => active ? theme.primary : 'transparent'};
-        text-align: center;
-    justify-content: center;
+    @media (max-width: 768px) {
+        padding-left: 40px;
+        &::before {
+            left: 16px;
+            transform: none;
+        }
     }
 `;
 
-const TabIcon = styled.div`
+const TimelineEntry = styled.div`
     display: flex;
-    align-items: center;
-    margin-right: 12px;
+    justify-content: ${({ $isLeft }) => ($isLeft ? 'flex-end' : 'flex-start')};
+    padding-bottom: 60px;
+    position: relative;
 
-    @media (max-width: 960px) {
-        margin-right: 6px;
+    @media (max-width: 768px) {
+        justify-content: flex-start;
+        padding-bottom: 40px;
     }
 `;
 
-const TabContent = styled(motion.div)`
-    flex: 1;
-    max-width: 700px;
+const EntryCard = styled(motion.div)`
+    width: calc(50% - 52px);
 
-    @media (max-width: 960px) {
+    @media (max-width: 768px) {
         width: 100%;
-        max-width: 600px;
     }
 `;
 
-const CardContainer = styled(motion.div)`
-    padding: 10px;
+/* Glowing dot on the timeline */
+const Dot = styled.div`
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.primary};
+    border: 3px solid ${({ theme }) => theme.card_light};
+    box-shadow:
+        0 0 0 4px ${({ theme }) => `${theme.primary}35`},
+        0 0 20px ${({ theme }) => `${theme.primary}50`};
+    transform: translateX(-50%);
+    z-index: 2;
+
+    @media (max-width: 768px) {
+        left: 16px;
+    }
 `;
 
-// Animation variants for tab content
-const contentVariants = {
-    hidden: {opacity: 0, x: 20},
-    visible: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeInOut"
-        }
-    },
-    exit: {
-        opacity: 0,
-        x: -20,
-        transition: {
-            duration: 0.3
-        }
+/* Horizontal connector line from dot to card */
+const Connector = styled.div`
+    position: absolute;
+    top: 37px;
+    height: 2px;
+    width: 36px;
+    background: ${({ theme }) => `${theme.primary}50`};
+    ${({ $isLeft }) => $isLeft ? 'right: calc(50% + 16px);' : 'left: calc(50% + 16px);'}
+
+    @media (max-width: 768px) {
+        display: none;
     }
-};
+`;
 
 const Experience = () => {
-    const [activeTab, setActiveTab] = useState(0);
     const { data: experiences = [], loading } = useContent('experience');
-    const currentExperience = experiences[activeTab] || experiences[0];
-
-    // For managing additional resources
-    const [resources, setResources] = useState([]);
-
-    // Load resources when tab changes
-    useEffect(() => {
-        if (experiences[activeTab]?.additionalResources) {
-            setResources(
-                experiences[activeTab].additionalResources.map(resource => ({
-                    type: getResourceType(resource),
-                    title: resource.title,
-                    url: resource.url
-                }))
-            );
-        } else {
-            setResources([]);
-        }
-    }, [activeTab, experiences]);
-
-    // Helper to determine resource type from icon
-    const getResourceType = (resource) => {
-        const icon = resource.icon?.type?.name;
-        if (icon === "FaGooglePlay") return "playstore";
-        if (icon === "FaAppStore") return "appstore";
-        if (icon === "FaGithub") return "github";
-        return "website";
-    };
-
-    const handleTabClick = (index) => {
-        setActiveTab(index);
-    };
 
     return (
         <Container id="experience">
@@ -193,50 +131,41 @@ const Experience = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ duration: 0.5 }}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
                 >
-                <SectionHeadingWrapper>
-                    <SectionLabel>My Journey</SectionLabel>
-                    <SectionTitle>Experience</SectionTitle>
-                </SectionHeadingWrapper>
-                <SectionDesc>
-                    My professional journey as a software engineer, working with different companies and on various
-                    projects. These experiences have helped me grow and develop my skills in different technologies and
-                    environments.
-                </SectionDesc>
+                    <SectionHeadingWrapper>
+                        <SectionLabel>My Journey</SectionLabel>
+                        <SectionTitle>Experience</SectionTitle>
+                    </SectionHeadingWrapper>
+                    <SectionDesc>
+                        The roles and projects that have shaped my skills and perspective as a developer.
+                    </SectionDesc>
                 </motion.div>
 
-                <ExperienceContainer>
-                    <TabsContainer numTabs={experiences.length}>
-                        {experiences.map((experience, index) => (
-                            <Tab
-                                key={index}
-                                active={activeTab === index}
-                                onClick={() => handleTabClick(index)}
-                            >
-                                <TabIcon>
-                                    <FaBriefcase/>
-                                </TabIcon>
-                                {experience.company || experience.title}
-                                {activeTab === index && <FaAngleRight style={{marginLeft: 'auto'}}/>}
-                            </Tab>
-                        ))}
-                    </TabsContainer>
-
-                    <TabContent
-                        key={activeTab}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        variants={contentVariants}
-                    >
-                        <CardContainer>
-                            {!loading && currentExperience && (
-                              <ExperienceCard experience={currentExperience}/>
-                            )}
-                        </CardContainer>
-                    </TabContent>
-                </ExperienceContainer>
+                {!loading && experiences.length > 0 && (
+                    <Timeline>
+                        {experiences.map((exp, index) => {
+                            const isLeft = index % 2 === 0;
+                            return (
+                                <TimelineEntry key={index} $isLeft={isLeft}>
+                                    <Dot />
+                                    <Connector $isLeft={isLeft} />
+                                    <EntryCard
+                                        initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, amount: 0.15 }}
+                                        transition={{
+                                            duration: 0.55,
+                                            ease: [0.16, 1, 0.3, 1],
+                                        }}
+                                    >
+                                        <ExperienceCard experience={exp} />
+                                    </EntryCard>
+                                </TimelineEntry>
+                            );
+                        })}
+                    </Timeline>
+                )}
             </Wrapper>
         </Container>
     );

@@ -105,7 +105,7 @@ const CompanyLink = styled.a`
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.3s ease;
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, transform 0.25s ease-in-out;
 
     &:hover {
         text-decoration: underline;
@@ -172,7 +172,7 @@ const Skill = styled.div`
     background-color: ${({ theme }) => `${theme.primary}20`};
     padding: 6px 14px;
     border-radius: 20px;
-    transition: all 0.3s ease-in-out;
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, transform 0.25s ease-in-out;
 
     &:hover {
         background-color: ${({ theme }) => `${theme.primary}40`};

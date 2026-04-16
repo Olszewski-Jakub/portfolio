@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Tilt from "react-parallax-tilt";
 
 /* ─── Image area ─── */
 
@@ -191,6 +192,17 @@ const ProjectCards = ({ project, setOpenModal }) => {
   const label = categoryLabel(project?.category);
 
   return (
+    <Tilt
+      tiltMaxAngleX={7}
+      tiltMaxAngleY={7}
+      glareEnable={true}
+      glareMaxOpacity={0.1}
+      glareColor="rgba(255,255,255,0.4)"
+      glarePosition="all"
+      scale={1.02}
+      transitionSpeed={500}
+      style={{ borderRadius: '14px', height: '100%' }}
+    >
     <Card onClick={() => setOpenModal({ state: true, project })}>
       <ImageArea>
         <Img src={imageSrc} alt={project?.title || "project"} loading="lazy" />
@@ -221,6 +233,7 @@ const ProjectCards = ({ project, setOpenModal }) => {
         </Footer>
       </Body>
     </Card>
+    </Tilt>
   );
 };
 
