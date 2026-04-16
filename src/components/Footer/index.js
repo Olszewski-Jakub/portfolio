@@ -133,6 +133,21 @@ const Copyright = styled.p`
   text-align: center;
 `;
 
+const EasterEggHint = styled.p`
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: ${({ theme }) => theme.text_secondary};
+  opacity: 0.18;
+  margin-top: 10px;
+  letter-spacing: 1px;
+  user-select: none;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.55;
+  }
+`;
+
 const ScrollToTop = styled.div`
   position: absolute;
   top: -25px;
@@ -323,6 +338,7 @@ const Footer = () => {
           <Copyright>
             &copy; {new Date().getFullYear()} Jakub Olszewski. All rights reserved.
           </Copyright>
+          <EasterEggHint>// ↑ ↑ ↓ ↓ ← → ← → B A</EasterEggHint>
         </FooterWrapper>
       </FooterContainer>
       </>

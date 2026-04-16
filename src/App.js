@@ -23,6 +23,7 @@ import SectionDivider from "./components/SectionDivider";
 import CursorSpotlight from "./components/CursorSpotlight";
 import IntroSplash, { shouldShowSplash } from "./components/IntroSplash";
 import NoiseTexture from "./components/NoiseTexture";
+import Terminal from "./components/Terminal";
 import { AnimatePresence } from "framer-motion";
 import useSmoothScroll from "./hooks/useSmoothScroll";
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -43,7 +44,27 @@ function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [openModal, setOpenModal] = useState({ state: false, project: null });
   const [showSplash, setShowSplash] = useState(shouldShowSplash);
+  const [showTerminal, setShowTerminal] = useState(false);
   useSmoothScroll();
+
+  /* Konami code: ↑↑↓↓←→←→BA */
+  useEffect(() => {
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let idx = 0;
+    const handler = (e) => {
+      if (e.key === KONAMI[idx]) {
+        idx++;
+        if (idx === KONAMI.length) {
+          setShowTerminal(true);
+          idx = 0;
+        }
+      } else {
+        idx = e.key === KONAMI[0] ? 1 : 0;
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
 
   // Dark mode from user preference
   useEffect(() => {
@@ -85,6 +106,7 @@ function App() {
         ) : (
           <>
             {showSplash && <IntroSplash onDone={() => setShowSplash(false)} />}
+            {showTerminal && <Terminal onClose={() => setShowTerminal(false)} />}
             <NoiseTexture />
             <CursorSpotlight darkMode={darkMode} />
             <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
