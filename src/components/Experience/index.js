@@ -32,14 +32,15 @@ const ScrollSpace = styled.div`
     position: relative;
 `;
 
+const NAVBAR_H = 80;
+
 const StickyWrap = styled.div`
     position: sticky;
-    top: 0;
-    height: 100vh;
+    top: ${NAVBAR_H}px;
+    height: calc(100vh - ${NAVBAR_H}px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    isolation: isolate;
 `;
 
 const ProgressTrack = styled.div`
@@ -64,15 +65,14 @@ const HeaderArea = styled.div`
 
 const Track = styled(motion.div)`
     display: flex;
+    flex: 1;
+    min-height: 0;
     width: ${({ $count }) => $count * 100}vw;
-    flex-shrink: 0;
-    align-self: stretch;
     will-change: transform;
 `;
 
 const Panel = styled.div`
-    min-width: 100vw;
-    width: 100vw;
+    flex: 0 0 100vw;
     height: 100%;
     display: flex;
     align-items: center;
@@ -375,12 +375,27 @@ const Experience = () => {
         return () => window.removeEventListener('resize', onResize);
     }, []);
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ['start start', 'end end'],
-    });
+    const { scrollY } = useScroll();
+    const [scrollRange, setScrollRange] = useState([0, 1]);
 
     const count = experiences.length || 1;
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || !experiences.length) return;
+        const measure = () => {
+            requestAnimationFrame(() => {
+                const rect = el.getBoundingClientRect();
+                const top = window.scrollY + rect.top;
+                setScrollRange([top, top + el.offsetHeight - window.innerHeight]);
+            });
+        };
+        measure();
+        window.addEventListener('resize', measure);
+        return () => window.removeEventListener('resize', measure);
+    }, [experiences.length]);
+
+    const scrollYProgress = useTransform(scrollY, scrollRange, [0, 1], { clamp: true });
     const x = useTransform(scrollYProgress, [0, 1], [0, -(count - 1) * vw]);
 
     useMotionValueEvent(scrollYProgress, 'change', v => {

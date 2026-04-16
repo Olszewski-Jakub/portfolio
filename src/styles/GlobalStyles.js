@@ -3,10 +3,6 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
   /* Fonts and base resets remain in App.css */
 
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     margin: 0 !important;
     padding: 0;
