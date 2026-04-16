@@ -7,12 +7,12 @@ import {
     FaTimes,
     FaCalendarAlt,
     FaTag,
-    FaUsers
 } from 'react-icons/fa';
 import { Modal } from '@mui/material';
 import useGithubContributors from '../../hooks/useGithubContributors';
 
-// Styled Components
+/* ─── Backdrop ─── */
+
 const Container = styled(motion.div)`
     position: fixed;
     inset: 0;
@@ -20,46 +20,29 @@ const Container = styled(motion.div)`
     height: 100vh;
     padding: 24px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
     z-index: 1000;
-    background: radial-gradient(1200px 600px at 10% -10%, rgba(2, 6, 23, 0.35), transparent),
-                radial-gradient(1200px 600px at 110% 110%, rgba(2, 6, 23, 0.35), transparent),
-                rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 `;
 
+/* ─── Modal shell ─── */
+
 const Wrapper = styled(motion.div)`
-    max-width: 880px;
+    max-width: 860px;
     width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 16px;
-    margin: 40px auto;
+    margin: 40px auto 60px;
     background: ${({ theme }) => theme.card};
-    color: ${({ theme }) => theme.text_primary};
-    padding: 28px 28px 96px;
-    display: flex;
-    flex-direction: column;
+    border-radius: 20px;
+    overflow: hidden;
     position: relative;
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.45);
 
-    @media (max-width: 768px) {
-        padding: 18px 18px 22px;
-        margin: 20px auto;
-        max-height: calc(100vh - 60px);
-    }
-
-    /* Smooth scrolling feel inside the dialog */
-    scroll-behavior: smooth;
-
-    /* Optional: subtle inner scrollbar style that uses theme tokens */
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
+    &::-webkit-scrollbar { width: 6px; }
     &::-webkit-scrollbar-thumb {
         background: ${({ theme }) => theme.scrollbar.thumb};
         border-radius: 6px;
@@ -67,269 +50,251 @@ const Wrapper = styled(motion.div)`
     &::-webkit-scrollbar-thumb:hover {
         background: ${({ theme }) => theme.scrollbar.thumbHover};
     }
+
+    @media (max-width: 768px) {
+        margin: 20px auto 40px;
+        border-radius: 16px;
+    }
+`;
+
+/* ─── Hero banner ─── */
+
+const HeroBanner = styled.div`
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+        height: 200px;
+    }
+`;
+
+const HeroImg = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+`;
+
+const HeroOverlay = styled.div`
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.85) 0%,
+        rgba(0,0,0,0.3) 55%,
+        rgba(0,0,0,0.1) 100%
+    );
+`;
+
+const HeroContent = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const HeroTitle = styled.h2`
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+
+    @media (max-width: 768px) {
+        font-size: 22px;
+    }
+`;
+
+const HeroMeta = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 `;
 
 const CloseButton = styled.button`
     position: absolute;
-    top: 16px;
-    right: 16px;
-    background: ${({ theme }) => `${theme.white}12`};
-    color: ${({ theme }) => theme.text_primary};
-    border: 1px solid ${({ theme }) => `${theme.white}1F`};
-    width: 44px;
-    height: 44px;
+    top: 14px;
+    right: 14px;
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
-    z-index: 15;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 
     &:hover {
-        background: ${({ theme }) => `${theme.primary}26`};
-        color: ${({ theme }) => theme.white};
-        transform: scale(1.06);
-        border-color: ${({ theme }) => `${theme.primary}40`};
+        background: rgba(0,0,0,0.7);
+        transform: scale(1.08);
     }
 `;
 
-// New layout pieces
-const Header = styled.div`
-    position: sticky;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px 16px;
-    padding: 6px 0 12px;
-    padding-right: 72px; /* reserve space for close button */
-    margin-bottom: 16px;
-    background: ${({ theme }) => `${theme.card}CC`};
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-    z-index: 3;
-    flex-wrap: wrap;
+/* ─── Status & category badges ─── */
+
+const StatusPill = styled.span`
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 50px;
+    color: ${({ status }) => {
+        if (status === 'Deployed') return '#3dd391';
+        if (status === 'Work in progress') return '#f39c12';
+        return '#fff';
+    }};
+    background: ${({ status }) => {
+        if (status === 'Deployed') return 'rgba(61,211,145,0.2)';
+        if (status === 'Work in progress') return 'rgba(243,156,18,0.2)';
+        return 'rgba(255,255,255,0.15)';
+    }};
+    border: 1px solid ${({ status }) => {
+        if (status === 'Deployed') return 'rgba(61,211,145,0.4)';
+        if (status === 'Work in progress') return 'rgba(243,156,18,0.4)';
+        return 'rgba(255,255,255,0.25)';
+    }};
+    backdrop-filter: blur(4px);
 `;
 
-const Content = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 24px;
-    padding-bottom: 140px; /* reserve space so sticky actions never overlap content */
+const CategoryPill = styled.span`
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 50px;
+    color: rgba(255,255,255,0.9);
+    background: rgba(47,129,247,0.3);
+    border: 1px solid rgba(47,129,247,0.4);
+    backdrop-filter: blur(4px);
+    text-transform: capitalize;
+`;
 
-    @media (max-width: 900px) {
+/* ─── Body ─── */
+
+const Body = styled.div`
+    padding: 24px 28px 100px;
+
+    @media (max-width: 768px) {
+        padding: 20px 18px 80px;
+    }
+`;
+
+const BodyGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 24px;
+
+    @media (max-width: 860px) {
         grid-template-columns: 1fr;
-        padding-bottom: 160px;
     }
 `;
 
 const Main = styled.div`
     display: flex;
     flex-direction: column;
+    gap: 0;
+    min-width: 0;
 `;
 
-const Aside = styled.aside`
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-`;
+/* ─── Tags ─── */
 
-const PreviewCard = styled.div`
-    background: ${({ theme }) => theme.card_light};
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-`;
-
-const PreviewImage = styled.img`
-    width: 100%;
-    display: block;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-`;
-
-const MetaPanel = styled.div`
-    background: ${({ theme }) => theme.card_light};
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-`;
-
-const MetaRow = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: 14px;
-    color: ${({ theme }) => theme.text_secondary};
-`;
-
-const Title = styled.h2`
-    font-size: 32px;
-    font-weight: 700;
-    color: ${({ theme }) => theme.text_primary};
-    margin: 8px 0;
-
-    @media only screen and (max-width: 768px) {
-        font-size: 28px;
-        margin: 6px 0;
-    }
-`;
-
-const InfoContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin: 16px 0;
-`;
-
-const InfoItem = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    color: ${({ theme }) => theme.text_secondary};
-`;
-
-const Date = styled(InfoItem)`
-    color: ${({ theme }) => theme.text_secondary};
-`;
-
-const Tags = styled.div`
+const TagRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin: 16px 0;
+    margin-bottom: 20px;
 `;
 
 const Tag = styled.span`
-    font-size: 14px;
-    font-weight: 500;
-    color: ${({ theme }) => theme.primary};
-    background-color: ${({ theme }) => `${theme.primary}20`};
-    padding: 6px 14px;
-    border-radius: 50px;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-        background-color: ${({ theme }) => `${theme.primary}40`};
-    }
-`;
-
-const StatusBadge = styled.div`
-    font-size: 14px;
-    font-weight: 500;
-    color: ${({ theme, status }) => {
-        if (status === "Deployed") return "#3dd391";
-        if (status === "Work in progress") return "#f39c12";
-        return theme.primary;
-    }};
-    background-color: ${({ theme, status }) => {
-        if (status === "Deployed") return "rgba(61, 211, 145, 0.15)";
-        if (status === "Work in progress") return "rgba(243, 156, 18, 0.15)";
-        return `${theme.primary}20`;
-    }};
-    padding: 6px 14px;
-    border-radius: 50px;
-    display: inline-block;
-    margin-bottom: 16px;
-`;
-
-const Description = styled.div`
-    font-size: 16px;
-    font-weight: 400;
-    color: ${({ theme }) => theme.text_primary};
-    line-height: 1.7;
-    margin: 16px 0 24px;
-
-    @media only screen and (max-width: 768px) {
-        font-size: 15px;
-        margin: 12px 0 20px;
-    }
-`;
-
-const Label = styled.h3`
-    font-size: 20px;
+    font-size: 12px;
     font-weight: 600;
-    color: ${({ theme }) => theme.text_primary};
-    margin: 24px 0 12px;
-
-    @media only screen and (max-width: 768px) {
-        font-size: 18px;
-        margin: 20px 0 10px;
-    }
+    color: ${({ theme }) => theme.primary};
+    background: ${({ theme }) => `${theme.primary}18`};
+    border: 1px solid ${({ theme }) => `${theme.primary}30`};
+    padding: 4px 12px;
+    border-radius: 50px;
 `;
+
+/* ─── Description ─── */
+
+const Description = styled.p`
+    font-size: 15px;
+    line-height: 1.75;
+    color: ${({ theme }) => theme.text_primary + 'DD'};
+    margin: 0 0 28px;
+`;
+
+/* ─── Section label ─── */
+
+const SectionLabel = styled.h3`
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: ${({ theme }) => theme.text_secondary};
+    margin: 0 0 12px;
+`;
+
+/* ─── Team members ─── */
 
 const Members = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin: 16px 0 24px;
+    gap: 10px;
+    margin-bottom: 28px;
 `;
 
 const Member = styled.div`
     display: flex;
     align-items: center;
     gap: 12px;
-    background-color: ${({ theme }) => theme.card_light};
-    padding: 12px 16px;
-    border-radius: 10px;
+    background: ${({ theme }) => theme.card_light};
+    padding: 10px 14px;
+    border-radius: 12px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
     &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 `;
 
-const MemberImage = styled.img`
-    width: 46px;
-    height: 46px;
-    object-fit: cover;
+const MemberAvatar = styled.img`
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid ${({ theme }) => theme.primary};
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-    @media only screen and (max-width: 768px) {
-        width: 40px;
-        height: 40px;
-    }
+    object-fit: cover;
+    border: 2px solid ${({ theme }) => `${theme.primary}60`};
 `;
 
-const MemberInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-`;
-
-const MemberName = styled.div`
-    font-size: 16px;
+const MemberName = styled.span`
+    font-size: 14px;
     font-weight: 500;
     color: ${({ theme }) => theme.text_primary};
-
-    @media only screen and (max-width: 768px) {
-        font-size: 14px;
-    }
+    flex: 1;
 `;
 
 const MemberLinks = styled.div`
     display: flex;
     gap: 8px;
-    margin-left: auto;
 `;
 
 const MemberLink = styled.a`
     color: ${({ theme }) => theme.text_secondary};
-    font-size: 18px;
+    font-size: 16px;
     transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
 
     &:hover {
@@ -338,149 +303,189 @@ const MemberLink = styled.a`
     }
 `;
 
-// Contributors styles
-const Contributors = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 16px 0 24px;
-`;
+/* ─── Contributors ─── */
 
 const ContributorsGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    margin-bottom: 28px;
 `;
 
 const Contributor = styled.a`
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 8px 12px;
     border-radius: 10px;
     text-decoration: none;
     color: inherit;
     background: ${({ theme }) => theme.card_light};
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.12);
-        border-color: ${({ theme }) => theme.primary};
+        box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+        border-color: ${({ theme }) => `${theme.primary}40`};
     }
 `;
 
 const ContributorAvatar = styled.img`
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
 `;
 
-const ContributorName = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
+const ContributorName = styled.span`
+    font-size: 12px;
+    color: ${({ theme }) => theme.text_secondary};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
-const ButtonGroup = styled.div`
-    position: sticky;
-    bottom: 12px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    width: fit-content;
-    margin-left: auto;
-    z-index: 5;
+/* ─── Aside / meta panel ─── */
 
-    @media only screen and (max-width: 768px) {
-        position: static;
-        width: 100%;
-        margin-top: 16px;
-        gap: 10px;
+const Aside = styled.aside`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`;
+
+const MetaPanel = styled.div`
+    background: ${({ theme }) => theme.card_light};
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`;
+
+const MetaRow = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+`;
+
+const MetaLabel = styled.span`
+    color: ${({ theme }) => theme.text_secondary};
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+`;
+
+const MetaValue = styled.span`
+    color: ${({ theme }) => theme.text_primary};
+    font-weight: 600;
+    text-align: right;
+`;
+
+const MetaDivider = styled.div`
+    height: 1px;
+    background: ${({ theme }) => `${theme.text_primary}10`};
+`;
+
+/* ─── Buttons ─── */
+
+const ButtonGroup = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 28px;
+    display: flex;
+    gap: 12px;
+    background: ${({ theme }) => `${theme.card}F0`};
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+
+    @media (max-width: 768px) {
+        padding: 12px 18px;
         flex-direction: column;
     }
 `;
 
-const Button = styled.a`
+const Btn = styled.a`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 12px 18px;
-    height: 46px;
+    gap: 8px;
+    padding: 11px 24px;
     border-radius: 50px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    flex: 1;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 
-    @media only screen and (max-width: 768px) {
-        height: 44px;
-        padding: 10px 16px;
-        font-size: 14px;
+    @media (max-width: 768px) {
+        flex: unset;
         width: 100%;
     }
 `;
 
-const GithubButton = styled(Button)`
+const GithubButton = styled(Btn)`
     background: transparent;
     color: ${({ theme }) => theme.primary};
-    border: 1.5px solid ${({ theme }) => theme.primary};
+    border: 1.5px solid ${({ theme }) => `${theme.primary}60`};
 
     &:hover {
-        background: ${({ theme }) => theme.primary};
-        color: ${({ theme }) => theme.white};
+        background: ${({ theme }) => `${theme.primary}15`};
+        border-color: ${({ theme }) => theme.primary};
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px ${({ theme }) => `${theme.primary}40`};
+        box-shadow: 0 6px 16px ${({ theme }) => `${theme.primary}25`};
     }
 `;
 
-const LiveButton = styled(Button)`
-    background: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.white};
-    border: 1.5px solid ${({ theme }) => `${theme.primary}CC`};
+const LiveButton = styled(Btn)`
+    background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+    color: #fff;
+    border: none;
 
     &:hover {
-        background: ${({ theme }) => `${theme.primary}E6`};
         transform: translateY(-2px);
-        box-shadow: 0 12px 24px ${({ theme }) => `${theme.primary}40`};
+        box-shadow: 0 8px 20px rgba(47,129,247,0.4);
     }
 `;
+
+/* ─── Component ─── */
+
+const getLiveLabel = (category) => {
+    if (category === 'android app') return 'Google Play';
+    if (category === 'ios app') return 'App Store';
+    if (category === 'web app') return 'Live Demo';
+    return 'View Project';
+};
 
 const ProjectDetails = ({ openModal, setOpenModal }) => {
     const project = openModal?.project;
     const { contributors } = useGithubContributors(project?.github, { limit: 12 });
+    const imageSrc = project?.imageUrl || project?.image || '';
+    const categoryStr = Array.isArray(project?.category) ? project.category.join(', ') : project?.category;
 
-    // Close modal with ESC key
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (e.key === 'Escape') {
-                setOpenModal({ state: false, project: null });
-            }
+            if (e.key === 'Escape') setOpenModal({ state: false, project: null });
         };
-
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [setOpenModal]);
 
-    // We will not manipulate body scroll in the component
-    // This prevents conflicts with MUI's own scroll handling
+    const close = () => setOpenModal({ state: false, project: null });
 
     return (
         <Modal
             open={true}
-            onClose={() => {
-                // Explicitly reset body overflow when modal closes
-                setTimeout(() => {
-                    document.body.style.overflow = '';
-                }, 0);
-                setOpenModal({ state: false, project: null });
-            }}
+            onClose={() => { setTimeout(() => { document.body.style.overflow = ''; }, 0); close(); }}
             aria-labelledby="project-details-modal"
             BackdropProps={{ timeout: 250 }}
             hideBackdrop
@@ -491,163 +496,139 @@ const ProjectDetails = ({ openModal, setOpenModal }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                onClick={() => setOpenModal({ state: false, project: null })}
+                onClick={close}
             >
                 <Wrapper
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 48 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 40 }}
+                    exit={{ opacity: 0, y: 48 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <CloseButton
-                        onClick={(e) => { e.stopPropagation(); setOpenModal({ state: false, project: null }); }}
-                        aria-label="Close modal"
-                    >
-                        <FaTimes />
-                    </CloseButton>
+                    {/* Hero banner */}
+                    <HeroBanner>
+                        {imageSrc && <HeroImg src={imageSrc} alt={project?.title} />}
+                        <HeroOverlay />
+                        <CloseButton onClick={(e) => { e.stopPropagation(); close(); }} aria-label="Close">
+                            <FaTimes size={16} />
+                        </CloseButton>
+                        <HeroContent>
+                            <HeroMeta>
+                                {project?.status && <StatusPill status={project.status}>{project.status}</StatusPill>}
+                                {categoryStr && <CategoryPill>{categoryStr}</CategoryPill>}
+                            </HeroMeta>
+                            <HeroTitle>{project?.title}</HeroTitle>
+                        </HeroContent>
+                    </HeroBanner>
 
-                    <Header>
-                        <Title>{project?.title}</Title>
-                        <InfoContainer>
-                            <Date>
-                                <FaCalendarAlt size={18} />
-                                {project?.date}
-                            </Date>
-                            <StatusBadge status={project?.status}>
-                                <FaTag size={14} style={{ marginRight: '6px' }} />
-                                {project?.status}
-                            </StatusBadge>
-                        </InfoContainer>
-                    </Header>
+                    {/* Body */}
+                    <Body>
+                        <BodyGrid>
+                            <Main>
+                                {project?.tags?.length > 0 && (
+                                    <TagRow>
+                                        {project.tags.map((tag, i) => <Tag key={i}>{tag}</Tag>)}
+                                    </TagRow>
+                                )}
 
-                    <Content>
-                        <Main>
-                            <Tags>
-                                {project?.tags.map((tag, index) => (
-                                    <Tag key={index}>{tag}</Tag>
-                                ))}
-                            </Tags>
+                                {project?.description && (
+                                    <Description>{project.description}</Description>
+                                )}
 
-                            <Description>{project?.description}</Description>
+                                {project?.member?.length > 0 && (
+                                    <>
+                                        <SectionLabel>Team Members</SectionLabel>
+                                        <Members>
+                                            {project.member.map((m, i) => (
+                                                <Member key={i}>
+                                                    <MemberAvatar src={m.img} alt={m.name} />
+                                                    <MemberName>{m.name}</MemberName>
+                                                    <MemberLinks>
+                                                        {m.github && (
+                                                            <MemberLink href={m.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                                                                <FaGithub />
+                                                            </MemberLink>
+                                                        )}
+                                                        {m.linkedin && (
+                                                            <MemberLink href={m.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                                                <FaExternalLinkAlt size={14} />
+                                                            </MemberLink>
+                                                        )}
+                                                    </MemberLinks>
+                                                </Member>
+                                            ))}
+                                        </Members>
+                                    </>
+                                )}
 
-                            {project?.member && (
-                                <>
-                                    <Label>Team Members</Label>
-                                    <Members>
-                                        {project?.member.map((member, index) => (
-                                            <Member key={index}>
-                                                <MemberImage src={member.img} alt={member.name} />
-                                                <MemberInfo>
-                                                    <MemberName>{member.name}</MemberName>
-                                                </MemberInfo>
-                                                <MemberLinks>
-                                                    <MemberLink
-                                                        href={member.github}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        aria-label="GitHub"
-                                                    >
-                                                        <FaGithub />
-                                                    </MemberLink>
-                                                    <MemberLink
-                                                        href={member.linkedin}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        aria-label="LinkedIn"
-                                                    >
-                                                        <FaExternalLinkAlt size={16} />
-                                                    </MemberLink>
-                                                </MemberLinks>
-                                            </Member>
-                                        ))}
-                                    </Members>
-                                </>
-                            )}
-
-                            {project?.github && contributors && contributors.length > 0 && (
-                                <>
-                                    <Label>Contributors</Label>
-                                    <Contributors>
+                                {contributors?.length > 0 && (
+                                    <>
+                                        <SectionLabel>Contributors</SectionLabel>
                                         <ContributorsGrid>
                                             {contributors.map((c) => (
-                                                <Contributor
-                                                    key={c.id || c.login}
-                                                    href={c.html_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    title={`@${c.login}`}
-                                                >
+                                                <Contributor key={c.id || c.login} href={c.html_url} target="_blank" rel="noopener noreferrer">
                                                     <ContributorAvatar src={c.avatar_url} alt={c.login} loading="lazy" />
                                                     <ContributorName>@{c.login}</ContributorName>
                                                 </Contributor>
                                             ))}
                                         </ContributorsGrid>
-                                    </Contributors>
-                                </>
-                            )}
-                        </Main>
-
-                        <Aside>
-                            {(() => {
-                                const previewSrc = project?.imageUrl || project?.image || '';
-                                return previewSrc ? (
-                                    <PreviewCard>
-                                        <PreviewImage src={previewSrc} alt={project?.title} loading="lazy" />
-                                    </PreviewCard>
-                                ) : null;
-                            })()}
-                            <MetaPanel>
-                                <MetaRow>
-                                    <span>Category</span>
-                                    <span style={{ color: 'inherit' }}>
-                                        {Array.isArray(project?.category) ? project?.category?.join(', ') : project?.category}
-                                    </span>
-                                </MetaRow>
-                                {project?.date && (
-                                    <MetaRow>
-                                        <span>Date</span>
-                                        <span style={{ color: 'inherit' }}>{project?.date}</span>
-                                    </MetaRow>
+                                    </>
                                 )}
-                                {project?.status && (
-                                    <MetaRow>
-                                        <span>Status</span>
-                                        <span style={{ color: 'inherit' }}>{project?.status}</span>
-                                    </MetaRow>
-                                )}
-                            </MetaPanel>
-                        </Aside>
-                    </Content>
+                            </Main>
 
+                            <Aside>
+                                <MetaPanel>
+                                    {project?.date && (
+                                        <>
+                                            <MetaRow>
+                                                <MetaLabel><FaCalendarAlt size={13} /> Date</MetaLabel>
+                                                <MetaValue>{project.date}</MetaValue>
+                                            </MetaRow>
+                                            <MetaDivider />
+                                        </>
+                                    )}
+                                    {categoryStr && (
+                                        <>
+                                            <MetaRow>
+                                                <MetaLabel><FaTag size={13} /> Type</MetaLabel>
+                                                <MetaValue style={{ textTransform: 'capitalize' }}>{categoryStr}</MetaValue>
+                                            </MetaRow>
+                                            <MetaDivider />
+                                        </>
+                                    )}
+                                    {project?.status && (
+                                        <MetaRow>
+                                            <MetaLabel>Status</MetaLabel>
+                                            <MetaValue>{project.status}</MetaValue>
+                                        </MetaRow>
+                                    )}
+                                </MetaPanel>
+                            </Aside>
+                        </BodyGrid>
+                    </Body>
+
+                    {/* Sticky action buttons */}
                     <ButtonGroup>
-                        <GithubButton href={project?.github} target="_blank" rel="noopener noreferrer">
-                            <FaGithub size={20} />
-                            View Code
-                        </GithubButton>
-
-                        <LiveButton
-                            href={project?.webapp}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                                opacity: project?.webapp === "" ? 0.5 : 1,
-                                pointerEvents: project?.webapp === "" ? "none" : "all",
-                            }}
-                        >
-                            <FaExternalLinkAlt size={18} />
-                            {
-                                project?.webapp === ""
-                                    ? 'Project not available'
-                                    : project?.category === "android app"
-                                        ? 'Google Play'
-                                        : project?.category === "ios app"
-                                            ? 'App Store'
-                                            : project?.category === "web app"
-                                                ? 'Live Demo'
-                                                : 'View Project'
-                            }
-                        </LiveButton>
+                        {project?.github && (
+                            <GithubButton href={project.github} target="_blank" rel="noopener noreferrer">
+                                <FaGithub size={17} />
+                                View Code
+                            </GithubButton>
+                        )}
+                        {project?.webapp !== undefined && (
+                            <LiveButton
+                                href={project.webapp || '#'}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    opacity: !project.webapp ? 0.45 : 1,
+                                    pointerEvents: !project.webapp ? 'none' : 'all',
+                                }}
+                            >
+                                <FaExternalLinkAlt size={15} />
+                                {!project.webapp ? 'Not available' : getLiveLabel(project.category)}
+                            </LiveButton>
+                        )}
                     </ButtonGroup>
                 </Wrapper>
             </Container>

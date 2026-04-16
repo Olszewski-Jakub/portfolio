@@ -14,6 +14,7 @@ const Container = styled.div`
     z-index: 1;
     align-items: center;
     padding: 80px 0;
+    background: ${({ theme }) => theme.bg};
 
     @media (max-width: 960px) {
         padding: 60px 0;

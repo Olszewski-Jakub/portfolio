@@ -9,7 +9,7 @@ export const Bio = {
     "Backend Developer"
   ],
   description:
-    "I am a motivated and versatile individual, always eager to take on new challenges. With a passion for learning I am dedicated to delivering high-quality results. With a positive attitude and a growth mindset, I am ready to make a meaningful contribution and achieve great things.",
+    "I build mobile apps and backend systems that combine clean architecture with intuitive user experiences. Specialising in Android, iOS, and full-stack development — I turn ideas into polished, production-ready products.",
   github: "https://github.com/Olszewski-Jakub",
   resume:
     "https://drive.google.com/file/d/1Mc8z4KKP4jYNVINUufJUJesAkpjKWGee/view?usp=sharing",

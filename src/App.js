@@ -19,6 +19,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import AdminApp from "./admin/AdminApp";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
+import SectionDivider from "./components/SectionDivider";
 import { AnimatePresence } from "framer-motion";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "./services/firebase";
@@ -30,19 +31,6 @@ const Body = styled.div`
   transition: background-color 0.3s ease-in-out;
 `;
 
-const Wrapper = styled.div`
-  background: linear-gradient(
-      38.73deg,
-      ${({ theme }) => theme.gradients.wrapper.pinkLight} 0%,
-      ${({ theme }) => theme.gradients.wrapper.pinkZero} 50%
-  ),
-  linear-gradient(
-      141.27deg,
-      ${({ theme }) => theme.gradients.wrapper.blueZero} 50%,
-      ${({ theme }) => theme.gradients.wrapper.blueLight} 100%
-  );
-  width: 100%;
-`;
 
 const analytics = getAnalytics(app);
 
@@ -94,16 +82,16 @@ function App() {
             <Body>
               <ScrollToTop />
               <HeroSection />
-              <Wrapper>
-                <Skills />
-                <Experience />
-              </Wrapper>
+              <SectionDivider from="card_light" to="bg" />
+              <Skills />
+              <SectionDivider from="bg" to="card_light" flip />
+              <Experience />
+              <SectionDivider from="card_light" to="bg" />
               <Projects openModal={openModal} setOpenModal={setOpenModal} />
-              <Wrapper>
-                <Education />
-                <Certificates />
-                <Contact />
-              </Wrapper>
+              <Education />
+              <SectionDivider from="bg" to="card_light" flip />
+              <Certificates />
+              <Contact />
               <Footer />
               <AnimatePresence>
                 {openModal.state && (

@@ -57,7 +57,7 @@ export const HeroContainer = styled.div`
     position: relative;
     padding: 120px 30px 100px;
     z-index: 1;
-    transition: all 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
 
     @media (max-width: 960px) {
