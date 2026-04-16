@@ -59,7 +59,7 @@ const HeaderArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 36px 20px 20px;
+    padding: 14px 20px 6px;
     flex-shrink: 0;
 `;
 
@@ -457,9 +457,9 @@ const Experience = () => {
                     </ProgressTrack>
 
                     <HeaderArea>
-                        <SectionHeadingWrapper style={{ marginBottom: 0 }}>
-                            <SectionLabel>My Journey</SectionLabel>
-                            <SectionTitle>Experience</SectionTitle>
+                        <SectionHeadingWrapper style={{ marginBottom: 0, gap: 0 }}>
+                            <SectionLabel style={{ marginBottom: 8 }}>My Journey</SectionLabel>
+                            <SectionTitle style={{ marginTop: 0, fontSize: '32px' }}>Experience</SectionTitle>
                         </SectionHeadingWrapper>
                     </HeaderArea>
 

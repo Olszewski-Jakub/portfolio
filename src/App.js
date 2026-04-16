@@ -21,6 +21,8 @@ import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import SectionDivider from "./components/SectionDivider";
 import CursorSpotlight from "./components/CursorSpotlight";
+import IntroSplash, { shouldShowSplash } from "./components/IntroSplash";
+import NoiseTexture from "./components/NoiseTexture";
 import { AnimatePresence } from "framer-motion";
 import useSmoothScroll from "./hooks/useSmoothScroll";
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -40,6 +42,7 @@ function App() {
   // State management
   const [darkMode, setDarkMode] = useState(true);
   const [openModal, setOpenModal] = useState({ state: false, project: null });
+  const [showSplash, setShowSplash] = useState(shouldShowSplash);
   useSmoothScroll();
 
   // Dark mode from user preference
@@ -81,6 +84,8 @@ function App() {
           <AdminApp />
         ) : (
           <>
+            {showSplash && <IntroSplash onDone={() => setShowSplash(false)} />}
+            <NoiseTexture />
             <CursorSpotlight darkMode={darkMode} />
             <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <Body>
