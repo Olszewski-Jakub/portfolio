@@ -22,6 +22,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 import SectionDivider from "./components/SectionDivider";
 import CursorSpotlight from "./components/CursorSpotlight";
 import { AnimatePresence } from "framer-motion";
+import useSmoothScroll from "./hooks/useSmoothScroll";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "./services/firebase";
 
@@ -39,6 +40,7 @@ function App() {
   // State management
   const [darkMode, setDarkMode] = useState(true);
   const [openModal, setOpenModal] = useState({ state: false, project: null });
+  useSmoothScroll();
 
   // Dark mode from user preference
   useEffect(() => {
