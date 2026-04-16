@@ -20,6 +20,7 @@ import AdminApp from "./admin/AdminApp";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import SectionDivider from "./components/SectionDivider";
+import CursorSpotlight from "./components/CursorSpotlight";
 import { AnimatePresence } from "framer-motion";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "./services/firebase";
@@ -78,6 +79,7 @@ function App() {
           <AdminApp />
         ) : (
           <>
+            <CursorSpotlight darkMode={darkMode} />
             <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <Body>
               <ScrollToTop />

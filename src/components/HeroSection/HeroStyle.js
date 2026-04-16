@@ -34,6 +34,12 @@ const floatGlow = keyframes`
 `;
 
 
+const pulseRing = keyframes`
+    0%   { transform: scale(1);   opacity: 0.7; }
+    70%  { transform: scale(2.2); opacity: 0;   }
+    100% { transform: scale(2.2); opacity: 0;   }
+`;
+
 const bounce = keyframes`
     0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);
@@ -423,4 +429,43 @@ export const StatLabel = styled.div`
   color: ${({ theme }) => theme.text_secondary};
   text-transform: uppercase;
   letter-spacing: 0.8px;
+`;
+
+export const AvailableBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  font-size: 13px;
+  font-weight: 600;
+  color: #22c55e;
+  letter-spacing: 0.3px;
+  margin-bottom: 20px;
+  width: fit-content;
+
+  @media (max-width: 960px) {
+    align-self: center;
+  }
+`;
+
+export const PulseDot = styled.span`
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: ${pulseRing} 1.8s ease-out infinite;
+  }
 `;

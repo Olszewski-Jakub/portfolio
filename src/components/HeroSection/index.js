@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import HeroBgAnimation from '../HeroBgAnimation'
 import {
     HeroContainer,
@@ -23,6 +23,8 @@ import {
     StatItem,
     StatNumber,
     StatLabel,
+    AvailableBadge,
+    PulseDot,
 } from './HeroStyle'
 import HeroImg from '../../images/HeroImage.jpg'
 import Typewriter from 'typewriter-effect';
@@ -53,6 +55,37 @@ const Counter = ({ value, suffix = '' }) => {
     );
 };
 
+/* Magnetic wrapper — pulls element toward cursor on hover */
+const Magnetic = ({ children, strength = 0.3 }) => {
+    const ref = useRef(null);
+
+    const onMouseMove = useCallback((e) => {
+        const el = ref.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top + rect.height / 2);
+        el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+    }, [strength]);
+
+    const onMouseLeave = useCallback(() => {
+        if (ref.current) {
+            ref.current.style.transform = 'translate(0px, 0px)';
+        }
+    }, []);
+
+    return (
+        <span
+            ref={ref}
+            onMouseMove={onMouseMove}
+            onMouseLeave={onMouseLeave}
+            style={{ display: 'inline-block', transition: 'transform 0.35s cubic-bezier(0.23, 1, 0.32, 1)' }}
+        >
+            {children}
+        </span>
+    );
+};
+
 const HeroSection = () => {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -73,6 +106,11 @@ const HeroSection = () => {
                 </HeroBg>
                 <HeroInnerContainer style={{ position: 'relative', zIndex: 1 }}>
                     <HeroLeftContainer>
+                        <AvailableBadge>
+                            <PulseDot />
+                            Available for opportunities
+                        </AvailableBadge>
+
                         <Title>Hi, I'm <br /> <Span>{Bio.name}</Span></Title>
                         <TextLoop>
                             I am a
@@ -91,18 +129,22 @@ const HeroSection = () => {
                         <SubTitle>{Bio.description}</SubTitle>
 
                         <ButtonRow>
-                            <ResumeButton href={Bio.resume} target='_blank' rel="noopener noreferrer">
-                                View Resume
-                            </ResumeButton>
-                            <ContactButton
-                                href="#contact"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-                                }}
-                            >
-                                Contact Me
-                            </ContactButton>
+                            <Magnetic strength={0.25}>
+                                <ResumeButton href={Bio.resume} target='_blank' rel="noopener noreferrer">
+                                    View Resume
+                                </ResumeButton>
+                            </Magnetic>
+                            <Magnetic strength={0.25}>
+                                <ContactButton
+                                    href="#contact"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                >
+                                    Contact Me
+                                </ContactButton>
+                            </Magnetic>
                         </ButtonRow>
 
                         {Bio.stats?.length > 0 && (
