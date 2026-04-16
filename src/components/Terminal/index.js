@@ -16,6 +16,13 @@ const Overlay = styled.div`
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(6px);
+
+    @media (max-width: 600px) {
+        align-items: stretch;
+        justify-content: stretch;
+        background: #0d120d;
+        backdrop-filter: none;
+    }
 `;
 
 const Window = styled.div`
@@ -47,6 +54,13 @@ const Window = styled.div`
         pointer-events: none;
         z-index: 10;
         border-radius: 12px;
+    }
+
+    @media (max-width: 600px) {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        &::after { border-radius: 0; }
     }
 `;
 
@@ -97,6 +111,11 @@ const Body = styled.div`
     &::-webkit-scrollbar-thumb {
         background: rgba(0, 255, 65, 0.15);
         border-radius: 2px;
+    }
+
+    @media (max-width: 600px) {
+        font-size: 12px;
+        padding: 12px 14px 8px;
     }
 `;
 

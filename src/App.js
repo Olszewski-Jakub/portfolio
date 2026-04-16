@@ -123,7 +123,7 @@ function App() {
               <SectionDivider from="bg" to="card_light" flip />
               <Certificates />
               <Contact />
-              <Footer />
+              <Footer onEasterEgg={() => setShowTerminal(true)} />
               <AnimatePresence>
                 {openModal.state && (
                   <ProjectDetails

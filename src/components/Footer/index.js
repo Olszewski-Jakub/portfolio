@@ -141,10 +141,16 @@ const EasterEggHint = styled.p`
   margin-top: 10px;
   letter-spacing: 1px;
   user-select: none;
+  cursor: pointer;
   transition: opacity 0.3s ease;
 
   &:hover {
-    opacity: 0.55;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    opacity: 0.28;
+    font-size: 12px;
   }
 `;
 
@@ -252,7 +258,7 @@ const FooterLink = styled.a`
   }
 `;
 
-const Footer = () => {
+const Footer = ({ onEasterEgg }) => {
   const theme = useTheme();
   const scrollToTop = () => {
     window.scrollTo({
@@ -338,7 +344,7 @@ const Footer = () => {
           <Copyright>
             &copy; {new Date().getFullYear()} Jakub Olszewski. All rights reserved.
           </Copyright>
-          <EasterEggHint>// ↑ ↑ ↓ ↓ ← → ← → B A</EasterEggHint>
+          <EasterEggHint onClick={onEasterEgg}>// ↑ ↑ ↓ ↓ ← → ← → B A</EasterEggHint>
         </FooterWrapper>
       </FooterContainer>
       </>
