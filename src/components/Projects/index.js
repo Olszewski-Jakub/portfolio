@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Container,
   Wrapper,
-  Title,
-  Desc,
   CardContainer,
   ToggleButtonGroup,
   ToggleButton,
@@ -13,6 +11,7 @@ import {
 import ProjectCard from "../Cards/ProjectCards";
 import useContent from "../../hooks/useContent";
 import { motion, AnimatePresence } from "framer-motion";
+import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from "../SectionTitle";
 
 const Projects = ({ openModal, setOpenModal }) => {
   const [toggle, setToggle] = useState("all");
@@ -47,11 +46,22 @@ const Projects = ({ openModal, setOpenModal }) => {
   return (
       <Container id="projects">
         <Wrapper>
-          <Title>Projects</Title>
-          <Desc>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+          <SectionHeadingWrapper>
+            <SectionLabel>What I've Built</SectionLabel>
+            <SectionTitle>Projects</SectionTitle>
+          </SectionHeadingWrapper>
+          <SectionDesc>
             I've worked on a variety of projects ranging from web applications to mobile apps and APIs.
             Here's a showcase of my recent work and ongoing projects.
-          </Desc>
+          </SectionDesc>
+          </motion.div>
 
           <ToggleButtonGroup>
             {categories.map((category) => (

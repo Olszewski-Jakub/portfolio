@@ -12,6 +12,8 @@ import {
     Span,
     SubTitle,
     ResumeButton,
+    ContactButton,
+    ButtonRow,
     SocialMediaIcons,
     SocialMediaIcon,
     ScrollDownIcon,
@@ -59,9 +61,14 @@ const HeroSection = () => {
                             </Span>
                         </TextLoop>
                         <SubTitle>{Bio.description}</SubTitle>
-                        <ResumeButton href={Bio.resume} target='_blank' rel="noopener noreferrer">
-                            View Resume
-                        </ResumeButton>
+                        <ButtonRow>
+                            <ResumeButton href={Bio.resume} target='_blank' rel="noopener noreferrer">
+                                View Resume
+                            </ResumeButton>
+                            <ContactButton href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }); }}>
+                                Contact Me
+                            </ContactButton>
+                        </ButtonRow>
 
                         <SocialMediaIcons>
                             <SocialMediaIcon href={Bio.linkedin} target="_blank" rel="noopener noreferrer">

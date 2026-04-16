@@ -44,34 +44,6 @@ export const Wrapper = styled.div`
     }
 `;
 
-export const Title = styled.h2`
-    font-size: 42px;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 8px;
-    color: ${({ theme }) => theme.text_primary};
-
-    @media (max-width: 768px) {
-        margin-top: 12px;
-        font-size: 36px;
-    }
-`;
-
-export const Desc = styled.p`
-    font-size: 18px;
-    text-align: center;
-    max-width: 800px;
-    color: ${({ theme }) => theme.text_secondary};
-    line-height: 1.5;
-    margin-bottom: 40px;
-
-    @media (max-width: 768px) {
-        margin: 12px 0 30px;
-        font-size: 16px;
-        padding: 0 16px;
-    }
-`;
 
 export const ToggleButtonGroup = styled.div`
     display: flex;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import useContent from '../../hooks/useContent';
 import { motion } from 'framer-motion';
 import { FaCertificate, FaExternalLinkAlt, FaFilter, FaTimes } from 'react-icons/fa';
+import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from '../SectionTitle';
 
 const CertificateDate = styled.div`
   font-size: 14px;
@@ -14,17 +15,6 @@ const CertificateDate = styled.div`
   }
 `;
 
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -33,6 +23,7 @@ const Container = styled.div`
     z-index: 1;
     align-items: center;
     padding: 80px 0;
+    background: ${({ theme }) => theme.card_light};
 
     @media (max-width: 960px) {
         padding: 60px 0;
@@ -56,36 +47,6 @@ const Wrapper = styled.div`
     }
 `;
 
-const Title = styled.h2`
-    font-size: 42px;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 20px;
-    color: ${({ theme }) => theme.text_primary};
-    animation: ${fadeIn} 0.5s ease-in-out;
-
-    @media (max-width: 768px) {
-        margin-top: 12px;
-        font-size: 36px;
-    }
-`;
-
-const Desc = styled.p`
-    font-size: 18px;
-    text-align: center;
-    max-width: 700px;
-    color: ${({ theme }) => theme.text_secondary};
-    line-height: 1.5;
-    margin-bottom: 40px;
-    animation: ${fadeIn} 0.5s ease-in-out 0.2s;
-    animation-fill-mode: both;
-
-    @media (max-width: 768px) {
-        font-size: 16px;
-        margin-bottom: 30px;
-        padding: 0 16px;
-    }
-`;
 
 const FilterContainer = styled.div`
     display: flex;
@@ -371,10 +332,21 @@ const Certificates = () => {
     return (
         <Container id="certificates">
             <Wrapper>
-                <Title>Certificates</Title>
-                <Desc>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                >
+                <SectionHeadingWrapper>
+                    <SectionLabel>Achievements</SectionLabel>
+                    <SectionTitle>Certificates</SectionTitle>
+                </SectionHeadingWrapper>
+                <SectionDesc>
                     Professional certifications and achievements that showcase my expertise and continuous learning.
-                </Desc>
+                </SectionDesc>
+                </motion.div>
 
                 <FilterContainer>
                     <FaFilter size={16} style={{ color: '#777', marginRight: '8px' }} />

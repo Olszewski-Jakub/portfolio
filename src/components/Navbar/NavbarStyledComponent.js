@@ -17,6 +17,33 @@ export const Nav = styled.div`
     box-shadow: ${({ scrolled }) => scrolled ? '0 4px 15px rgba(0, 0, 0, 0.1)' : 'none'};
 `;
 
+export const ProgressBar = styled.div`
+    position: fixed;
+    top: 80px;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2F81F7, #0EA5E9);
+    width: ${({ progress }) => progress}%;
+    z-index: 10;
+    transition: width 0.1s linear;
+    border-radius: 0 2px 2px 0;
+`;
+
+export const InitialsBadge = styled.div`
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+`;
+
 export const NavbarContainer = styled.div`
     display: flex;
     justify-content: space-between;

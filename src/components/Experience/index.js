@@ -1,20 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
 import ExperienceCard from '../Cards/ExperienceCard';
 import useContent from '../../hooks/useContent';
 import {motion} from 'framer-motion';
 import {FaAngleRight, FaBriefcase} from 'react-icons/fa';
-
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
+import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from '../SectionTitle';
 
 const Container = styled.div`
     display: flex;
@@ -24,6 +14,7 @@ const Container = styled.div`
     z-index: 1;
     align-items: center;
     padding: 80px 0;
+    background: ${({ theme }) => theme.card_light};
 
     @media (max-width: 960px) {
         padding: 60px 0;
@@ -46,36 +37,6 @@ const Wrapper = styled.div`
     }
 `;
 
-const Title = styled.h2`
-    font-size: 42px;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 20px;
-  color: ${({ theme }) => theme.text_primary};
-    animation: ${fadeIn} 0.5s ease-in-out;
-
-    @media (max-width: 768px) {
-        margin-top: 12px;
-        font-size: 36px;
-  }
-`;
-
-const Desc = styled.p`
-    font-size: 18px;
-    text-align: center;
-    max-width: 700px;
-    color: ${({theme}) => theme.text_secondary};
-    line-height: 1.5;
-    margin-bottom: 40px;
-    animation: ${fadeIn} 0.5s ease-in-out 0.2s;
-    animation-fill-mode: both;
-
-    @media (max-width: 768px) {
-        font-size: 16px;
-        margin-bottom: 30px;
-        padding: 0 16px;
-    }
-`;
 
 const ExperienceContainer = styled.div`
     width: 100%;
@@ -227,13 +188,23 @@ const Experience = () => {
     return (
         <Container id="experience">
             <Wrapper>
-                <Title>Experience</Title>
-                <Desc>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                >
+                <SectionHeadingWrapper>
+                    <SectionLabel>My Journey</SectionLabel>
+                    <SectionTitle>Experience</SectionTitle>
+                </SectionHeadingWrapper>
+                <SectionDesc>
                     My professional journey as a software engineer, working with different companies and on various
-                    projects.
-                    These experiences have helped me grow and develop my skills in different technologies and
+                    projects. These experiences have helped me grow and develop my skills in different technologies and
                     environments.
-                </Desc>
+                </SectionDesc>
+                </motion.div>
 
                 <ExperienceContainer>
                     <TabsContainer numTabs={experiences.length}>

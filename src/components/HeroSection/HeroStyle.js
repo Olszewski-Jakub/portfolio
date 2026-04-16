@@ -11,6 +11,18 @@ const fadeIn = keyframes`
     }
 `;
 
+const glowPulse = keyframes`
+    0% {
+        box-shadow: 0 0 0 0 rgba(47, 129, 247, 0.4), 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(47, 129, 247, 0), 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(47, 129, 247, 0), 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+`;
+
 const float = keyframes`
     0% {
         transform: translateY(0px);
@@ -46,17 +58,16 @@ export const HeroContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     position: relative;
-    padding: 120px 30px 80px;
+    padding: 120px 30px 100px;
     z-index: 1;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 70% 95%, 0 100%);
     transition: all 0.5s ease-in-out;
     opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
 
     @media (max-width: 960px) {
-        padding: 66px 16px;
+        padding: 66px 16px 80px;
     }
     @media (max-width: 640px) {
-        padding: 32px 16px;
+        padding: 32px 16px 60px;
     }
 `;
 
@@ -144,14 +155,13 @@ export const Img = styled.img`
     max-height: 500px;
     border-radius: 50%;
     border: 4px solid ${({ theme }) => theme.primary};
-    animation: ${float} 6s ease-in-out infinite;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    animation: ${float} 6s ease-in-out infinite, ${glowPulse} 3s ease-in-out infinite;
     transition: all 0.5s ease-in-out;
 
     &:hover {
         transform: scale(1.03);
         border-color: ${({ theme }) => theme.primary};
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 20px 40px rgba(47, 129, 247, 0.35);
     }
 
     @media (max-width: 768px) {
@@ -204,12 +214,15 @@ export const TextLoop = styled.div`
 `;
 
 export const Span = styled.span`
-  color: ${({ theme }) => theme.primary};
+  background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   cursor: pointer;
-  transition: color 0.3s ease-in-out;
-  
+  transition: opacity 0.3s ease-in-out;
+
   &:hover {
-    color: ${({ theme }) => `${theme.primary}CC`}; // Adding transparency for hover effect
+    opacity: 0.85;
   }
 `;
 
@@ -231,37 +244,71 @@ export const SubTitle = styled.p`
   }
 `;
 
+export const ButtonRow = styled.div`
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media (max-width: 960px) {
+        justify-content: center;
+    }
+`;
+
 export const ResumeButton = styled.a`
     appearance: button;
     text-decoration: none;
-    width: 95%;
-    max-width: 250px;
-    text-align: center;
-    padding: 16px 0;
+    padding: 14px 32px;
     color: ${({ theme }) => theme.white};
     border-radius: 50px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     transition: all 0.3s ease-in-out !important;
-    background: ${({ theme }) => theme.primary};
-    background: linear-gradient(225deg, 
-      ${({ theme }) => theme.primary} 0%, 
-      ${({ theme }) => `${theme.primary}CC`} 100%);
-    box-shadow: 0 6px 20px rgba(133, 76, 230, 0.25);
-    
+    background: linear-gradient(135deg, #2F81F7 0%, #0EA5E9 100%);
+    box-shadow: 0 6px 20px rgba(47, 129, 247, 0.35);
+
     &:hover {
         transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 10px 25px rgba(133, 76, 230, 0.4);
+        box-shadow: 0 12px 28px rgba(47, 129, 247, 0.5);
     }
-    
+
     &:active {
         transform: translateY(1px) scale(0.98);
     }
-    
+
     @media (max-width: 640px) {
-        padding: 12px 0;
-        font-size: 16px;
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+`;
+
+export const ContactButton = styled.a`
+    appearance: button;
+    text-decoration: none;
+    padding: 14px 32px;
+    color: ${({ theme }) => theme.primary};
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out !important;
+    background: transparent;
+    border: 2px solid ${({ theme }) => theme.primary};
+
+    &:hover {
+        background: ${({ theme }) => `${theme.primary}15`};
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(47, 129, 247, 0.2);
+    }
+
+    &:active {
+        transform: translateY(1px) scale(0.98);
+    }
+
+    @media (max-width: 640px) {
+        padding: 12px 24px;
+        font-size: 15px;
     }
 `;
 
