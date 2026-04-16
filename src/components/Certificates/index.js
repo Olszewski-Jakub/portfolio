@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useContent from '../../hooks/useContent';
-import { motion } from 'framer-motion';
-import { FaCertificate, FaExternalLinkAlt, FaFilter, FaTimes } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaCertificate, FaExternalLinkAlt } from 'react-icons/fa';
 import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from '../SectionTitle';
 
 const CertificateDate = styled.div`
@@ -48,71 +48,55 @@ const Wrapper = styled.div`
 `;
 
 
-const FilterContainer = styled.div`
+const FilterRow = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    gap: 10px;
-    margin-bottom: 40px;
     flex-wrap: wrap;
-
-    @media (max-width: 768px) {
-        margin-bottom: 30px;
-    }
+    gap: 10px;
+    justify-content: center;
+    margin: 32px 0 40px;
 `;
 
-const FilterButton = styled.button`
-    display: flex;
+const FilterChip = styled.button`
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: ${({ active, theme }) => active ? theme.primary : `${theme.card_light}`};
-    color: ${({ active, theme }) => active ? theme.white : theme.text_primary};
-    border: 1px solid ${({ active, theme }) => active ? theme.primary : `${theme.text_primary}30`};
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-        background: ${({ active, theme }) => active ? theme.primary : `${theme.primary}20`};
-        transform: translateY(-3px);
-    }
-
-    @media (max-width: 768px) {
-        font-size: 12px;
-        padding: 8px 12px;
-    }
-`;
-
-const ClearFilterButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 6px;
-    padding: 10px 16px;
-    background: transparent;
-    color: ${({ theme }) => theme.text_secondary};
-    border: 1px solid ${({ theme }) => `${theme.text_secondary}50`};
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    letter-spacing: 0.4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    border: 1.5px solid ${({ active, theme }) => active ? theme.primary : `${theme.text_primary}25`};
+    background: ${({ active, theme }) => active ? theme.primary : 'transparent'};
+    color: ${({ active, theme }) => active ? '#fff' : theme.text_secondary};
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
     &:hover {
-        color: ${({ theme }) => theme.text_primary};
-        border-color: ${({ theme }) => theme.text_primary};
-        transform: translateY(-3px);
+        border-color: ${({ theme }) => theme.primary};
+        color: ${({ active, theme }) => active ? '#fff' : theme.primary};
+        transform: translateY(-2px);
+        box-shadow: ${({ active }) => active
+            ? '0 6px 18px rgba(47,129,247,0.35)'
+            : '0 4px 12px rgba(47,129,247,0.12)'};
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 480px) {
+        padding: 7px 14px;
         font-size: 12px;
-        padding: 8px 12px;
     }
+`;
+
+const FilterCount = styled.span`
+    background: ${({ active, theme }) => active ? 'rgba(255,255,255,0.25)' : `${theme.primary}18`};
+    color: ${({ active, theme }) => active ? '#fff' : theme.primary};
+    border-radius: 50px;
+    padding: 0 7px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.6;
+    min-width: 20px;
+    text-align: center;
 `;
 
 const CertificatesGrid = styled.div`
@@ -136,7 +120,7 @@ const CertificateCard = styled(motion.div)`
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out;
     position: relative;
     border: 1px solid ${({ theme }) => `${theme.primary}20`};
     height: 100%;
@@ -144,7 +128,7 @@ const CertificateCard = styled(motion.div)`
     &:hover {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         transform: translateY(-5px);
-        border: 1px solid ${({ theme }) => theme.primary};
+        border-color: ${({ theme }) => theme.primary};
     }
 `;
 
@@ -246,7 +230,7 @@ const ViewCertificateButton = styled.a`
     background: ${({ theme }) => theme.card_light};
     color: ${({ theme }) => theme.text_primary};
     padding: 10px 16px;
-    border-radius: 10px;
+    border-radius: 50px;
     font-weight: 500;
     font-size: 14px;
     display: flex;
@@ -255,7 +239,7 @@ const ViewCertificateButton = styled.a`
     gap: 8px;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     margin-top: auto;
 
     &:hover {
@@ -295,39 +279,20 @@ const EmptyStateText = styled.p`
     }
 `;
 
-// Animation variants for cards
-const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.4
-        }
-    }
-};
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
+const humanLabel = (cat) => cat === 'all' ? 'All' : (cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : cat);
 
 const Certificates = () => {
     const [activeFilter, setActiveFilter] = useState('all');
     const { data: certificates = [], loading } = useContent('certificates');
 
-    // Extract unique categories from certificates
-    const categories = ['all', ...new Set((certificates || []).map(cert => cert.category).filter(Boolean))];
+    const allCerts = certificates || [];
+    const categories = ['all', ...new Set(allCerts.map(cert => cert.category).filter(Boolean))];
 
-    // Filter certificates based on selected category
+    const countFor = (cat) => cat === 'all' ? allCerts.length : allCerts.filter(c => c.category === cat).length;
+
     const filteredCertificates = activeFilter === 'all'
-        ? certificates
-        : certificates.filter(cert => cert.category === activeFilter);
+        ? allCerts
+        : allCerts.filter(cert => cert.category === activeFilter);
 
     return (
         <Container id="certificates">
@@ -348,38 +313,30 @@ const Certificates = () => {
                 </SectionDesc>
                 </motion.div>
 
-                <FilterContainer>
-                    <FaFilter size={16} style={{ color: '#777', marginRight: '8px' }} />
-
-                    {categories.map((category, index) => (
-                        <FilterButton
-                            key={index}
+                <FilterRow>
+                    {categories.map((category) => (
+                        <FilterChip
+                            key={category}
                             active={activeFilter === category}
                             onClick={() => setActiveFilter(category)}
                         >
-                            {category.charAt(0).toUpperCase() + category.slice(1)}
-                        </FilterButton>
+                            {humanLabel(category)}
+                            <FilterCount active={activeFilter === category}>{countFor(category)}</FilterCount>
+                        </FilterChip>
                     ))}
-
-                    {activeFilter !== 'all' && (
-                        <ClearFilterButton onClick={() => setActiveFilter('all')}>
-                            <FaTimes size={12} />
-                            Clear Filter
-                        </ClearFilterButton>
-                    )}
-                </FilterContainer>
+                </FilterRow>
 
                 {!loading && filteredCertificates.length > 0 ? (
-                    <CertificatesGrid
-                        as={motion.div}
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
+                    <CertificatesGrid>
+                        <AnimatePresence mode="popLayout">
                         {filteredCertificates.map((certificate, index) => (
                             <CertificateCard
-                                key={index}
-                                variants={cardVariants}
+                                key={`${activeFilter}-${certificate.title || index}`}
+                                layout
+                                initial={{ opacity: 0, scale: 0.96 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.94 }}
+                                transition={{ duration: 0.25, delay: index * 0.04 }}
                             >
                                 <CertificateCategory>
                                     {certificate.category.charAt(0).toUpperCase() + certificate.category.slice(1)}
@@ -417,6 +374,7 @@ const Certificates = () => {
                                 </CertificateDetails>
                             </CertificateCard>
                         ))}
+                        </AnimatePresence>
                     </CertificatesGrid>
                 ) : (
                     <EmptyStateContainer>

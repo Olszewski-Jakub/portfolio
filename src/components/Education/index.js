@@ -87,7 +87,7 @@ const Tab = styled.div`
     color: ${({ active, theme }) => active ? theme.primary : theme.text_secondary};
     border-left: 3px solid ${({ active, theme }) => active ? theme.primary : 'transparent'};
     background-color: ${({ active, theme }) => active ? `${theme.primary}10` : 'transparent'};
-    transition: all 0.3s ease-in-out;
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, border-color 0.25s ease-in-out;
 
     &:hover {
         color: ${({ theme }) => theme.primary};

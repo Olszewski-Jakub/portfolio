@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { FaCalendarAlt, FaGraduationCap, FaAward, FaMapMarkerAlt, FaLink } from 'react-icons/fa';
 
 const Card = styled.div`
@@ -181,7 +181,7 @@ const WebsiteLink = styled.a`
 `;
 
 const EducationCard = ({ education }) => {
-    // Extract city from the school name if it contains a comma
+    const theme = useTheme();
     const schoolParts = education.school.split(',');
     const schoolName = schoolParts[0];
     const schoolLocation = schoolParts.length > 1 ? schoolParts.slice(1).join(',').trim() : '';
@@ -218,7 +218,7 @@ const EducationCard = ({ education }) => {
 
             {education.grade && (
                 <GradeContainer>
-                    <FaAward size={16} color="#854CE6" />
+                    <FaAward size={16} color={theme.primary} />
                     <GradeLabel>Achievement:</GradeLabel>
                     <GradeValue>{education.grade}</GradeValue>
                 </GradeContainer>

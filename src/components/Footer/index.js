@@ -45,8 +45,8 @@ const Logo = styled.h1`
   font-weight: 700;
   font-size: 28px;
   color: ${({ theme }) => theme.primary};
-  transition: all 0.3s ease-in-out;
-  
+  transition: transform 0.3s ease-in-out;
+
   &:hover {
     transform: scale(1.05);
   }
@@ -74,7 +74,7 @@ const NavLink = styled.a`
   color: ${({ theme }) => theme.text_primary};
   text-decoration: none;
   font-size: 1.2rem;
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
   position: relative;
   
   &:after {
@@ -113,12 +113,12 @@ const SocialMediaIcon = styled.a`
   justify-content: center;
   color: ${({ theme }) => theme.text_primary};
   font-size: 1.5rem;
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   background: ${({ theme }) => `${theme.primary}15`};
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
     transform: translateY(-3px);
@@ -148,13 +148,13 @@ const ScrollToTop = styled.div`
   font-size: 24px;
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease-in-out;
-  
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   }
-  
+
   @media (max-width: 768px) {
     right: 20px;
     width: 45px;
@@ -229,8 +229,8 @@ const FooterLink = styled.a`
   color: ${({ theme }) => theme.text_secondary};
   text-decoration: none;
   font-size: 14px;
-  transition: all 0.3s ease-in-out;
-  
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
   &:hover {
     color: ${({ theme }) => theme.primary};
     transform: translateX(3px);

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import {
     FaGithub,
     FaExternalLinkAlt,
@@ -11,29 +12,8 @@ import {
 import { Modal } from '@mui/material';
 import useGithubContributors from '../../hooks/useGithubContributors';
 
-// Animations
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-`;
-
-const slideUp = keyframes`
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-`;
-
 // Styled Components
-const Container = styled.div`
+const Container = styled(motion.div)`
     position: fixed;
     inset: 0;
     width: 100vw;
@@ -42,9 +22,8 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow-y: auto; /* Modal content scrolls when taller than viewport */
+    overflow-y: auto;
     z-index: 1000;
-    animation: ${fadeIn} 0.25s ease-in-out;
     background: radial-gradient(1200px 600px at 10% -10%, rgba(2, 6, 23, 0.35), transparent),
                 radial-gradient(1200px 600px at 110% 110%, rgba(2, 6, 23, 0.35), transparent),
                 rgba(0, 0, 0, 0.45);
@@ -52,22 +31,21 @@ const Container = styled.div`
     -webkit-backdrop-filter: blur(10px);
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
     max-width: 880px;
     width: 100%;
-    max-height: 90vh; /* Keep header/footer visible */
-    overflow-y: auto; /* Scroll inside the dialog */
+    max-height: 90vh;
+    overflow-y: auto;
     border-radius: 16px;
     margin: 40px auto;
     background: ${({ theme }) => theme.card};
     color: ${({ theme }) => theme.text_primary};
-    padding: 28px 28px 96px; /* extra bottom space for sticky actions */
+    padding: 28px 28px 96px;
     display: flex;
     flex-direction: column;
     position: relative;
     border: 1px solid rgba(148, 163, 184, 0.12);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-    animation: ${slideUp} 0.35s ease-in-out;
 
     @media (max-width: 768px) {
         padding: 18px 18px 22px;
@@ -105,7 +83,7 @@ const CloseButton = styled.button`
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
     z-index: 15;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -239,8 +217,8 @@ const Tag = styled.span`
     color: ${({ theme }) => theme.primary};
     background-color: ${({ theme }) => `${theme.primary}20`};
     padding: 6px 14px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    border-radius: 50px;
+    transition: background-color 0.2s ease-in-out;
 
     &:hover {
         background-color: ${({ theme }) => `${theme.primary}40`};
@@ -261,7 +239,7 @@ const StatusBadge = styled.div`
         return `${theme.primary}20`;
     }};
     padding: 6px 14px;
-    border-radius: 8px;
+    border-radius: 50px;
     display: inline-block;
     margin-bottom: 16px;
 `;
@@ -305,7 +283,7 @@ const Member = styled.div`
     background-color: ${({ theme }) => theme.card_light};
     padding: 12px 16px;
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
     &:hover {
         transform: translateY(-3px);
@@ -352,7 +330,7 @@ const MemberLinks = styled.div`
 const MemberLink = styled.a`
     color: ${({ theme }) => theme.text_secondary};
     font-size: 18px;
-    transition: all 0.3s ease;
+    transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
 
     &:hover {
         color: ${({ theme }) => theme.primary};
@@ -433,12 +411,12 @@ const Button = styled.a`
     gap: 10px;
     padding: 12px 18px;
     height: 46px;
-    border-radius: 12px;
+    border-radius: 50px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 
     @media only screen and (max-width: 768px) {
@@ -508,8 +486,20 @@ const ProjectDetails = ({ openModal, setOpenModal }) => {
             hideBackdrop
             disableScrollLock={true}
         >
-            <Container onClick={() => setOpenModal({ state: false, project: null })}>
-                <Wrapper onClick={(e) => e.stopPropagation()}>
+            <Container
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={() => setOpenModal({ state: false, project: null })}
+            >
+                <Wrapper
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 40 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    onClick={(e) => e.stopPropagation()}
+                >
                     <CloseButton
                         onClick={(e) => { e.stopPropagation(); setOpenModal({ state: false, project: null }); }}
                         aria-label="Close modal"

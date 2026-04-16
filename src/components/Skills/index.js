@@ -98,11 +98,11 @@ const SkillItem = styled(motion.div)`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: all 0.25s ease-in-out;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, border-color 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   cursor: default;
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.primary};
+    border-color: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.primary};
     background: ${({ theme }) => `${theme.primary}10`};
     transform: translateY(-3px);
@@ -149,14 +149,22 @@ const Skills = () => {
   return (
     <Container id="skills">
       <Wrapper>
-        <SectionHeadingWrapper>
-          <SectionLabel>What I Know</SectionLabel>
-          <SectionTitle>Skills</SectionTitle>
-        </SectionHeadingWrapper>
-        <SectionDesc>
-          Here are the technologies and tools I've been working with over the past few years.
-          I'm always excited to learn and adapt to new technologies.
-        </SectionDesc>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
+        >
+          <SectionHeadingWrapper>
+            <SectionLabel>What I Know</SectionLabel>
+            <SectionTitle>Skills</SectionTitle>
+          </SectionHeadingWrapper>
+          <SectionDesc>
+            Here are the technologies and tools I've been working with over the past few years.
+            I'm always excited to learn and adapt to new technologies.
+          </SectionDesc>
+        </motion.div>
 
         <TabsRow>
           {skills.map((skill, index) => (

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import emailjs from "@emailjs/browser";
 import { Snackbar, Alert, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
@@ -90,7 +90,7 @@ const InputLabel = styled.label`
   font-size: ${({ isFocused, hasValue }) => (isFocused || hasValue ? '14px' : '16px')};
   color: ${({ theme, isFocused }) => (isFocused ? theme.primary : theme.text_secondary)};
   pointer-events: none;
-  transition: all 0.3s ease-in-out;
+  transition: top 0.3s ease-in-out, font-size 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
   background-color: ${({ theme, isFocused, hasValue }) =>
       (isFocused || hasValue) ? theme.card : 'transparent'};
   padding: 0 4px;
@@ -105,7 +105,7 @@ const InputIcon = styled.div`
   top: 14px;
   right: 16px;
   color: ${({ theme, isFocused }) => (isFocused ? theme.primary : theme.text_secondary)};
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 `;
 
 const ContactInput = styled.input`
@@ -118,7 +118,7 @@ const ContactInput = styled.input`
   border-radius: 12px;
   padding: 12px 16px;
   padding-right: 40px;
-  transition: all 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
   
   &:focus {
     border: 1px solid ${({ theme }) => theme.primary};
@@ -143,7 +143,7 @@ const ContactInputMessage = styled.textarea`
   padding-right: 40px;
   resize: vertical;
   min-height: 120px;
-  transition: all 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
   
   &:focus {
     border: 1px solid ${({ theme }) => theme.primary};
@@ -174,7 +174,7 @@ const ContactButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
   &:hover {
     transform: scale(1.02);
@@ -231,7 +231,7 @@ const InfoCard = styled.a`
   border-radius: 12px;
   border: 1px solid ${({ theme }) => `${theme.primary}20`};
   text-decoration: none;
-  transition: all 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   cursor: pointer;
 
   &:hover {
@@ -286,7 +286,7 @@ const formVariants = {
 };
 
 const Contact = () => {
-  // State for form inputs
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
@@ -431,7 +431,7 @@ const Contact = () => {
               viewport={{ once: true }}
           >
             <ContactTitle>
-              <FiMail size={24} style={{ color: "#854CE6" }} />
+              <FiMail size={24} style={{ color: theme.primary }} />
               Let's Connect
             </ContactTitle>
 

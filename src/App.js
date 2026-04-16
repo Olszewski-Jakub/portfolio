@@ -13,12 +13,13 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
-import Certificates from "./components/Certificates"; // Import the new component
+import Certificates from "./components/Certificates";
 import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./components/ScrollToTop";
 import AdminApp from "./admin/AdminApp";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
+import { AnimatePresence } from "framer-motion";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "./services/firebase";
 
@@ -26,7 +27,7 @@ const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
   width: 100%;
   overflow-x: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
 `;
 
 const Wrapper = styled.div`
@@ -41,7 +42,6 @@ const Wrapper = styled.div`
       ${({ theme }) => theme.gradients.wrapper.blueLight} 100%
   );
   width: 100%;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 98%, 0 100%);
 `;
 
 const analytics = getAnalytics(app);
@@ -105,17 +105,19 @@ function App() {
                 <Contact />
               </Wrapper>
               <Footer />
-              {openModal.state && (
-                <ProjectDetails
-                  openModal={openModal}
-                  setOpenModal={(newModalState) => {
-                    setOpenModal(newModalState);
-                    if (!newModalState.state) {
-                      setTimeout(() => { document.body.style.overflow = ''; }, 100);
-                    }
-                  }}
-                />
-              )}
+              <AnimatePresence>
+                {openModal.state && (
+                  <ProjectDetails
+                    openModal={openModal}
+                    setOpenModal={(newModalState) => {
+                      setOpenModal(newModalState);
+                      if (!newModalState.state) {
+                        setTimeout(() => { document.body.style.overflow = ''; }, 100);
+                      }
+                    }}
+                  />
+                )}
+              </AnimatePresence>
             </Body>
           </>
         )}
