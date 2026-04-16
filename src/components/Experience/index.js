@@ -113,7 +113,7 @@ const Connector = styled.div`
     height: 2px;
     width: 36px;
     background: ${({ theme }) => `${theme.primary}50`};
-    ${({ $isLeft }) => $isLeft ? 'right: calc(50% + 16px);' : 'left: calc(50% + 16px);'}
+    ${({ $isLeft }) => $isLeft ? 'left: calc(50% + 16px);' : 'right: calc(50% + 16px);'}
 
     @media (max-width: 768px) {
         display: none;
