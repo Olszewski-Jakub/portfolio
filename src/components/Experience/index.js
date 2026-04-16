@@ -39,6 +39,7 @@ const StickyWrap = styled.div`
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    isolation: isolate;
 `;
 
 const ProgressTrack = styled.div`
@@ -63,9 +64,10 @@ const HeaderArea = styled.div`
 
 const Track = styled(motion.div)`
     display: flex;
-    flex: 1;
+    width: ${({ $count }) => $count * 100}vw;
+    flex-shrink: 0;
+    align-self: stretch;
     will-change: transform;
-    min-height: 0;
 `;
 
 const Panel = styled.div`
@@ -363,6 +365,15 @@ const Experience = () => {
     const isMobile = useIsMobile();
     const containerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [vw, setVw] = useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth : 1200
+    );
+
+    useEffect(() => {
+        const onResize = () => setVw(window.innerWidth);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -370,7 +381,7 @@ const Experience = () => {
     });
 
     const count = experiences.length || 1;
-    const x = useTransform(scrollYProgress, [0, 1], ['0vw', `${-(count - 1) * 100}vw`]);
+    const x = useTransform(scrollYProgress, [0, 1], [0, -(count - 1) * vw]);
 
     useMotionValueEvent(scrollYProgress, 'change', v => {
         const idx = Math.floor(v * count);
@@ -437,7 +448,7 @@ const Experience = () => {
                         </SectionHeadingWrapper>
                     </HeaderArea>
 
-                    <Track style={{ x }}>
+                    <Track style={{ x }} $count={count}>
                         {experiences.map((exp, i) => (
                             <Panel key={i}>
                                 <PanelInner>

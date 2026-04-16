@@ -29,7 +29,7 @@ import { app } from "./services/firebase";
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.3s ease-in-out;
 `;
 
