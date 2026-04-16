@@ -101,39 +101,38 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             </GitHubButton>
           </ButtonContainer>
 
-          {isOpen && (
-              <MobileMenu isOpen={isOpen}>
-                {navItems.map((item) => (
-                    <MobileLink
-                        key={item.name}
-                        href={item.href}
-                        onClick={closeMenu}
-                    >
-                      {item.name}
-                    </MobileLink>
-                ))}
-                <GitHubButton
-                    style={{
-                      padding: '10px 16px',
-                      background: `${theme.primary}`,
-                      color: 'white',
-                      width: 'max-content',
-                      margin: '16px auto 0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                    href={Bio.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
+          {/* Always mounted so the CSS transform animation plays on open/close */}
+          <MobileMenu isOpen={isOpen}>
+            {navItems.map((item) => (
+                <MobileLink
+                    key={item.name}
+                    href={item.href}
                     onClick={closeMenu}
                 >
-                  <FaGithub />
-                  GitHub Profile
-                </GitHubButton>
-              </MobileMenu>
-          )}
+                  {item.name}
+                </MobileLink>
+            ))}
+            <GitHubButton
+                style={{
+                  padding: '10px 16px',
+                  background: `${theme.primary}`,
+                  color: 'white',
+                  width: 'max-content',
+                  margin: '16px auto 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+                href={Bio.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+            >
+              <FaGithub />
+              GitHub Profile
+            </GitHubButton>
+          </MobileMenu>
         </NavbarContainer>
       </Nav>
       </>

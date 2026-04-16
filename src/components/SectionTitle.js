@@ -1,15 +1,8 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+// No CSS keyframe animations here — all sections use Framer Motion
+// whileInView on the parent motion.div wrapper, so CSS animations on children
+// would double-animate and cause jitter.
 
 export const SectionLabel = styled.div`
   display: inline-block;
@@ -23,7 +16,6 @@ export const SectionLabel = styled.div`
   border-radius: 50px;
   margin-bottom: 14px;
   border: 1px solid ${({ theme }) => `${theme.primary}30`};
-  animation: ${fadeIn} 0.5s ease-in-out;
 `;
 
 export const SectionTitle = styled.h2`
@@ -33,8 +25,9 @@ export const SectionTitle = styled.h2`
   margin-top: 4px;
   color: ${({ theme }) => theme.text_primary};
   position: relative;
-  display: inline-block;
-  animation: ${fadeIn} 0.5s ease-in-out;
+  /* block + text-align: center is correct for centering; inline-block caused misalignment */
+  display: block;
+  width: 100%;
 
   &:after {
     content: '';
@@ -61,8 +54,6 @@ export const SectionDesc = styled.p`
   line-height: 1.6;
   margin-top: 24px;
   margin-bottom: 40px;
-  animation: ${fadeIn} 0.5s ease-in-out 0.2s;
-  animation-fill-mode: both;
 
   @media (max-width: 768px) {
     font-size: 16px;
@@ -76,4 +67,5 @@ export const SectionHeadingWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 8px;
+  width: 100%;
 `;

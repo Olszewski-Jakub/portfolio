@@ -11,29 +11,26 @@ const fadeIn = keyframes`
     }
 `;
 
-const glowPulse = keyframes`
+// Combined float + glow in one keyframe — eliminates the jitter from
+// two unsynchronised animations running on the same element.
+const floatGlow = keyframes`
     0% {
-        box-shadow: 0 0 0 0 rgba(47, 129, 247, 0.4), 0 10px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(0px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 0 0 rgba(47,129,247,0.35);
+    }
+    30% {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 0 8px rgba(47,129,247,0);
     }
     50% {
-        box-shadow: 0 0 0 8px rgba(47, 129, 247, 0), 0 10px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-12px);
+        box-shadow: 0 20px 30px rgba(0,0,0,0.2), 0 0 0 0 rgba(47,129,247,0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(47, 129, 247, 0), 0 10px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(0px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 0 0 rgba(47,129,247,0);
     }
 `;
 
-const float = keyframes`
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
-`;
 
 const bounce = keyframes`
     0%, 20%, 50%, 80%, 100% {
@@ -74,18 +71,14 @@ export const HeroContainer = styled.div`
 export const HeroBg = styled.div`
     position: absolute;
     display: flex;
-    justify-content: end;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    justify-content: flex-end;
+    top: 50%;
+    left: 50%;
     width: 100%;
     height: 100%;
     max-width: 1360px;
     overflow: hidden;
     padding: 0 30px;
-    top: 50%;
-    left: 50%;
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 
@@ -113,6 +106,7 @@ export const HeroLeftContainer = styled.div`
     width: 50%;
     order: 1;
     animation: ${fadeIn} 1s ease-in-out;
+    animation-fill-mode: both;
 
     @media (max-width: 960px) {
         width: 100%;
@@ -155,13 +149,13 @@ export const Img = styled.img`
     max-height: 500px;
     border-radius: 50%;
     border: 4px solid ${({ theme }) => theme.primary};
-    animation: ${float} 6s ease-in-out infinite, ${glowPulse} 3s ease-in-out infinite;
-    transition: all 0.5s ease-in-out;
+    animation: ${floatGlow} 6s ease-in-out infinite;
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out, border-color 0.3s;
 
     &:hover {
-        transform: scale(1.03);
-        border-color: ${({ theme }) => theme.primary};
-        box-shadow: 0 20px 40px rgba(47, 129, 247, 0.35);
+        animation-play-state: paused;
+        transform: scale(1.04);
+        box-shadow: 0 20px 40px rgba(47, 129, 247, 0.4);
     }
 
     @media (max-width: 768px) {

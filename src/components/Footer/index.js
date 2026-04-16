@@ -1,9 +1,12 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import { FiArrowUp } from "react-icons/fi";
 import { Bio } from "../../data/constants";
 
+// WaveWrapper background matches the Contact section (card_light),
+// so the wave looks like a bite taken out of that section.
+// The SVG fill must match the footer background (bg).
 const WaveWrapper = styled.div`
   width: 100%;
   overflow: hidden;
@@ -22,7 +25,7 @@ const FooterContainer = styled.div`
   padding: 2rem 0;
   display: flex;
   justify-content: center;
-  background: ${({ theme }) => theme.card_light};
+  background: ${({ theme }) => theme.bg};
   position: relative;
   z-index: 1;
 `;
@@ -114,7 +117,7 @@ const SocialMediaIcon = styled.a`
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  background: ${({ theme }) => `${theme.card_light}90`};
+  background: ${({ theme }) => `${theme.primary}15`};
   
   &:hover {
     color: ${({ theme }) => theme.primary};
@@ -235,6 +238,7 @@ const FooterLink = styled.a`
 `;
 
 const Footer = () => {
+  const theme = useTheme();
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -248,8 +252,7 @@ const Footer = () => {
         <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <path
             d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z"
-            fill="currentColor"
-            style={{ color: 'inherit' }}
+            fill={theme.bg}
           />
         </svg>
       </WaveWrapper>

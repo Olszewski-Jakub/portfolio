@@ -32,9 +32,17 @@ const TabsRow = styled.div`
   gap: 0;
   border: 1.5px solid ${({ theme }) => `${theme.primary}40`};
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   margin-bottom: 36px;
-  flex-wrap: wrap;
+  flex-shrink: 0;
+  max-width: 100%;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Tab = styled.button`
@@ -44,12 +52,14 @@ const Tab = styled.button`
   padding: 12px 24px;
   cursor: pointer;
   border: none;
+  flex-shrink: 0;
+  white-space: nowrap;
   background: ${({ active, theme }) => active ? theme.primary : 'transparent'};
   color: ${({ active, theme }) => active ? theme.white : theme.text_secondary};
   font-size: 15px;
   font-weight: 600;
   font-family: inherit;
-  transition: all 0.25s ease-in-out;
+  transition: background 0.25s ease-in-out, color 0.25s ease-in-out;
   border-right: 1px solid ${({ theme }) => `${theme.primary}30`};
 
   &:last-child {

@@ -42,25 +42,21 @@ const Wrapper = styled.div`
 
 
 const ContactForm = styled(motion.form)`
-  width: 100%;
-  max-width: 560px;
   flex: 1;
+  min-width: 0;
+  max-width: 560px;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.card};
   padding: 32px;
   border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   gap: 20px;
-  transition: all 0.3s ease-in-out;
   border: 1px solid ${({ theme }) => `${theme.primary}15`};
 
-  &:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  }
-
   @media (max-width: 900px) {
-    width: 95%;
+    width: 100%;
+    max-width: 560px;
   }
 
   @media (max-width: 768px) {
@@ -198,30 +194,31 @@ const ContactButton = styled.button`
 
 const ContactBody = styled.div`
   display: flex;
-  gap: 48px;
-  align-items: flex-start;
+  gap: 40px;
+  align-items: stretch;
   justify-content: center;
   width: 100%;
-  max-width: 1000px;
+  max-width: 960px;
+  padding: 0 20px;
 
   @media (max-width: 900px) {
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 28px;
+    padding: 0;
   }
 `;
 
 const ContactInfo = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-width: 260px;
-  max-width: 300px;
+  gap: 14px;
+  width: 280px;
+  flex-shrink: 0;
 
   @media (max-width: 900px) {
-    max-width: 100%;
-    width: 95%;
-    min-width: unset;
+    width: 100%;
+    max-width: 560px;
   }
 `;
 

@@ -1,15 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
+import styled from 'styled-components';
 
 export const Container = styled.div`
     background: linear-gradient(
@@ -37,7 +26,6 @@ export const Wrapper = styled.div`
     max-width: 1350px;
     padding: 10px 0px 100px 0;
     gap: 12px;
-    animation: ${fadeIn} 0.5s ease-in-out;
 
     @media (max-width: 960px) {
         padding: 0px 0px 80px 0;
@@ -136,5 +124,4 @@ export const EmptyProjectsMessage = styled.div`
     padding: 20px;
     border-radius: 12px;
     border: 1px dashed ${({ theme }) => theme.text_secondary};
-    animation: ${fadeIn} 0.5s ease-in-out;
 `;

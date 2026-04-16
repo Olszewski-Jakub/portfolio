@@ -16,7 +16,7 @@ const Image = styled.img`
   height: 100%;
   object-fit: cover;
   background-color: ${({ theme }) => theme.white};
-  transition: transform 0.4s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 `;
 
 const HoverOverlay = styled.div`
@@ -44,18 +44,19 @@ const Card = styled.div`
   background-color: ${({ theme }) => theme.card};
   cursor: pointer;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   padding: 20px 18px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: all 0.35s ease-in-out;
+  /* Specific properties only — avoid transition:all which causes jitter */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
   border: 1px solid ${({ theme }) => `${theme.primary}18`};
 
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
     border-color: ${({ theme }) => `${theme.primary}50`};
   }
 
