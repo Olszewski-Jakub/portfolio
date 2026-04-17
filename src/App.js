@@ -13,36 +13,29 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
-import Certificates from "./components/Certificates"; // Import the new component
+import Certificates from "./components/Certificates";
 import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./components/ScrollToTop";
 import AdminApp from "./admin/AdminApp";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
+import SectionDivider from "./components/SectionDivider";
+import CursorSpotlight from "./components/CursorSpotlight";
+import IntroSplash, { shouldShowSplash } from "./components/IntroSplash";
+import NoiseTexture from "./components/NoiseTexture";
+import Terminal from "./components/Terminal";
+import { AnimatePresence } from "framer-motion";
+import useSmoothScroll from "./hooks/useSmoothScroll";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "./services/firebase";
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
   width: 100%;
-  overflow-x: hidden;
-  transition: all 0.3s ease-in-out;
+  overflow-x: clip;
+  transition: background-color 0.3s ease-in-out;
 `;
 
-const Wrapper = styled.div`
-  background: linear-gradient(
-      38.73deg,
-      ${({ theme }) => theme.gradients.wrapper.pinkLight} 0%,
-      ${({ theme }) => theme.gradients.wrapper.pinkZero} 50%
-  ),
-  linear-gradient(
-      141.27deg,
-      ${({ theme }) => theme.gradients.wrapper.blueZero} 50%,
-      ${({ theme }) => theme.gradients.wrapper.blueLight} 100%
-  );
-  width: 100%;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 98%, 0 100%);
-`;
 
 const analytics = getAnalytics(app);
 
@@ -50,6 +43,28 @@ function App() {
   // State management
   const [darkMode, setDarkMode] = useState(true);
   const [openModal, setOpenModal] = useState({ state: false, project: null });
+  const [showSplash, setShowSplash] = useState(shouldShowSplash);
+  const [showTerminal, setShowTerminal] = useState(false);
+  useSmoothScroll();
+
+  /* Konami code: ↑↑↓↓←→←→BA */
+  useEffect(() => {
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let idx = 0;
+    const handler = (e) => {
+      if (e.key === KONAMI[idx]) {
+        idx++;
+        if (idx === KONAMI.length) {
+          setShowTerminal(true);
+          idx = 0;
+        }
+      } else {
+        idx = e.key === KONAMI[0] ? 1 : 0;
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
 
   // Dark mode from user preference
   useEffect(() => {
@@ -90,32 +105,38 @@ function App() {
           <AdminApp />
         ) : (
           <>
+            {showSplash && <IntroSplash onDone={() => setShowSplash(false)} />}
+            {showTerminal && <Terminal onClose={() => setShowTerminal(false)} />}
+            <NoiseTexture />
+            <CursorSpotlight darkMode={darkMode} />
             <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <Body>
               <ScrollToTop />
               <HeroSection />
-              <Wrapper>
-                <Skills />
-                <Experience />
-              </Wrapper>
+              <SectionDivider from="card_light" to="bg" />
+              <Skills />
+              <SectionDivider from="bg" to="card_light" flip />
+              <Experience />
+              <SectionDivider from="card_light" to="bg" />
               <Projects openModal={openModal} setOpenModal={setOpenModal} />
-              <Wrapper>
-                <Education />
-                <Certificates />
-                <Contact />
-              </Wrapper>
-              <Footer />
-              {openModal.state && (
-                <ProjectDetails
-                  openModal={openModal}
-                  setOpenModal={(newModalState) => {
-                    setOpenModal(newModalState);
-                    if (!newModalState.state) {
-                      setTimeout(() => { document.body.style.overflow = ''; }, 100);
-                    }
-                  }}
-                />
-              )}
+              <Education />
+              <SectionDivider from="bg" to="card_light" flip />
+              <Certificates />
+              <Contact />
+              <Footer onEasterEgg={() => setShowTerminal(true)} />
+              <AnimatePresence>
+                {openModal.state && (
+                  <ProjectDetails
+                    openModal={openModal}
+                    setOpenModal={(newModalState) => {
+                      setOpenModal(newModalState);
+                      if (!newModalState.state) {
+                        setTimeout(() => { document.body.style.overflow = ''; }, 100);
+                      }
+                    }}
+                  />
+                )}
+              </AnimatePresence>
             </Body>
           </>
         )}

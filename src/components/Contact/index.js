@@ -1,20 +1,12 @@
 import React, { useState, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { useTheme } from "styled-components";
 import emailjs from "@emailjs/browser";
 import { Snackbar, Alert, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
-import { FiMail, FiUser, FiFileText, FiSend } from "react-icons/fi";
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+import { FiMail, FiUser, FiFileText, FiSend, FiMapPin } from "react-icons/fi";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { Bio } from "../../data/constants";
+import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from "../SectionTitle";
 
 const Container = styled.div`
   display: flex;
@@ -24,6 +16,7 @@ const Container = styled.div`
   z-index: 1;
   align-items: center;
   padding: 80px 0;
+  background: ${({ theme }) => theme.card_light};
 
   @media (max-width: 960px) {
     padding: 60px 0;
@@ -47,52 +40,23 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.h2`
-  font-size: 42px;
-  font-weight: 700;
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 8px;
-  color: ${({ theme }) => theme.text_primary};
-  animation: ${fadeIn} 0.5s ease-in-out;
-
-  @media (max-width: 768px) {
-    margin-top: 12px;
-    font-size: 36px;
-  }
-`;
-
-const Desc = styled.p`
-  font-size: 18px;
-  text-align: center;
-  max-width: 600px;
-  color: ${({ theme }) => theme.text_secondary};
-  line-height: 1.5;
-  margin-bottom: 40px;
-  animation: ${fadeIn} 0.5s ease-in-out 0.2s;
-  animation-fill-mode: both;
-
-  @media (max-width: 768px) {
-    font-size: 16px;
-    margin-bottom: 30px;
-  }
-`;
 
 const ContactForm = styled(motion.form)`
-  width: 95%;
-  max-width: 600px;
+  flex: 1;
+  min-width: 0;
+  max-width: 560px;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.card};
   padding: 32px;
   border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   gap: 20px;
-  transition: all 0.3s ease-in-out;
+  border: 1px solid ${({ theme }) => `${theme.primary}15`};
 
-  &:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
+  @media (max-width: 900px) {
+    width: 100%;
+    max-width: 560px;
   }
 
   @media (max-width: 768px) {
@@ -126,7 +90,7 @@ const InputLabel = styled.label`
   font-size: ${({ isFocused, hasValue }) => (isFocused || hasValue ? '14px' : '16px')};
   color: ${({ theme, isFocused }) => (isFocused ? theme.primary : theme.text_secondary)};
   pointer-events: none;
-  transition: all 0.3s ease-in-out;
+  transition: top 0.3s ease-in-out, font-size 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
   background-color: ${({ theme, isFocused, hasValue }) =>
       (isFocused || hasValue) ? theme.card : 'transparent'};
   padding: 0 4px;
@@ -141,7 +105,7 @@ const InputIcon = styled.div`
   top: 14px;
   right: 16px;
   color: ${({ theme, isFocused }) => (isFocused ? theme.primary : theme.text_secondary)};
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 `;
 
 const ContactInput = styled.input`
@@ -154,7 +118,7 @@ const ContactInput = styled.input`
   border-radius: 12px;
   padding: 12px 16px;
   padding-right: 40px;
-  transition: all 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
   
   &:focus {
     border: 1px solid ${({ theme }) => theme.primary};
@@ -179,7 +143,7 @@ const ContactInputMessage = styled.textarea`
   padding-right: 40px;
   resize: vertical;
   min-height: 120px;
-  transition: all 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
   
   &:focus {
     border: 1px solid ${({ theme }) => theme.primary};
@@ -197,10 +161,7 @@ const ContactButton = styled.button`
   width: 100%;
   text-decoration: none;
   text-align: center;
-  background: ${({ theme }) => theme.primary};
-  background: linear-gradient(225deg, 
-    ${({ theme }) => theme.primary} 0%, 
-    ${({ theme }) => `${theme.primary}CC`} 100%);
+  background: linear-gradient(135deg, #2F81F7 0%, #0EA5E9 100%);
   padding: 16px;
   margin-top: 10px;
   border-radius: 12px;
@@ -213,22 +174,103 @@ const ContactButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: all 0.3s ease-in-out;
-  
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
   &:hover {
     transform: scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(47, 129, 247, 0.4);
   }
-  
+
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
   }
-  
+
   @media (max-width: 768px) {
     padding: 12px;
     font-size: 14px;
   }
+`;
+
+const ContactBody = styled.div`
+  display: flex;
+  gap: 40px;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 960px;
+  padding: 0 20px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 0;
+  }
+`;
+
+const ContactInfo = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 280px;
+  flex-shrink: 0;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    max-width: 560px;
+  }
+`;
+
+const InfoCard = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: ${({ theme }) => theme.card};
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => `${theme.primary}20`};
+  text-decoration: none;
+  transition: transform 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => `${theme.primary}60`};
+    box-shadow: 0 8px 20px rgba(47, 129, 247, 0.12);
+  }
+`;
+
+const InfoIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: ${({ theme }) => `${theme.primary}18`};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.primary};
+  flex-shrink: 0;
+`;
+
+const InfoText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const InfoLabel = styled.span`
+  font-size: 12px;
+  color: ${({ theme }) => theme.text_secondary};
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+const InfoValue = styled.span`
+  font-size: 14px;
+  color: ${({ theme }) => theme.text_primary};
+  font-weight: 500;
 `;
 
 const formVariants = {
@@ -244,7 +286,7 @@ const formVariants = {
 };
 
 const Contact = () => {
-  // State for form inputs
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
@@ -327,10 +369,58 @@ const Contact = () => {
   return (
       <Container id="contact">
         <Wrapper>
-          <Title>Contact</Title>
-          <Desc>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+          <SectionHeadingWrapper>
+            <SectionLabel>Get In Touch</SectionLabel>
+            <SectionTitle>Contact</SectionTitle>
+          </SectionHeadingWrapper>
+          <SectionDesc>
             Feel free to reach out to me for any questions or opportunities! I'll get back to you as soon as possible.
-          </Desc>
+          </SectionDesc>
+          </motion.div>
+
+          <ContactBody>
+            <ContactInfo
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <InfoCard href={`mailto:jakub@example.com`} onClick={(e) => e.preventDefault()}>
+                <InfoIcon><FiMail size={20} /></InfoIcon>
+                <InfoText>
+                  <InfoLabel>Email</InfoLabel>
+                  <InfoValue>Send a message below</InfoValue>
+                </InfoText>
+              </InfoCard>
+              <InfoCard href={Bio.linkedin} target="_blank" rel="noopener noreferrer">
+                <InfoIcon><FaLinkedin size={20} /></InfoIcon>
+                <InfoText>
+                  <InfoLabel>LinkedIn</InfoLabel>
+                  <InfoValue>j-olszewski</InfoValue>
+                </InfoText>
+              </InfoCard>
+              <InfoCard href={Bio.github} target="_blank" rel="noopener noreferrer">
+                <InfoIcon><FaGithub size={20} /></InfoIcon>
+                <InfoText>
+                  <InfoLabel>GitHub</InfoLabel>
+                  <InfoValue>Olszewski-Jakub</InfoValue>
+                </InfoText>
+              </InfoCard>
+              <InfoCard as="div">
+                <InfoIcon><FiMapPin size={20} /></InfoIcon>
+                <InfoText>
+                  <InfoLabel>Location</InfoLabel>
+                  <InfoValue>Available for opportunities</InfoValue>
+                </InfoText>
+              </InfoCard>
+            </ContactInfo>
 
           <ContactForm
               ref={form}
@@ -341,7 +431,7 @@ const Contact = () => {
               viewport={{ once: true }}
           >
             <ContactTitle>
-              <FiMail size={24} style={{ color: "#854CE6" }} />
+              <FiMail size={24} style={{ color: theme.primary }} />
               Let's Connect
             </ContactTitle>
 
@@ -432,6 +522,7 @@ const Contact = () => {
               )}
             </ContactButton>
           </ContactForm>
+          </ContactBody>
 
           <Snackbar
               open={open}

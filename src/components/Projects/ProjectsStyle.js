@@ -1,168 +1,128 @@
-import styled, { keyframes } from 'styled-components';
-
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
+import styled from 'styled-components';
 
 export const Container = styled.div`
-    background: linear-gradient(
-            343.07deg,
-            ${({ theme }) => theme.gradients.projects.violetLight} 5.71%,
-            ${({ theme }) => theme.gradients.projects.violetZero} 64.83%
-    );
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
     z-index: 1;
     align-items: center;
-    padding: 80px 0;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 98%, 0 100%);
+    padding: 80px 0 100px;
+    background: ${({ theme }) => theme.bg};
 `;
 
 export const Wrapper = styled.div`
     position: relative;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     width: 100%;
-    max-width: 1350px;
-    padding: 10px 0px 100px 0;
-    gap: 12px;
-    animation: ${fadeIn} 0.5s ease-in-out;
-
-    @media (max-width: 960px) {
-        padding: 0px 0px 80px 0;
-    }
-`;
-
-export const Title = styled.h2`
-    font-size: 42px;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 8px;
-    color: ${({ theme }) => theme.text_primary};
+    max-width: 1200px;
+    padding: 0 24px;
+    gap: 0;
 
     @media (max-width: 768px) {
-        margin-top: 12px;
-        font-size: 36px;
-    }
-`;
-
-export const Desc = styled.p`
-    font-size: 18px;
-    text-align: center;
-    max-width: 800px;
-    color: ${({ theme }) => theme.text_secondary};
-    line-height: 1.5;
-    margin-bottom: 40px;
-
-    @media (max-width: 768px) {
-        margin: 12px 0 30px;
-        font-size: 16px;
         padding: 0 16px;
     }
 `;
 
-export const ToggleButtonGroup = styled.div`
+/* ── Filter chips ── */
+
+export const FilterRow = styled.div`
     display: flex;
-    border: 1.5px solid ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.primary};
-    font-size: 16px;
-    border-radius: 12px;
-    font-weight: 500;
-    margin: 22px 0px 40px 0px;
-    overflow: hidden;
-
-    @media (max-width: 768px) {
-        font-size: 12px;
-        margin-bottom: 30px;
-        border-radius: 10px;
-    }
-
-    &.show-more {
-        margin: 40px auto 0;
-        width: auto;
-        border-radius: 20px;
-    }
-`;
-
-export const ToggleButton = styled.div`
-    padding: 8px 18px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    
-    ${({ active, theme }) =>
-    active && `
-            background: ${theme.primary};
-            color: ${theme.white};
-        `
-}
-    
-    &:hover {
-        background: ${({ theme, active }) => active ? theme.primary : `${theme.primary}22`};
-        color: ${({ theme, active }) => active ? theme.white : theme.primary};
-    }
-    
-    @media (max-width: 768px) {
-        padding: 6px 12px;
-        border-radius: 4px;
-    }
-    
-    &.show-more {
-        background: transparent;
-        color: ${({ theme }) => theme.primary};
-        border: 1.5px solid ${({ theme }) => theme.primary};
-        border-radius: 20px;
-        padding: 10px 24px;
-        transition: all 0.3s ease-in-out;
-        margin: 0 auto;
-        
-        &:hover {
-            background: ${({ theme }) => theme.primary};
-            color: ${({ theme }) => theme.white};
-            transform: translateY(-3px);
-        }
-    }
-`;
-
-export const Divider = styled.div`
-    width: 1.5px;
-    background: ${({ theme }) => theme.primary};
-`;
-
-export const CardContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-    gap: 28px;
-    
-    @media (max-width: 768px) {
-        gap: 20px;
+    gap: 10px;
+    justify-content: center;
+    margin: 32px 0 40px;
+`;
+
+export const FilterChip = styled.button`
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    border: 1.5px solid ${({ active, theme }) => active ? theme.primary : `${theme.text_primary}25`};
+    background: ${({ active, theme }) => active ? theme.primary : 'transparent'};
+    color: ${({ active, theme }) => active ? '#fff' : theme.text_secondary};
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        border-color: ${({ theme }) => theme.primary};
+        color: ${({ active, theme }) => active ? '#fff' : theme.primary};
+        transform: translateY(-2px);
+        box-shadow: ${({ active, theme }) => active
+            ? '0 6px 18px rgba(47,129,247,0.35)'
+            : '0 4px 12px rgba(47,129,247,0.12)'};
+    }
+
+    @media (max-width: 480px) {
+        padding: 7px 14px;
+        font-size: 12px;
     }
 `;
 
-export const EmptyProjectsMessage = styled.div`
+export const FilterCount = styled.span`
+    background: ${({ active, theme }) => active ? 'rgba(255,255,255,0.25)' : `${theme.primary}18`};
+    color: ${({ active, theme }) => active ? '#fff' : theme.primary};
+    border-radius: 50px;
+    padding: 0 7px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.6;
+    min-width: 20px;
+    text-align: center;
+`;
+
+/* ── Cards grid ── */
+
+export const CardGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    width: 100%;
+
+    @media (max-width: 720px) {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+`;
+
+export const EmptyMessage = styled.div`
+    grid-column: 1 / -1;
     text-align: center;
     color: ${({ theme }) => theme.text_secondary};
-    font-size: 18px;
-    margin: 50px 0;
-    max-width: 500px;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px dashed ${({ theme }) => theme.text_secondary};
-    animation: ${fadeIn} 0.5s ease-in-out;
+    font-size: 16px;
+    padding: 60px 20px;
+    border: 1.5px dashed ${({ theme }) => `${theme.text_primary}20`};
+    border-radius: 16px;
+    width: 100%;
+`;
+
+/* ── Show more ── */
+
+export const ShowMoreButton = styled.button`
+    margin-top: 40px;
+    padding: 12px 36px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1.5px solid ${({ theme }) => theme.primary};
+    background: transparent;
+    color: ${({ theme }) => theme.primary};
+    transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        background: ${({ theme }) => theme.primary};
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(47,129,247,0.3);
+    }
 `;

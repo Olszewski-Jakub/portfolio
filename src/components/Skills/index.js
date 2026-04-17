@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { skills } from "../../data/constants";
-import { motion } from "framer-motion";
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+import { motion, AnimatePresence } from "framer-motion";
+import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from "../SectionTitle";
+import { FaCode, FaServer, FaMobileAlt, FaTools } from "react-icons/fa";
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +13,7 @@ const Container = styled.div`
   z-index: 1;
   align-items: center;
   padding: 80px 0;
+  background: ${({ theme }) => theme.bg};
 `;
 
 const Wrapper = styled.div`
@@ -34,210 +26,178 @@ const Wrapper = styled.div`
   max-width: 1100px;
   gap: 12px;
   padding: 0 20px;
-
-  @media (max-width: 960px) {
-    flex-direction: column;
-  }
 `;
 
-export const Title = styled.h2`
-  font-size: 42px;
-  text-align: center;
-  font-weight: 700;
-  margin-top: 20px;
-  color: ${({ theme }) => theme.text_primary};
-  animation: ${fadeIn} 0.5s ease-in-out;
-
-  @media (max-width: 768px) {
-    margin-top: 12px;
-    font-size: 36px;
-  }
-`;
-
-export const Desc = styled.p`
-  font-size: 18px;
-  text-align: center;
-  max-width: 600px;
-  color: ${({ theme }) => theme.text_secondary};
-  line-height: 1.5;
-  margin-bottom: 40px;
-  animation: ${fadeIn} 0.5s ease-in-out 0.2s;
-  animation-fill-mode: both;
-
-  @media (max-width: 768px) {
-    font-size: 16px;
-    margin-bottom: 30px;
-  }
-`;
-
-const SkillsContainer = styled.div`
-  width: 100%;
+const TabsRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
+  gap: 0;
+  border: 1.5px solid ${({ theme }) => `${theme.primary}40`};
+  border-radius: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: 36px;
+  flex-shrink: 0;
+  max-width: 100%;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const Skill = styled(motion.div)`
-  width: 100%;
-  max-width: 500px;
-  background: ${({ theme }) => theme.card};
-  border: 1px solid ${({ theme }) => `${theme.primary}30`};
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
-  padding: 24px 36px;
-  transition: all 0.3s ease-in-out;
+const Tab = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  border: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: ${({ active, theme }) => active ? theme.primary : 'transparent'};
+  color: ${({ active, theme }) => active ? theme.white : theme.text_secondary};
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.25s ease-in-out, color 0.25s ease-in-out;
+  border-right: 1px solid ${({ theme }) => `${theme.primary}30`};
+
+  &:last-child {
+    border-right: none;
+  }
 
   &:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-    border: 1px solid ${({ theme }) => theme.primary};
+    background: ${({ active, theme }) => active ? theme.primary : `${theme.primary}18`};
+    color: ${({ active, theme }) => active ? theme.white : theme.primary};
   }
 
-  @media (max-width: 768px) {
-    max-width: 400px;
-    padding: 18px 24px;
-  }
-
-  @media (max-width: 500px) {
-    max-width: 330px;
-    padding: 16px 20px;
+  @media (max-width: 600px) {
+    padding: 10px 16px;
+    font-size: 13px;
+    gap: 6px;
   }
 `;
 
-const SkillTitle = styled.h3`
-  font-size: 28px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.text_primary};
-  margin-bottom: 24px;
-  text-align: center;
-  position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: ${({ theme }) => theme.primary};
-    border-radius: 10px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 24px;
-  }
-`;
-
-const SkillList = styled.div`
+const SkillsGrid = styled(motion.div)`
+  width: 100%;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 20px;
+  justify-content: center;
 `;
 
-const SkillItem = styled.div`
-  font-size: 16px;
-  font-weight: 400;
+const SkillItem = styled(motion.div)`
+  font-size: 15px;
+  font-weight: 500;
   color: ${({ theme }) => theme.text_primary + 'cc'};
-  border: 1px solid ${({ theme }) => theme.text_primary + '60'};
+  background: ${({ theme }) => theme.card};
+  border: 1px solid ${({ theme }) => theme.text_primary + '25'};
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 12px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease-in-out;
+  gap: 10px;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, border-color 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  cursor: default;
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.primary};
+    border-color: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.primary};
+    background: ${({ theme }) => `${theme.primary}10`};
     transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(47, 129, 247, 0.15);
   }
 
   @media (max-width: 768px) {
-    font-size: 14px;
+    font-size: 13px;
     padding: 10px 14px;
-  }
-
-  @media (max-width: 500px) {
-    font-size: 14px;
-    padding: 8px 12px;
   }
 `;
 
 const SkillImage = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
-  
-  @media (max-width: 768px) {
-    width: 20px;
-    height: 20px;
-  }
 `;
 
-// Animation variants for staggered animation
-const containerVariants = {
+const CATEGORY_ICONS = {
+  "Frontend": <FaCode size={16} />,
+  "Backend": <FaServer size={16} />,
+  "Android": <FaMobileAlt size={16} />,
+  "Others": <FaTools size={16} />,
+};
+
+const gridVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
+    transition: { staggerChildren: 0.05 }
+  },
+  exit: { opacity: 0, transition: { duration: 0.15 } }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5
-    }
-  }
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.2 } }
 };
 
 const Skills = () => {
+  const [activeTab, setActiveTab] = useState(0);
+  const currentSkill = skills[activeTab];
+
   return (
-      <Container id="skills">
-        <Wrapper>
-          <Title>Skills</Title>
-          <Desc>
+    <Container id="skills">
+      <Wrapper>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
+        >
+          <SectionHeadingWrapper>
+            <SectionLabel>What I Know</SectionLabel>
+            <SectionTitle>Skills</SectionTitle>
+          </SectionHeadingWrapper>
+          <SectionDesc>
             Here are the technologies and tools I've been working with over the past few years.
             I'm always excited to learn and adapt to new technologies.
-          </Desc>
+          </SectionDesc>
+        </motion.div>
 
-          <SkillsContainer
-              as={motion.div}
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+        <TabsRow>
+          {skills.map((skill, index) => (
+            <Tab
+              key={index}
+              active={activeTab === index}
+              onClick={() => setActiveTab(index)}
+            >
+              {CATEGORY_ICONS[skill.title] || <FaCode size={16} />}
+              {skill.title}
+            </Tab>
+          ))}
+        </TabsRow>
+
+        <AnimatePresence mode="wait">
+          <SkillsGrid
+            key={activeTab}
+            variants={gridVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
           >
-            {skills.map((skill, index) => (
-                <Skill
-                    key={index}
-                    variants={itemVariants}
-                >
-                  <SkillTitle>{skill.title}</SkillTitle>
-                  <SkillList>
-                    {skill.skills.map((item, itemIndex) => (
-                        <SkillItem key={itemIndex}>
-                          <SkillImage src={item.image} alt={item.name} />
-                          {item.name}
-                        </SkillItem>
-                    ))}
-                  </SkillList>
-                </Skill>
+            {currentSkill?.skills.map((item, idx) => (
+              <SkillItem key={idx} variants={itemVariants}>
+                <SkillImage src={item.image} alt={item.name} />
+                {item.name}
+              </SkillItem>
             ))}
-          </SkillsContainer>
-        </Wrapper>
-      </Container>
+          </SkillsGrid>
+        </AnimatePresence>
+      </Wrapper>
+    </Container>
   );
 };
 

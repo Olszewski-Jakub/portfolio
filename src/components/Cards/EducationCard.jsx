@@ -1,20 +1,8 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { motion } from 'framer-motion';
+import styled, { useTheme } from 'styled-components';
 import { FaCalendarAlt, FaGraduationCap, FaAward, FaMapMarkerAlt, FaLink } from 'react-icons/fa';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const Card = styled(motion.div)`
+const Card = styled.div`
   width: 100%;
   border-radius: 16px;
   padding: 20px 30px;
@@ -24,18 +12,17 @@ const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   background-color: ${({ theme }) => theme.card};
   border: 1px solid ${({ theme }) => `${theme.primary}30`};
-  animation: ${fadeIn} 0.5s ease-in-out;
-  
+
   &:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
-    border: 1px solid ${({ theme }) => theme.primary};
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => theme.primary};
   }
-  
+
   @media (max-width: 768px) {
     padding: 16px;
     gap: 8px;
@@ -194,7 +181,7 @@ const WebsiteLink = styled.a`
 `;
 
 const EducationCard = ({ education }) => {
-    // Extract city from the school name if it contains a comma
+    const theme = useTheme();
     const schoolParts = education.school.split(',');
     const schoolName = schoolParts[0];
     const schoolLocation = schoolParts.length > 1 ? schoolParts.slice(1).join(',').trim() : '';
@@ -231,7 +218,7 @@ const EducationCard = ({ education }) => {
 
             {education.grade && (
                 <GradeContainer>
-                    <FaAward size={16} color="#854CE6" />
+                    <FaAward size={16} color={theme.primary} />
                     <GradeLabel>Achievement:</GradeLabel>
                     <GradeValue>{education.grade}</GradeValue>
                 </GradeContainer>

@@ -1,20 +1,8 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { motion } from 'framer-motion';
+import styled from 'styled-components';
 import { FaCalendarAlt, FaMapMarkerAlt, FaExternalLinkAlt, FaGooglePlay, FaAppStore, FaGithub, FaGlobe } from 'react-icons/fa';
 
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-
-const Card = styled(motion.div)`
+const Card = styled.div`
     width: 100%;
     border-radius: 16px;
     padding: 20px 30px;
@@ -24,16 +12,15 @@ const Card = styled(motion.div)`
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     background-color: ${({ theme }) => theme.card};
     border: 1px solid ${({ theme }) => `${theme.primary}30`};
-    animation: ${fadeIn} 0.5s ease-in-out;
 
     &:hover {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        transform: translateY(-5px);
-        border: 1px solid ${({ theme }) => theme.primary};
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+        transform: translateY(-4px);
+        border-color: ${({ theme }) => theme.primary};
     }
 
     @media (max-width: 768px) {
@@ -118,7 +105,7 @@ const CompanyLink = styled.a`
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.3s ease;
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, transform 0.25s ease-in-out;
 
     &:hover {
         text-decoration: underline;
@@ -185,7 +172,7 @@ const Skill = styled.div`
     background-color: ${({ theme }) => `${theme.primary}20`};
     padding: 6px 14px;
     border-radius: 20px;
-    transition: all 0.3s ease-in-out;
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, transform 0.25s ease-in-out;
 
     &:hover {
         background-color: ${({ theme }) => `${theme.primary}40`};

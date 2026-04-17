@@ -1,26 +1,43 @@
 import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
 `;
 
-const float = keyframes`
+const auroraShift = keyframes`
+    0%   { transform: translate(0%,   0%)   scale(1);    }
+    25%  { transform: translate(-4%,  5%)   scale(1.06); }
+    50%  { transform: translate(5%,  -3%)   scale(0.97); }
+    75%  { transform: translate(-2%, -5%)   scale(1.04); }
+    100% { transform: translate(0%,   0%)   scale(1);    }
+`;
+
+// Combined float + glow in one keyframe — eliminates the jitter from
+// two unsynchronised animations running on the same element.
+const floatGlow = keyframes`
     0% {
         transform: translateY(0px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 0 0 rgba(47,129,247,0.35);
+    }
+    30% {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 0 8px rgba(47,129,247,0);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-12px);
+        box-shadow: 0 20px 30px rgba(0,0,0,0.2), 0 0 0 0 rgba(47,129,247,0);
     }
     100% {
         transform: translateY(0px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 0 0 rgba(47,129,247,0);
     }
+`;
+
+
+const pulseRing = keyframes`
+    0%   { transform: scale(1);   opacity: 0.7; }
+    70%  { transform: scale(2.2); opacity: 0;   }
+    100% { transform: scale(2.2); opacity: 0;   }
 `;
 
 const bounce = keyframes`
@@ -37,7 +54,21 @@ const bounce = keyframes`
 
 export const HeroSectionWrapper = styled.div`
     position: relative;
-    padding-top: 80px; // Account for the fixed navbar
+    padding-top: 80px;
+    overflow: hidden;
+`;
+
+export const AuroraBg = styled.div`
+    position: absolute;
+    inset: -40%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 80% 60% at 15% 45%, rgba(47, 129, 247, 0.26) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 80% at 85% 25%, rgba(14, 165, 233, 0.2)  0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 55% 80%, rgba(99, 102, 241, 0.14) 0%, transparent 60%);
+    animation: ${auroraShift} 18s ease-in-out infinite alternate;
+    will-change: transform;
 `;
 
 export const HeroContainer = styled.div`
@@ -46,35 +77,30 @@ export const HeroContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     position: relative;
-    padding: 120px 30px 80px;
+    padding: 120px 30px 100px;
     z-index: 1;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 70% 95%, 0 100%);
-    transition: all 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
 
     @media (max-width: 960px) {
-        padding: 66px 16px;
+        padding: 66px 16px 80px;
     }
     @media (max-width: 640px) {
-        padding: 32px 16px;
+        padding: 32px 16px 60px;
     }
 `;
 
 export const HeroBg = styled.div`
     position: absolute;
     display: flex;
-    justify-content: end;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    justify-content: flex-end;
+    top: 50%;
+    left: 50%;
     width: 100%;
     height: 100%;
     max-width: 1360px;
     overflow: hidden;
     padding: 0 30px;
-    top: 50%;
-    left: 50%;
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 
@@ -102,6 +128,7 @@ export const HeroLeftContainer = styled.div`
     width: 50%;
     order: 1;
     animation: ${fadeIn} 1s ease-in-out;
+    animation-fill-mode: both;
 
     @media (max-width: 960px) {
         width: 100%;
@@ -144,14 +171,13 @@ export const Img = styled.img`
     max-height: 500px;
     border-radius: 50%;
     border: 4px solid ${({ theme }) => theme.primary};
-    animation: ${float} 6s ease-in-out infinite;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.5s ease-in-out;
+    animation: ${floatGlow} 6s ease-in-out infinite;
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out, border-color 0.3s;
 
     &:hover {
-        transform: scale(1.03);
-        border-color: ${({ theme }) => theme.primary};
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        animation-play-state: paused;
+        transform: scale(1.04);
+        box-shadow: 0 20px 40px rgba(47, 129, 247, 0.4);
     }
 
     @media (max-width: 768px) {
@@ -204,12 +230,15 @@ export const TextLoop = styled.div`
 `;
 
 export const Span = styled.span`
-  color: ${({ theme }) => theme.primary};
+  background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   cursor: pointer;
-  transition: color 0.3s ease-in-out;
-  
+  transition: opacity 0.3s ease-in-out;
+
   &:hover {
-    color: ${({ theme }) => `${theme.primary}CC`}; // Adding transparency for hover effect
+    opacity: 0.85;
   }
 `;
 
@@ -231,37 +260,71 @@ export const SubTitle = styled.p`
   }
 `;
 
+export const ButtonRow = styled.div`
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media (max-width: 960px) {
+        justify-content: center;
+    }
+`;
+
 export const ResumeButton = styled.a`
     appearance: button;
     text-decoration: none;
-    width: 95%;
-    max-width: 250px;
-    text-align: center;
-    padding: 16px 0;
+    padding: 14px 32px;
     color: ${({ theme }) => theme.white};
     border-radius: 50px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     transition: all 0.3s ease-in-out !important;
-    background: ${({ theme }) => theme.primary};
-    background: linear-gradient(225deg, 
-      ${({ theme }) => theme.primary} 0%, 
-      ${({ theme }) => `${theme.primary}CC`} 100%);
-    box-shadow: 0 6px 20px rgba(133, 76, 230, 0.25);
-    
+    background: linear-gradient(135deg, #2F81F7 0%, #0EA5E9 100%);
+    box-shadow: 0 6px 20px rgba(47, 129, 247, 0.35);
+
     &:hover {
         transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 10px 25px rgba(133, 76, 230, 0.4);
+        box-shadow: 0 12px 28px rgba(47, 129, 247, 0.5);
     }
-    
+
     &:active {
         transform: translateY(1px) scale(0.98);
     }
-    
+
     @media (max-width: 640px) {
-        padding: 12px 0;
-        font-size: 16px;
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+`;
+
+export const ContactButton = styled.a`
+    appearance: button;
+    text-decoration: none;
+    padding: 14px 32px;
+    color: ${({ theme }) => theme.primary};
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out !important;
+    background: transparent;
+    border: 2px solid ${({ theme }) => theme.primary};
+
+    &:hover {
+        background: ${({ theme }) => `${theme.primary}15`};
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(47, 129, 247, 0.2);
+    }
+
+    &:active {
+        transform: translateY(1px) scale(0.98);
+    }
+
+    @media (max-width: 640px) {
+        padding: 12px 24px;
+        font-size: 15px;
     }
 `;
 
@@ -300,8 +363,109 @@ export const ScrollDownIcon = styled.div`
   color: ${({ theme }) => theme.text_secondary};
   cursor: pointer;
   transition: color 0.3s ease-in-out;
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
+  }
+`;
+
+/* ── Hero stats ── */
+
+export const StatsRow = styled.div`
+  display: flex;
+  gap: 36px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+
+  @media (max-width: 960px) {
+    justify-content: center;
+    gap: 28px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 20px;
+  }
+`;
+
+export const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -18px;
+    top: 8px;
+    height: 32px;
+    width: 1px;
+    background: ${({ theme }) => `${theme.text_primary}20`};
+
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 960px) {
+    align-items: center;
+  }
+`;
+
+export const StatNumber = styled.div`
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
+
+export const StatLabel = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.text_secondary};
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+`;
+
+export const AvailableBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  font-size: 13px;
+  font-weight: 600;
+  color: #22c55e;
+  letter-spacing: 0.3px;
+  margin-bottom: 20px;
+  width: fit-content;
+
+  @media (max-width: 960px) {
+    align-self: center;
+  }
+`;
+
+export const PulseDot = styled.span`
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: ${pulseRing} 1.8s ease-out infinite;
   }
 `;

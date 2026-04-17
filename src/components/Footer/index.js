@@ -1,22 +1,31 @@
-// Update your Footer component to include the Certificates link
-
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import { FiArrowUp } from "react-icons/fi";
 import { Bio } from "../../data/constants";
+
+// WaveWrapper background matches the Contact section (card_light),
+// so the wave looks like a bite taken out of that section.
+// The SVG fill must match the footer background (bg).
+const WaveWrapper = styled.div`
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  background: ${({ theme }) => theme.card_light};
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 60px;
+  }
+`;
 
 const FooterContainer = styled.div`
   width: 100%;
   padding: 2rem 0;
   display: flex;
   justify-content: center;
-  background: ${({ theme }) => theme.card_light};
-  background: linear-gradient(
-    to bottom,
-    ${({ theme }) => theme.bg} 0%,
-    ${({ theme }) => theme.card_light} 100%
-  );
+  background: ${({ theme }) => theme.bg};
   position: relative;
   z-index: 1;
 `;
@@ -36,8 +45,8 @@ const Logo = styled.h1`
   font-weight: 700;
   font-size: 28px;
   color: ${({ theme }) => theme.primary};
-  transition: all 0.3s ease-in-out;
-  
+  transition: transform 0.3s ease-in-out;
+
   &:hover {
     transform: scale(1.05);
   }
@@ -65,7 +74,7 @@ const NavLink = styled.a`
   color: ${({ theme }) => theme.text_primary};
   text-decoration: none;
   font-size: 1.2rem;
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
   position: relative;
   
   &:after {
@@ -104,12 +113,12 @@ const SocialMediaIcon = styled.a`
   justify-content: center;
   color: ${({ theme }) => theme.text_primary};
   font-size: 1.5rem;
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  background: ${({ theme }) => `${theme.card_light}90`};
-  
+  background: ${({ theme }) => `${theme.primary}15`};
+
   &:hover {
     color: ${({ theme }) => theme.primary};
     transform: translateY(-3px);
@@ -122,6 +131,27 @@ const Copyright = styled.p`
   font-size: 0.9rem;
   color: ${({ theme }) => theme.text_secondary};
   text-align: center;
+`;
+
+const EasterEggHint = styled.p`
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: ${({ theme }) => theme.text_secondary};
+  opacity: 0.18;
+  margin-top: 10px;
+  letter-spacing: 1px;
+  user-select: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    opacity: 0.28;
+    font-size: 12px;
+  }
 `;
 
 const ScrollToTop = styled.div`
@@ -139,13 +169,13 @@ const ScrollToTop = styled.div`
   font-size: 24px;
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease-in-out;
-  
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   }
-  
+
   @media (max-width: 768px) {
     right: 20px;
     width: 45px;
@@ -220,15 +250,16 @@ const FooterLink = styled.a`
   color: ${({ theme }) => theme.text_secondary};
   text-decoration: none;
   font-size: 14px;
-  transition: all 0.3s ease-in-out;
-  
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
   &:hover {
     color: ${({ theme }) => theme.primary};
     transform: translateX(3px);
   }
 `;
 
-const Footer = () => {
+const Footer = ({ onEasterEgg }) => {
+  const theme = useTheme();
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -237,6 +268,15 @@ const Footer = () => {
   };
 
   return (
+      <>
+      <WaveWrapper>
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <path
+            d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z"
+            fill={theme.bg}
+          />
+        </svg>
+      </WaveWrapper>
       <FooterContainer>
         <FooterWrapper>
           <ScrollToTop onClick={scrollToTop}>
@@ -304,8 +344,10 @@ const Footer = () => {
           <Copyright>
             &copy; {new Date().getFullYear()} Jakub Olszewski. All rights reserved.
           </Copyright>
+          <EasterEggHint onClick={onEasterEgg}>// ↑ ↑ ↓ ↓ ← → ← → B A</EasterEggHint>
         </FooterWrapper>
       </FooterContainer>
+      </>
   );
 };
 

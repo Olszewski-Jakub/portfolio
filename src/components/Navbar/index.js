@@ -1,5 +1,3 @@
-// Update your Navbar component to include the Certificates link
-
 import React, { useState, useEffect } from 'react';
 import {
   Nav,
@@ -13,9 +11,10 @@ import {
   MobileIcon,
   MobileMenu,
   MobileLink,
-  ThemeToggleButton
+  ThemeToggleButton,
+  ProgressBar,
+  InitialsBadge
 } from './NavbarStyledComponent';
-import { DiCssdeck } from 'react-icons/di';
 import { FaBars, FaTimes, FaMoon, FaSun, FaGithub } from 'react-icons/fa';
 import { Bio } from '../../data/constants';
 import { useTheme } from 'styled-components';
@@ -23,16 +22,18 @@ import { useTheme } from 'styled-components';
 const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const theme = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
-      if (offset > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(offset > 50);
+
+      // Calculate scroll progress
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = docHeight > 0 ? (offset / docHeight) * 100 : 0;
+      setScrollProgress(progress);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -60,7 +61,9 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
   ];
 
   return (
-      <Nav scrolled={scrolled}>
+      <>
+        <ProgressBar progress={scrollProgress} />
+        <Nav scrolled={scrolled}>
         <NavbarContainer>
           <NavLogo to="/">
             <a style={{
@@ -68,9 +71,11 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               alignItems: "center",
               color: theme.text_primary,
               cursor: 'pointer',
-              textDecoration: 'none'
+              textDecoration: 'none',
+              gap: '10px'
             }}>
-              <DiCssdeck size="3rem" /> <Span>Portfolio</Span>
+              <InitialsBadge>J.O.</InitialsBadge>
+              <Span>Portfolio</Span>
             </a>
           </NavLogo>
 
@@ -96,41 +101,41 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             </GitHubButton>
           </ButtonContainer>
 
-          {isOpen && (
-              <MobileMenu isOpen={isOpen}>
-                {navItems.map((item) => (
-                    <MobileLink
-                        key={item.name}
-                        href={item.href}
-                        onClick={closeMenu}
-                    >
-                      {item.name}
-                    </MobileLink>
-                ))}
-                <GitHubButton
-                    style={{
-                      padding: '10px 16px',
-                      background: `${theme.primary}`,
-                      color: 'white',
-                      width: 'max-content',
-                      margin: '16px auto 0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                    href={Bio.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
+          {/* Always mounted so the CSS transform animation plays on open/close */}
+          <MobileMenu isOpen={isOpen}>
+            {navItems.map((item) => (
+                <MobileLink
+                    key={item.name}
+                    href={item.href}
                     onClick={closeMenu}
                 >
-                  <FaGithub />
-                  GitHub Profile
-                </GitHubButton>
-              </MobileMenu>
-          )}
+                  {item.name}
+                </MobileLink>
+            ))}
+            <GitHubButton
+                style={{
+                  padding: '10px 16px',
+                  background: `${theme.primary}`,
+                  color: 'white',
+                  width: 'max-content',
+                  margin: '16px auto 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+                href={Bio.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+            >
+              <FaGithub />
+              GitHub Profile
+            </GitHubButton>
+          </MobileMenu>
         </NavbarContainer>
       </Nav>
+      </>
   );
 };
 

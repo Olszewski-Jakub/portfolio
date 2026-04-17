@@ -17,6 +17,34 @@ export const Nav = styled.div`
     box-shadow: ${({ scrolled }) => scrolled ? '0 4px 15px rgba(0, 0, 0, 0.1)' : 'none'};
 `;
 
+export const ProgressBar = styled.div`
+    position: fixed;
+    top: 80px;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2F81F7, #0EA5E9);
+    width: ${({ progress }) => progress}%;
+    z-index: 1001;
+    transition: width 0.1s linear;
+    border-radius: 0 2px 2px 0;
+    pointer-events: none;
+`;
+
+export const InitialsBadge = styled.div`
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2F81F7, #0EA5E9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+`;
+
 export const NavbarContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -209,12 +237,15 @@ export const MobileMenu = styled.div`
     padding: 32px 40px 64px;
     background: ${({ theme }) => `${theme.card_light}f5`};
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease-in-out;
-    transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-100vh)')};
     border-radius: 0 0 20px 20px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    opacity: ${({ isOpen }) => (isOpen ? '100%' : '0')};
-    z-index: ${({ isOpen }) => (isOpen ? '1000' : '-1000')};
     max-height: 85vh;
     overflow-y: auto;
+    /* Animate via opacity + transform together so transition plays on both open and close */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+    transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-20px)')};
+    /* Keep in DOM but out of pointer interaction when closed */
+    pointer-events: ${({ isOpen }) => (isOpen ? 'all' : 'none')};
+    z-index: 1000;
 `;

@@ -2,113 +2,139 @@ import React, { useState, useEffect } from "react";
 import {
   Container,
   Wrapper,
-  Title,
-  Desc,
-  CardContainer,
-  ToggleButtonGroup,
-  ToggleButton,
-  Divider,
-  EmptyProjectsMessage
+  FilterRow,
+  FilterChip,
+  FilterCount,
+  CardGrid,
+  EmptyMessage,
+  ShowMoreButton,
 } from "./ProjectsStyle";
 import ProjectCard from "../Cards/ProjectCards";
 import useContent from "../../hooks/useContent";
 import { motion, AnimatePresence } from "framer-motion";
+import { SectionLabel, SectionTitle, SectionDesc, SectionHeadingWrapper } from "../SectionTitle";
+
+const LABEL_MAP = {
+  all: "All",
+  "web app": "Web Apps",
+  "android app": "Android",
+  api: "APIs",
+};
+
+const humanLabel = (cat) => LABEL_MAP[cat] || (cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : cat);
 
 const Projects = ({ openModal, setOpenModal }) => {
-  const [toggle, setToggle] = useState("all");
-  const { data: projectsData, loading } = useContent('projects');
-  const [filteredProjects, setFilteredProjects] = useState([]);
-  const [visibleProjects, setVisibleProjects] = useState([]);
+  const [active, setActive] = useState("all");
+  const { data: projectsData, loading } = useContent("projects");
+  const [filtered, setFiltered] = useState([]);
+  const [visible, setVisible] = useState([]);
   const [showMore, setShowMore] = useState(false);
-  const projectsPerPage = 6;
+  const PER_PAGE = 6;
 
-  // Filter projects based on selected category
+  // Derive categories + per-category counts
+  const allProjects = projectsData || [];
+  const categories = [
+    "all",
+    ...new Set(
+      allProjects
+        .flatMap((p) => (Array.isArray(p.category) ? p.category : [p.category]))
+        .filter(Boolean)
+    ),
+  ];
+
+  const countFor = (cat) =>
+    cat === "all"
+      ? allProjects.length
+      : allProjects.filter((p) =>
+          (Array.isArray(p.category) ? p.category : [p.category]).includes(cat)
+        ).length;
+
   useEffect(() => {
-    const src = projectsData || [];
-    if (toggle === "all") {
-      setFilteredProjects(src);
+    if (active === "all") {
+      setFiltered(allProjects);
     } else {
-      setFilteredProjects(src.filter(item => (Array.isArray(item.category) ? item.category : [item.category]).includes(toggle)));
+      setFiltered(
+        allProjects.filter((p) =>
+          (Array.isArray(p.category) ? p.category : [p.category]).includes(active)
+        )
+      );
     }
-  }, [toggle, projectsData]);
+    setShowMore(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, projectsData]);
 
-  // Handle pagination
   useEffect(() => {
-    if (showMore) {
-      setVisibleProjects(filteredProjects);
-    } else {
-      setVisibleProjects(filteredProjects.slice(0, projectsPerPage));
-    }
-  }, [filteredProjects, showMore]);
-
-  // Get unique categories for filter buttons
-  const categories = ["all", ...new Set((projectsData || []).flatMap(project => Array.isArray(project.category) ? project.category : [project.category]).filter(Boolean))];
+    setVisible(showMore ? filtered : filtered.slice(0, PER_PAGE));
+  }, [filtered, showMore]);
 
   return (
-      <Container id="projects">
-        <Wrapper>
-          <Title>Projects</Title>
-          <Desc>
-            I've worked on a variety of projects ranging from web applications to mobile apps and APIs.
-            Here's a showcase of my recent work and ongoing projects.
-          </Desc>
+    <Container id="projects">
+      <Wrapper>
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}
+        >
+          <SectionHeadingWrapper>
+            <SectionLabel>What I've Built</SectionLabel>
+            <SectionTitle>Projects</SectionTitle>
+          </SectionHeadingWrapper>
+          <SectionDesc>
+            A selection of projects I've built — from mobile apps to web platforms and APIs.
+          </SectionDesc>
+        </motion.div>
 
-          <ToggleButtonGroup>
-            {categories.map((category) => (
-                <React.Fragment key={category}>
-                  {category !== categories[0] && <Divider />}
-                  <ToggleButton
-                      active={toggle === category}
-                      onClick={() => setToggle(category)}
-                  >
-                    {category === "all" ? "ALL" :
-                        category === "web app" ? "WEB APPS" :
-                            category === "android app" ? "ANDROID APPS" :
-                                category === "api" ? "APIs" :
-                                    category.toUpperCase()}
-                  </ToggleButton>
-                </React.Fragment>
-            ))}
-          </ToggleButtonGroup>
+        {/* Filter chips */}
+        <FilterRow>
+          {categories.map((cat) => (
+            <FilterChip
+              key={cat}
+              active={active === cat}
+              onClick={() => setActive(cat)}
+            >
+              {humanLabel(cat)}
+              <FilterCount active={active === cat}>{countFor(cat)}</FilterCount>
+            </FilterChip>
+          ))}
+        </FilterRow>
 
-          <CardContainer>
-            <AnimatePresence>
-              {loading ? null : visibleProjects.length > 0 ? (
-                  visibleProjects.map((project, index) => (
-                      <motion.div
-                          key={project.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 20 }}
-                          transition={{ duration: 0.3, delay: index * 0.1 }}
-                      >
-                        <ProjectCard
-                            project={project}
-                            openModal={openModal}
-                            setOpenModal={setOpenModal}
-                            index={index}
-                        />
-                      </motion.div>
-                  ))
-              ) : (
-                  <EmptyProjectsMessage>
-                    No projects found in this category. Check back soon!
-                  </EmptyProjectsMessage>
-              )}
-            </AnimatePresence>
-          </CardContainer>
+        {/* Cards */}
+        <CardGrid>
+          <AnimatePresence mode="popLayout">
+            {loading ? null : visible.length > 0 ? (
+              visible.map((project, index) => (
+                <motion.div
+                  key={project.id ?? project.title}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.94 }}
+                  transition={{ duration: 0.25, delay: index * 0.05 }}
+                >
+                  <ProjectCard
+                    project={project}
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                  />
+                </motion.div>
+              ))
+            ) : (
+              <EmptyMessage>No projects in this category yet — check back soon!</EmptyMessage>
+            )}
+          </AnimatePresence>
+        </CardGrid>
 
-          {filteredProjects.length > projectsPerPage && (
-              <ToggleButton
-                  className="show-more"
-                  onClick={() => setShowMore(!showMore)}
-                  style={{ marginTop: '40px' }}
-              >
-                {showMore ? "Show Less" : "Show More"}
-              </ToggleButton>
-          )}
-        </Wrapper>
-      </Container>
+        {/* Show more */}
+        {filtered.length > PER_PAGE && (
+          <ShowMoreButton onClick={() => setShowMore((s) => !s)}>
+            {showMore ? "Show less" : `Show ${filtered.length - PER_PAGE} more`}
+          </ShowMoreButton>
+        )}
+      </Wrapper>
+    </Container>
   );
 };
 

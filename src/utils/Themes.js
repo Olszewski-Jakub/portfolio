@@ -40,6 +40,7 @@ export const lightTheme = {
     text_primary: "#0F172A",       // slate-900
     text_secondary: "#475569",     // slate-600
     card: "#FFFFFF",
+    card_light: "#EFF2F7",         // slightly darker than bgLight for contrast
     button: "#2563EB",
     white: "#FFFFFF",
     black: "#000000",
