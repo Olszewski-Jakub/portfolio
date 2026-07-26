@@ -575,12 +575,14 @@ const Overlay = styled.div`
   z-index: 2000;
   padding: 16px;
   animation: ${fadeIn} 0.15s ease;
+  overflow: hidden;
+  overscroll-behavior: none;
 `;
 
 const Modal = styled.div`
   width: min(720px, 100%);
   max-height: min(90vh, 880px);
-  overflow: auto;
+  overflow: hidden;
   background: ${({ theme }) => theme.card};
   color: ${({ theme }) => theme.text_primary};
   border: 1px solid ${({ theme }) => `${theme.text_primary}16`};
@@ -588,20 +590,19 @@ const Modal = styled.div`
   box-shadow: 0 28px 64px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  overscroll-behavior: contain;
 `;
 
 const ModalHeader = styled.header`
-  position: sticky;
-  top: 0;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 16px 20px;
-  background: ${({ theme }) => `${theme.card}f2`};
-  backdrop-filter: blur(10px);
+  background: ${({ theme }) => theme.card};
   border-bottom: 1px solid ${({ theme }) => `${theme.text_primary}12`};
-  z-index: 1;
 `;
 
 const ModalTitle = styled.h3`
@@ -632,6 +633,11 @@ const CloseX = styled.button`
 
 const ModalBody = styled.div`
   padding: 20px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const Fields = styled.div`
@@ -759,15 +765,13 @@ const PreviewImg = styled.img`
 `;
 
 const ModalActions = styled.div`
+  flex-shrink: 0;
   display: flex;
   gap: 10px;
   justify-content: flex-end;
   padding: 14px 20px 18px;
   border-top: 1px solid ${({ theme }) => `${theme.text_primary}12`};
-  position: sticky;
-  bottom: 0;
-  background: ${({ theme }) => `${theme.card}f2`};
-  backdrop-filter: blur(10px);
+  background: ${({ theme }) => theme.card};
 `;
 
 const Btn = styled.button`
@@ -943,10 +947,14 @@ export default function AdminPanel({ active: externalActive, onActiveChange, hid
         setDraft({});
       }
     };
+    const prevBody = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
     window.addEventListener('keydown', onKey);
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevHtml;
       window.removeEventListener('keydown', onKey);
     };
   }, [showCreate, showEdit]);
