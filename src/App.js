@@ -4,7 +4,6 @@ import { darkTheme, lightTheme, portfolioDarkTheme, portfolioLightTheme } from "
 import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import Portfolio from "./components/Portfolio";
-import ProjectDetails from "./components/ProjectDetails";
 import GlobalStyles from "./styles/GlobalStyles";
 import Terminal from "./components/Terminal";
 import { getAnalytics, isSupported, logEvent } from "firebase/analytics";
@@ -15,7 +14,6 @@ const AdminApp = lazy(() => import("./admin/AdminApp"));
 function App() {
   // State management
   const [darkMode, setDarkMode] = useState(true);
-  const [openModal, setOpenModal] = useState({ state: false, project: null });
   const [showTerminal, setShowTerminal] = useState(false);
 
   /* Konami code: ↑↑↓↓←→←→BA */
@@ -90,10 +88,8 @@ function App() {
             <Portfolio
               darkMode={darkMode}
               toggleDarkMode={toggleDarkMode}
-              onProject={(project) => setOpenModal({ state: true, project })}
               onEasterEgg={() => setShowTerminal(true)}
             />
-            {openModal.state && <ProjectDetails openModal={openModal} setOpenModal={setOpenModal} />}
           </>
         )}
       </Router>

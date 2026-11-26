@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import ProjectDetails, { projectHref } from '../ProjectDetails';
 import { Bio, projects, experiences, skills, education, certificates } from '../../data/constants';
 import useContent from '../../hooks/useContent';
 import { FiMoon, FiSun } from 'react-icons/fi';
@@ -44,22 +46,19 @@ function CollectionStatus({ loading, error, count, label }) {
   return null;
 }
 
-function ProjectImage({ project, className, active }) {
+function ProjectImage({ project, className, active, showFallback = true }) {
   const [failedSource, setFailedSource] = useState(null);
   const source = project.imageUrl || project.image;
   return (
     <div className={className} data-active={active} aria-hidden="true">
       {source && source !== failedSource ? (
         <img src={source} alt="" loading="lazy" onError={() => setFailedSource(source)} />
-      ) : (
-        <span aria-hidden="true">{project.title}</span>
-      )}
+      ) : showFallback ? <span>{project.title}</span> : null}
     </div>
   );
 }
 
-function Work({ collection, onProject }) {
-  const [filter, setFilter] = useState(null);
+function Work({ collection, filter, setFilter }) {
   const all = collection.data;
   const categories = [...new Set(all.flatMap(categoriesOf))];
   const currentFilter = categories.includes(filter) ? filter : null;
@@ -89,18 +88,21 @@ function Work({ collection, onProject }) {
               <p className="folio-meta">{categoriesOf(featured).map(categoryLabel).join(' / ')}</p>
               <h3>{featured.title}</h3>
               {featured.description && <p className="folio-feature-description">{featured.description}</p>}
-              <button className="folio-button" type="button" onClick={() => onProject(featured)}>View project</button>
+              <Link className="folio-button" to={projectHref(featured)}>View project</Link>
             </div>
           </article>
           {archive.length > 0 && (
             <ul className="folio-project-list">
               {archive.map((project) => (
                 <li key={project.id ?? project.title}>
-                  <button type="button" onClick={() => onProject(project)}>
-                    <span className="folio-project-name">{project.title}</span>
+                  <Link to={projectHref(project)}>
+                    <div className="folio-project-ident">
+                      <ProjectImage project={project} className="folio-project-thumb" showFallback={false} />
+                      <span className="folio-project-name">{project.title}</span>
+                    </div>
                     <span className="folio-meta">{categoriesOf(project).map(categoryLabel).join(' / ')}</span>
-                    <span className="folio-row-action">View project</span>
-                  </button>
+                    <span className="folio-row-action" aria-hidden="true">View project</span>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -111,7 +113,7 @@ function Work({ collection, onProject }) {
   );
 }
 
-function Lab({ projects, onProject }) {
+function Lab({ projects }) {
   const [selection, setSelection] = useState(null);
   const [animatePreview, setAnimatePreview] = useState(false);
   const experiments = projects.filter((project) =>
@@ -146,7 +148,7 @@ function Lab({ projects, onProject }) {
             </div>
             <div className="folio-actions">
               {active.webapp && <a className="folio-button" href={active.webapp}>Open experiment</a>}
-              <button className="folio-text-button" type="button" onClick={() => onProject(active)}>Project details</button>
+              <Link to={projectHref(active)}>Project details</Link>
             </div>
           </div>
           <div className="folio-lab-stage" data-animate={animatePreview ? 'true' : undefined}>
@@ -259,8 +261,16 @@ function Credentials() {
   );
 }
 
-export default function Portfolio({ darkMode, toggleDarkMode, onProject, onEasterEgg }) {
+export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
+  const [filter, setFilter] = useState(null);
+  const { hash, pathname } = useLocation();
   const collection = usePortfolioContent('projects', projects);
+
+  useEffect(() => {
+    if (pathname === '/' && hash) {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
+    }
+  }, [hash, pathname]);
   const hasLab = collection.data.some((project) =>
     categoriesOf(project).some((category) => category === 'simulation' || category === 'visualization')
   );
@@ -268,42 +278,47 @@ export default function Portfolio({ darkMode, toggleDarkMode, onProject, onEaste
     <Page className="folio">
       <a className="folio-skip" href="#main">Skip to content</a>
       <header className="folio-wrap folio-header">
-        <a className="folio-brand" href="#about"><span aria-hidden="true">JO</span>{Bio.name}</a>
+        <Link className="folio-brand" to="/#about"><span aria-hidden="true">JO</span>{Bio.name}</Link>
         <nav aria-label="Main navigation">
-          <a href="#projects">Work</a>
-          {hasLab && <a href="#lab">Lab</a>}
-          <a href="#experience">Experience</a>
-          <a href="#contact">Contact</a>
+          <Link to="/#projects">Work</Link>
+          {hasLab && <Link to="/#lab">Lab</Link>}
+          <Link to="/#experience">Experience</Link>
+          <Link to="/#contact">Contact</Link>
         </nav>
         <button type="button" className="folio-theme" aria-label="Dark mode" aria-pressed={darkMode} onClick={toggleDarkMode}>
           {darkMode ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
         </button>
       </header>
-      <main id="main" tabIndex={-1}>
-        <section className="folio-wrap folio-hero" id="about" aria-labelledby="home-heading">
-          <div className="folio-hero-copy">
-            <p className="folio-kicker">Jakub Olszewski / Software developer</p>
-            <h1 id="home-heading">Mobile apps.<br /><span>Backend systems.</span></h1>
-            <p className="folio-intro">I build for Android and iOS, from the interface down to the API.</p>
-            <div className="folio-actions">
-              <a className="folio-button" href="#projects">Explore my work</a>
-              <a href={Bio.resume}>View résumé</a>
-            </div>
-          </div>
-          <PathPreview />
-        </section>
-        <Work collection={collection} onProject={onProject} />
-        <Lab projects={collection.data} onProject={onProject} />
-        <Career />
-        <Credentials />
-        <Contact />
-      </main>
+      <Routes>
+        <Route path="/projects/:projectId/:projectSlug" element={<ProjectDetails collection={collection} />} />
+        <Route path="*" element={(
+            <main id="main" tabIndex={-1}>
+              <section className="folio-wrap folio-hero" id="about" aria-labelledby="home-heading">
+                <div className="folio-hero-copy">
+                  <p className="folio-kicker">Jakub Olszewski / Software developer</p>
+                  <h1 id="home-heading">Mobile apps.<br /><span>Backend systems.</span></h1>
+                  <p className="folio-intro">I build for Android and iOS, from the interface down to the API.</p>
+                  <div className="folio-actions">
+                    <Link className="folio-button" to="/#projects">Explore my work</Link>
+                    <a href={Bio.resume}>View résumé</a>
+                  </div>
+                </div>
+                <PathPreview />
+              </section>
+              <Work collection={collection} filter={filter} setFilter={setFilter} />
+              <Lab projects={collection.data} />
+              <Career />
+              <Credentials />
+              <Contact />
+            </main>
+        )} />
+      </Routes>
       <footer className="folio-wrap folio-footer">
         <button className="folio-text-button" type="button" onClick={onEasterEgg}>{Bio.name}</button>
         <nav aria-label="Footer navigation">
           <a href={Bio.github}>GitHub</a>
           <a href={Bio.linkedin}>LinkedIn</a>
-          <a href="#about">Back to top</a>
+          <Link to="/#about">Back to top</Link>
         </nav>
       </footer>
     </Page>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const board = [
   '...#.........',
@@ -45,6 +45,22 @@ const routeOrder = new Map(route.map((cell, index) => [cell, index]));
 
 export default function PathPreview() {
   const [result, setResult] = useState(null);
+  const [flat, setFlat] = useState(false);
+  const viewport = useRef(null);
+
+  function resetCamera() {
+    viewport.current.style.removeProperty('--pitch');
+    viewport.current.style.removeProperty('--yaw');
+  }
+
+  function moveCamera(event) {
+    if (flat || event.pointerType !== 'mouse' || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    viewport.current.style.setProperty('--pitch', `${-y * 14}deg`);
+    viewport.current.style.setProperty('--yaw', `${x * 14}deg`);
+  }
 
   function togglePath(event) {
     setResult(result ? null : { animate: event.detail > 0 });
@@ -54,24 +70,36 @@ export default function PathPreview() {
     <section className="folio-path" aria-labelledby="path-heading">
       <header className="folio-path-header">
         <h2 id="path-heading">Pathfinding demo</h2>
-        <span>Breadth-first search</span>
+        <button
+          className="folio-path-view"
+          type="button"
+          aria-pressed={!flat}
+          onClick={() => { resetCamera(); setFlat(!flat); }}
+        >
+          3D view
+        </button>
       </header>
-      <div className="folio-path-board" data-animate={result?.animate ? 'true' : undefined} aria-hidden="true">
-        {tiles.map((tile, index) => (
-          <span
-            key={index}
-            className="folio-path-cell"
-            data-tile={tile}
-            data-route={result && routeOrder.has(index) ? 'true' : undefined}
-            style={routeOrder.has(index) ? { '--step': routeOrder.get(index) } : undefined}
-          >
-            {tile === 'S' && 'A'}
-            {tile === 'G' && 'B'}
-          </span>
-        ))}
+      <div className="folio-path-viewport" ref={viewport} data-flat={flat} onPointerMove={moveCamera} onPointerLeave={resetCamera} aria-hidden="true">
+        <div className="folio-path-camera">
+          <div className="folio-path-board" data-animate={result?.animate ? 'true' : undefined}>
+            {tiles.map((tile, index) => (
+              <span
+                key={index}
+                className="folio-path-cell"
+                data-tile={tile}
+                data-route={result && routeOrder.has(index) ? 'true' : undefined}
+                style={routeOrder.has(index) ? { '--step': routeOrder.get(index) } : undefined}
+              >
+                {tile === '#' && <i className="folio-path-wall" />}
+                {tile === 'S' && 'A'}
+                {tile === 'G' && 'B'}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
       <div className="folio-path-footer">
-        <p role="status">{result ? `Shortest route · ${route.length - 1} steps` : 'Find the shortest route from A to B.'}</p>
+        <p role="status">{result ? `Shortest route · ${route.length - 1} steps` : 'Shortest path from A to B · BFS'}</p>
         <button className="folio-path-run" type="button" onClick={togglePath}>
           {result ? 'Reset demo' : 'Run demo'}
         </button>
