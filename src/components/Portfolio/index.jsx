@@ -2,7 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Bio, projects, experiences, skills, education, certificates } from '../../data/constants';
 import useContent from '../../hooks/useContent';
-import portrait from '../../images/HeroImage.jpg';
+import { FiMoon, FiSun } from 'react-icons/fi';
+import PathPreview from './PathPreview';
 import Contact from '../Contact';
 import './portfolio.css';
 
@@ -43,11 +44,11 @@ function CollectionStatus({ loading, error, count, label }) {
   return null;
 }
 
-function ProjectImage({ project, className }) {
+function ProjectImage({ project, className, active }) {
   const [failedSource, setFailedSource] = useState(null);
   const source = project.imageUrl || project.image;
   return (
-    <div className={className}>
+    <div className={className} data-active={active} aria-hidden="true">
       {source && source !== failedSource ? (
         <img src={source} alt="" loading="lazy" onError={() => setFailedSource(source)} />
       ) : (
@@ -112,6 +113,7 @@ function Work({ collection, onProject }) {
 
 function Lab({ projects, onProject }) {
   const [selection, setSelection] = useState(null);
+  const [animatePreview, setAnimatePreview] = useState(false);
   const experiments = projects.filter((project) =>
     categoriesOf(project).some((category) => category === 'simulation' || category === 'visualization')
   );
@@ -129,7 +131,15 @@ function Lab({ projects, onProject }) {
           <div>
             <div className="folio-lab-picker" role="group" aria-label="Choose an experiment">
               {experiments.map((project) => (
-                <button key={project.id ?? project.title} type="button" aria-pressed={project === active} onClick={() => setSelection(project.id ?? project.title)}>
+                <button
+                  key={project.id ?? project.title}
+                  type="button"
+                  aria-pressed={project === active}
+                  onClick={(event) => {
+                    setAnimatePreview(event.detail > 0);
+                    setSelection(project.id ?? project.title);
+                  }}
+                >
                   {project.title}
                 </button>
               ))}
@@ -139,7 +149,16 @@ function Lab({ projects, onProject }) {
               <button className="folio-text-button" type="button" onClick={() => onProject(active)}>Project details</button>
             </div>
           </div>
-          <ProjectImage key={active.id ?? active.title} project={active} className="folio-lab-image" />
+          <div className="folio-lab-stage" data-animate={animatePreview ? 'true' : undefined}>
+            {experiments.map((project) => (
+              <ProjectImage
+                key={project.id ?? project.title}
+                project={project}
+                className="folio-lab-image"
+                active={project === active}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -249,7 +268,7 @@ export default function Portfolio({ darkMode, toggleDarkMode, onProject, onEaste
     <Page className="folio">
       <a className="folio-skip" href="#main">Skip to content</a>
       <header className="folio-wrap folio-header">
-        <a className="folio-brand" href="#about">{Bio.name}</a>
+        <a className="folio-brand" href="#about"><span aria-hidden="true">JO</span>{Bio.name}</a>
         <nav aria-label="Main navigation">
           <a href="#projects">Work</a>
           {hasLab && <a href="#lab">Lab</a>}
@@ -257,24 +276,21 @@ export default function Portfolio({ darkMode, toggleDarkMode, onProject, onEaste
           <a href="#contact">Contact</a>
         </nav>
         <button type="button" className="folio-theme" aria-label="Dark mode" aria-pressed={darkMode} onClick={toggleDarkMode}>
-          Dark mode
+          {darkMode ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
         </button>
       </header>
       <main id="main" tabIndex={-1}>
         <section className="folio-wrap folio-hero" id="about" aria-labelledby="home-heading">
           <div className="folio-hero-copy">
-            <p className="folio-kicker">Android · iOS · Backend</p>
-            <h1 id="home-heading">Jakub<br />Olszewski<span>.</span></h1>
-            <p className="folio-intro">I build Android and iOS apps, and the backend services they run on.</p>
+            <p className="folio-kicker">Jakub Olszewski / Software developer</p>
+            <h1 id="home-heading">Mobile apps.<br /><span>Backend systems.</span></h1>
+            <p className="folio-intro">I build for Android and iOS, from the interface down to the API.</p>
             <div className="folio-actions">
               <a className="folio-button" href="#projects">Explore my work</a>
               <a href={Bio.resume}>View résumé</a>
             </div>
           </div>
-          <figure className="folio-portrait">
-            <img src={portrait} alt="Portrait of Jakub Olszewski" width="1024" height="1024" fetchpriority="high" />
-            <figcaption>Mobile developer</figcaption>
-          </figure>
+          <PathPreview />
         </section>
         <Work collection={collection} onProject={onProject} />
         <Lab projects={collection.data} onProject={onProject} />
