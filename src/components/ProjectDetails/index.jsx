@@ -44,11 +44,11 @@ function ProjectArticle({ project }) {
         )}
       </header>
       {image && !imageFailed && (
-        <figure className="folio-case-art">
+        <figure className="folio-case-art" data-reveal>
           <img src={image} alt={project.title} onError={() => setImageFailed(true)} />
         </figure>
       )}
-      <div className="folio-case-body">
+      <div className="folio-case-body" data-reveal>
         <div>
           {project.description && <section><h2>Overview</h2><p className="folio-prose">{project.description}</p></section>}
           {project.member?.length > 0 && (

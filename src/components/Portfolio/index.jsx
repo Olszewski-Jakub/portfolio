@@ -6,6 +6,7 @@ import { Bio, projects, experiences, skills, education, certificates } from '../
 import useContent from '../../hooks/useContent';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import PathPreview from './PathPreview';
+import SignalObject from './SignalObject';
 import Contact from '../Contact';
 import './portfolio.css';
 
@@ -46,14 +47,14 @@ function CollectionStatus({ loading, error, count, label }) {
   return null;
 }
 
-function ProjectImage({ project, className, active, showFallback = true }) {
+function ProjectImage({ project, className, active }) {
   const [failedSource, setFailedSource] = useState(null);
   const source = project.imageUrl || project.image;
   return (
     <div className={className} data-active={active} aria-hidden="true">
       {source && source !== failedSource ? (
         <img src={source} alt="" loading="lazy" onError={() => setFailedSource(source)} />
-      ) : showFallback ? <span>{project.title}</span> : null}
+      ) : <span>{project.title}</span>}
     </div>
   );
 }
@@ -82,7 +83,7 @@ function Work({ collection, filter, setFilter }) {
             ))}
           </div>
           <p className="folio-sr-only" role="status">{visible.length} projects</p>
-          <article className="folio-feature">
+          <article className="folio-feature" data-reveal>
             <ProjectImage project={featured} className="folio-feature-image" />
             <div className="folio-feature-copy">
               <p className="folio-meta">{categoriesOf(featured).map(categoryLabel).join(' / ')}</p>
@@ -96,12 +97,9 @@ function Work({ collection, filter, setFilter }) {
               {archive.map((project) => (
                 <li key={project.id ?? project.title}>
                   <Link to={projectHref(project)}>
-                    <div className="folio-project-ident">
-                      <ProjectImage project={project} className="folio-project-thumb" showFallback={false} />
-                      <span className="folio-project-name">{project.title}</span>
-                    </div>
+                    <ProjectImage project={project} className="folio-project-thumb" />
+                    <span className="folio-project-name">{project.title}</span>
                     <span className="folio-meta">{categoriesOf(project).map(categoryLabel).join(' / ')}</span>
-                    <span className="folio-row-action" aria-hidden="true">View project</span>
                   </Link>
                 </li>
               ))}
@@ -120,7 +118,6 @@ function Lab({ projects }) {
     categoriesOf(project).some((category) => category === 'simulation' || category === 'visualization')
   );
   const active = experiments.find((project) => (project.id ?? project.title) === selection) ?? experiments[0];
-  if (!active) return null;
 
   return (
     <section className="folio-lab folio-section" id="lab" aria-labelledby="lab-heading">
@@ -129,7 +126,7 @@ function Lab({ projects }) {
           <h2 id="lab-heading">The lab</h2>
           <p>Explore how algorithms find a route and how gravity shapes an orbit.</p>
         </div>
-        <div className="folio-lab-grid">
+        {active && <div className="folio-lab-grid" data-reveal>
           <div>
             <div className="folio-lab-picker" role="group" aria-label="Choose an experiment">
               {experiments.map((project) => (
@@ -161,7 +158,8 @@ function Lab({ projects }) {
               />
             ))}
           </div>
-        </div>
+        </div>}
+        <div className="folio-lab-demo" data-reveal><PathPreview /></div>
       </div>
     </section>
   );
@@ -174,7 +172,7 @@ function Career() {
       <div className="folio-section-head">
         <h2 id="career-heading">Experience</h2>
       </div>
-      <div className="folio-career">
+      <div className="folio-career" data-reveal>
         <div>
           <CollectionStatus {...experience} count={experience.data.length} label="roles" />
           {experience.data.map((entry) => (
@@ -222,7 +220,7 @@ function Credentials() {
   const schools = usePortfolioContent('education', education);
   const credentials = usePortfolioContent('certificates', certificates);
   return (
-    <section className="folio-section folio-wrap folio-credentials" aria-label="Education and certificates">
+    <section className="folio-section folio-wrap folio-credentials" data-reveal aria-label="Education and certificates">
       <div id="education">
         <h2>Education</h2>
         <CollectionStatus {...schools} count={schools.data.length} label="education records" />
@@ -271,9 +269,19 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
       document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
     }
   }, [hash, pathname]);
-  const hasLab = collection.data.some((project) =>
-    categoriesOf(project).some((category) => category === 'simulation' || category === 'visualization')
-  );
+  useEffect(() => {
+    if (typeof IntersectionObserver !== 'function' || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.dataset.visible = 'true';
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll('.folio [data-reveal]').forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, [collection.loading, pathname]);
+
   return (
     <Page className="folio">
       <a className="folio-skip" href="#main">Skip to content</a>
@@ -281,7 +289,7 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
         <Link className="folio-brand" to="/#about"><span aria-hidden="true">JO</span>{Bio.name}</Link>
         <nav aria-label="Main navigation">
           <Link to="/#projects">Work</Link>
-          {hasLab && <Link to="/#lab">Lab</Link>}
+          <Link to="/#lab">Lab</Link>
           <Link to="/#experience">Experience</Link>
           <Link to="/#contact">Contact</Link>
         </nav>
@@ -295,15 +303,15 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
             <main id="main" tabIndex={-1}>
               <section className="folio-wrap folio-hero" id="about" aria-labelledby="home-heading">
                 <div className="folio-hero-copy">
-                  <p className="folio-kicker">Jakub Olszewski / Software developer</p>
-                  <h1 id="home-heading">Mobile apps.<br /><span>Backend systems.</span></h1>
-                  <p className="folio-intro">I build for Android and iOS, from the interface down to the API.</p>
+                  <p className="folio-kicker">Software developer · Android / iOS / Backend</p>
+                  <h1 id="home-heading">Jakub<br /><span>Olszewski</span></h1>
+                  <p className="folio-intro">I build mobile apps, the APIs behind them, and experiments you can try here.</p>
                   <div className="folio-actions">
                     <Link className="folio-button" to="/#projects">Explore my work</Link>
                     <a href={Bio.resume}>View résumé</a>
                   </div>
                 </div>
-                <PathPreview />
+                <SignalObject />
               </section>
               <Work collection={collection} filter={filter} setFilter={setFilter} />
               <Lab projects={collection.data} />
