@@ -67,22 +67,22 @@ export const lightTheme = {
 
 export const portfolioDarkTheme = {
     ...darkTheme,
-    bg: "#151610",
-    primary: "#def658",
-    text_primary: "#f4f3e8",
-    text_secondary: "#bcbcaf",
-    card: "#1d1e17",
-    card_light: "#202218",
-    portfolioRule: "#45483a",
+    bg: "#10131a",
+    primary: "#a4baff",
+    text_primary: "#f4f6fa",
+    text_secondary: "#b5bdcc",
+    card: "#151a24",
+    card_light: "#1c2230",
+    portfolioRule: "#394354",
 };
 
 export const portfolioLightTheme = {
     ...lightTheme,
-    bg: "#efeee5",
-    primary: "#3e4c13",
-    text_primary: "#181a13",
-    text_secondary: "#555847",
-    card: "#f7f6ee",
-    card_light: "#e5e5d8",
-    portfolioRule: "#c8c9b7",
+    bg: "#f6f7fa",
+    primary: "#324cbd",
+    text_primary: "#141927",
+    text_secondary: "#50596a",
+    card: "#ffffff",
+    card_light: "#ecf0f8",
+    portfolioRule: "#cbd3e1",
 };

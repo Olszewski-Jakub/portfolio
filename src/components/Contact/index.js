@@ -31,7 +31,7 @@ export default function Contact() {
 
   return (
     <section className="folio-section folio-contact" id="contact" data-chapter aria-labelledby="contact-heading">
-      <div className="folio-wrap folio-contact-grid">
+      <div className="folio-wrap folio-contact-grid" data-motion-target>
         <div>
           <h2 id="contact-heading">Let’s talk</h2>
           <p>Send me a message about a project or role, or find me on LinkedIn.</p>

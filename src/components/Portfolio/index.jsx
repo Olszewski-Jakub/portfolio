@@ -6,11 +6,12 @@ import { Bio, projects, experiences, skills, education, certificates } from '../
 import useContent from '../../hooks/useContent';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import PathPreview from './PathPreview';
-import SignalObject from './SignalObject';
+import useSectionMotion from './useSectionMotion';
+import pathTracerImage from './path-tracer.webp';
 import Contact from '../Contact';
 import './portfolio.css';
-import './story-stage.css';
-import './scroll-story.css';
+import './product-story.css';
+import './section-motion.css';
 
 const Page = styled.div`
   --paper: ${({ theme }) => theme.bg};
@@ -94,7 +95,7 @@ function Work({ collection, filter, setFilter }) {
             ))}
           </div>
           <p className="folio-sr-only" role="status">{visible.length} projects</p>
-          <article className="folio-feature">
+          <article className="folio-feature" data-motion-target>
             <ProjectImage project={featured} className="folio-feature-image" />
             <div className="folio-feature-copy">
               <p className="folio-meta">{categoriesOf(featured).map(categoryLabel).join(' / ')}</p>
@@ -106,7 +107,7 @@ function Work({ collection, filter, setFilter }) {
           {archive.length > 0 && (
             <ul className="folio-project-list">
               {archive.map((project) => (
-                <li key={project.id ?? project.title}>
+                <li key={project.id ?? project.title} data-motion-target>
                   <Link to={projectHref(project)}>
                     <ProjectImage project={project} className="folio-project-thumb" />
                     <span className="folio-project-name">{project.title}</span>
@@ -159,7 +160,7 @@ function Lab({ projects }) {
               <Link to={projectHref(active)}>Project details</Link>
             </div>
           </div>
-          <div className="folio-lab-stage" data-animate={animatePreview ? 'true' : undefined}>
+          <div className="folio-lab-stage" data-motion-target data-animate={animatePreview ? 'true' : undefined}>
             {experiments.map((project) => (
               <ProjectImage
                 key={project.id ?? project.title}
@@ -170,7 +171,7 @@ function Lab({ projects }) {
             ))}
           </div>
         </div>}
-        <div className="folio-lab-demo"><PathPreview /></div>
+        <div className="folio-lab-demo" data-motion-target><PathPreview /></div>
       </div>
     </section>
   );
@@ -184,7 +185,7 @@ function Career() {
         <h2 id="career-heading">Experience</h2>
       </div>
       <div className="folio-career">
-        <div>
+        <div data-motion-target>
           <CollectionStatus {...experience} count={experience.data.length} label="roles" />
           {experience.data.map((entry) => (
             <details className="folio-disclosure" key={entry.id ?? entry.role}>
@@ -232,7 +233,7 @@ function Credentials() {
   const credentials = usePortfolioContent('certificates', certificates);
   return (
     <section className="folio-section folio-wrap folio-credentials" id="credentials" data-chapter aria-label="Education and certificates">
-      <div id="education">
+      <div id="education" data-motion-target>
         <h2>Education</h2>
         <CollectionStatus {...schools} count={schools.data.length} label="education records" />
         {schools.data.map((school) => (
@@ -249,7 +250,7 @@ function Credentials() {
           </details>
         ))}
       </div>
-      <div id="certificates">
+      <div id="certificates" data-motion-target>
         <h2>Certificates</h2>
         <CollectionStatus {...credentials} count={credentials.data.length} label="certificates" />
         {credentials.data.map((certificate) => (
@@ -270,10 +271,36 @@ function Credentials() {
   );
 }
 
+function Introduction() {
+  return (
+    <section className="folio-product-intro" id="about" data-chapter data-sticky-scene aria-labelledby="home-heading">
+      <div className="folio-product-stage" data-sticky-stage>
+        <div className="folio-wrap folio-product-copy">
+          <p className="folio-kicker">Mobile &amp; backend developer</p>
+          <h1 id="home-heading">{Bio.name}</h1>
+          <p>I build Android and iOS apps, and the systems behind them.</p>
+          <div className="folio-actions">
+            <Link className="folio-button" to="/#projects">Explore my work</Link>
+            <a href={Bio.resume}>View résumé</a>
+          </div>
+        </div>
+        <figure className="folio-product-figure">
+          <div className="folio-product-display">
+            <img src={pathTracerImage} alt="Path Tracer showing a search algorithm exploring a grid of obstacles" width="1500" height="724" fetchpriority="high" />
+          </div>
+          <figcaption>Path Tracer · Interactive algorithm visualizer</figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
 export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
   const [filter, setFilter] = useState(null);
   const { hash, pathname, key } = useLocation();
   const previousPath = useRef(null);
+  const homeRef = useRef(null);
+  useSectionMotion(homeRef, pathname === '/');
   const navigation = useNavigationType();
   const collection = usePortfolioContent('projects', projects);
 
@@ -317,26 +344,13 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
       <Routes>
         <Route path="/projects/:projectId/:projectSlug" element={<ProjectDetails collection={collection} />} />
         <Route path="*" element={(
-          <main className="folio-home" data-theme={darkMode ? 'dark' : 'light'} id="main" tabIndex={-1}>
-            <SignalObject />
-            <div className="folio-chapters">
-              <section className="folio-wrap folio-hero" id="about" data-chapter aria-labelledby="home-heading">
-                <div className="folio-hero-copy">
-                  <p className="folio-kicker">Software developer · Android / iOS / Backend</p>
-                  <h1 id="home-heading">Jakub<br /><span>Olszewski</span></h1>
-                  <p className="folio-intro">I build mobile apps, the APIs behind them, and experiments you can try here.</p>
-                  <div className="folio-actions">
-                    <Link className="folio-button" to="/#projects">Explore my work</Link>
-                    <a href={Bio.resume}>View résumé</a>
-                  </div>
-                </div>
-              </section>
-              <Work collection={collection} filter={filter} setFilter={setFilter} />
-              <Lab projects={collection.data} />
-              <Career />
-              <Credentials />
-              <Contact />
-            </div>
+          <main className="folio-home" data-theme={darkMode ? 'dark' : 'light'} id="main" tabIndex={-1} ref={homeRef}>
+            <Introduction />
+            <Work collection={collection} filter={filter} setFilter={setFilter} />
+            <Lab projects={collection.data} />
+            <Career />
+            <Credentials />
+            <Contact />
           </main>
         )} />
       </Routes>
