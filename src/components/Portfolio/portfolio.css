@@ -259,6 +259,7 @@
 .folio-project-list li { min-width: 0; }
 .folio-project-list a {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: .42rem;
   text-decoration: none;
   padding-bottom: .85rem;
@@ -268,13 +269,15 @@
 .folio-project-thumb {
   display: grid;
   place-items: center;
+  position: relative;
+  inline-size: 100%;
   aspect-ratio: 16 / 10;
   overflow: clip;
   background: #272a22;
   border: 1px solid var(--rule);
   margin-bottom: .55rem;
 }
-.folio-project-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.folio-project-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .folio-project-name { font-weight: 700; font-size: clamp(1.05rem, 2vw, 1.65rem); line-height: 1.1; }
 
 .folio-lab { background: var(--panel); }
