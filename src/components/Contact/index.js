@@ -30,17 +30,14 @@ export default function Contact() {
   }
 
   return (
-    <section className="folio-section folio-contact" id="contact" aria-labelledby="contact-heading">
-      <div className="folio-wrap folio-contact-grid" data-reveal>
+    <section className="folio-section folio-contact" id="contact" data-chapter aria-labelledby="contact-heading">
+      <div className="folio-wrap folio-contact-grid">
         <div>
           <h2 id="contact-heading">Let’s talk</h2>
           <p>Send me a message about a project or role, or find me on LinkedIn.</p>
           <div className="folio-actions">
             <a href={Bio.linkedin}>LinkedIn</a>
             <a href={Bio.github}>GitHub</a>
-          </div>
-          <div className="folio-contact-object" aria-hidden="true">
-            <span /><span /><span />
           </div>
         </div>
         <form ref={form} onSubmit={sendMessage}>

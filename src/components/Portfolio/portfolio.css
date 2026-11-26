@@ -444,28 +444,6 @@
 .folio-hero .folio-intro { max-width: 30ch; }
 .folio-hero .folio-button, .folio-contact .folio-button { background: #def658; color: #151610; border-color: #def658; }
 .folio-hero .folio-button:hover, .folio-contact .folio-button:hover { background: #f0ff9d; color: #151610; }
-.folio-signal { min-width: 0; align-self: center; }
-.folio-signal canvas { display: block; width: 100%; height: auto; aspect-ratio: 1.13; }
-.folio-signal figcaption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: .6rem;
-  border-top: 1px solid #555849;
-  padding-top: .8rem;
-  font: 500 .875rem var(--mono);
-  color: var(--muted);
-}
-.folio-signal figcaption > div { display: flex; flex-wrap: wrap; gap: .3rem; }
-.folio-signal button {
-  font: inherit;
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--ink);
-  padding: .4rem .6rem;
-}
-.folio-signal button[aria-pressed='true'] { background: #def658; color: #151610; border-color: #def658; }
 .folio-header { min-height: 4.75rem; }
 .folio-brand span { border-radius: 0; rotate: -7deg; }
 .folio .folio-button, .folio .folio-theme, .folio-filters button { border-radius: .2rem; }
@@ -497,13 +475,11 @@
 @media (max-width: 760px) {
   .folio-hero { min-height: 0; }
   .folio-hero h1 { font-size: clamp(3.4rem, 13vw, 7rem); }
-  .folio-signal { width: min(100%, 32rem); }
   .folio-toolkit { border-left: 0; padding-left: 0; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .folio-hero-copy { animation: folio-arrive 520ms var(--ease-out) both; }
-  .folio-signal { animation: folio-arrive 560ms var(--ease-out) 65ms both; }
   .folio [data-reveal][data-visible='true'] { animation: folio-arrive 440ms var(--ease-out) both; }
 
   @keyframes folio-arrive {
@@ -533,23 +509,3 @@
   content: '';
 }
 .folio-career .folio-disclosure[open]::before { background: var(--accent); }
-.folio-contact-object {
-  width: min(16rem, 70%);
-  aspect-ratio: 2.05;
-  margin-top: 2rem;
-  perspective: 500px;
-  position: relative;
-}
-.folio-contact-object span {
-  position: absolute;
-  inset: 18% 12%;
-  border: 1px solid #d3eb53;
-  transform: rotateX(48deg) rotateZ(-23deg) translateZ(var(--offset));
-}
-.folio-contact-object span:nth-child(1) { --offset: -34px; opacity: .35; }
-.folio-contact-object span:nth-child(2) { --offset: 0px; opacity: .65; }
-.folio-contact-object span:nth-child(3) { --offset: 34px; }
-@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-  .folio-contact-object span { transition: transform 240ms var(--ease-out); }
-  .folio-contact-object:hover span { transform: rotateX(38deg) rotateZ(-38deg) translateZ(var(--offset)); }
-}

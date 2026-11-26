@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import ProjectDetails, { projectHref } from '../ProjectDetails';
 import { Bio, projects, experiences, skills, education, certificates } from '../../data/constants';
 import useContent from '../../hooks/useContent';
@@ -9,6 +9,8 @@ import PathPreview from './PathPreview';
 import SignalObject from './SignalObject';
 import Contact from '../Contact';
 import './portfolio.css';
+import './story-stage.css';
+import './scroll-story.css';
 
 const Page = styled.div`
   --paper: ${({ theme }) => theme.bg};
@@ -25,12 +27,21 @@ const filters = {
   'web app': 'Web',
   'android app': 'Android',
   'ios app': 'iOS',
+  'desktop app': 'Desktop',
+  rms: 'RMS',
   api: 'APIs',
   visualization: 'Visualization',
   simulation: 'Simulation',
 };
 
-const categoriesOf = (project) => [project.category].flat().filter(Boolean);
+function categoriesOf(project) {
+  const categories = [project.category].flat()
+    .filter((category) => typeof category === 'string')
+    .map((category) => category.trim().toLowerCase())
+    .map((category) => ({ 'web apps': 'web app', apis: 'api' })[category] ?? category)
+    .filter(Boolean);
+  return [...new Set(categories)];
+}
 const categoryLabel = (category) => filters[category] || category;
 
 function usePortfolioContent(name, preview) {
@@ -67,7 +78,7 @@ function Work({ collection, filter, setFilter }) {
   const [featured, ...archive] = visible;
 
   return (
-    <section className="folio-section folio-wrap" id="projects" aria-labelledby="work-heading">
+    <section className="folio-section folio-wrap" id="projects" data-chapter aria-labelledby="work-heading">
       <div className="folio-section-head">
         <h2 id="work-heading">Selected work</h2>
         <p>Mobile apps, web projects and the APIs that power them.</p>
@@ -83,7 +94,7 @@ function Work({ collection, filter, setFilter }) {
             ))}
           </div>
           <p className="folio-sr-only" role="status">{visible.length} projects</p>
-          <article className="folio-feature" data-reveal>
+          <article className="folio-feature">
             <ProjectImage project={featured} className="folio-feature-image" />
             <div className="folio-feature-copy">
               <p className="folio-meta">{categoriesOf(featured).map(categoryLabel).join(' / ')}</p>
@@ -120,13 +131,13 @@ function Lab({ projects }) {
   const active = experiments.find((project) => (project.id ?? project.title) === selection) ?? experiments[0];
 
   return (
-    <section className="folio-lab folio-section" id="lab" aria-labelledby="lab-heading">
+    <section className="folio-lab folio-section" id="lab" data-chapter aria-labelledby="lab-heading">
       <div className="folio-wrap">
         <div className="folio-section-head">
           <h2 id="lab-heading">The lab</h2>
           <p>Explore how algorithms find a route and how gravity shapes an orbit.</p>
         </div>
-        {active && <div className="folio-lab-grid" data-reveal>
+        {active && <div className="folio-lab-grid">
           <div>
             <div className="folio-lab-picker" role="group" aria-label="Choose an experiment">
               {experiments.map((project) => (
@@ -159,7 +170,7 @@ function Lab({ projects }) {
             ))}
           </div>
         </div>}
-        <div className="folio-lab-demo" data-reveal><PathPreview /></div>
+        <div className="folio-lab-demo"><PathPreview /></div>
       </div>
     </section>
   );
@@ -168,11 +179,11 @@ function Lab({ projects }) {
 function Career() {
   const experience = usePortfolioContent('experience', experiences);
   return (
-    <section className="folio-section folio-wrap" id="experience" aria-labelledby="career-heading">
+    <section className="folio-section folio-wrap" id="experience" data-chapter aria-labelledby="career-heading">
       <div className="folio-section-head">
         <h2 id="career-heading">Experience</h2>
       </div>
-      <div className="folio-career" data-reveal>
+      <div className="folio-career">
         <div>
           <CollectionStatus {...experience} count={experience.data.length} label="roles" />
           {experience.data.map((entry) => (
@@ -220,7 +231,7 @@ function Credentials() {
   const schools = usePortfolioContent('education', education);
   const credentials = usePortfolioContent('certificates', certificates);
   return (
-    <section className="folio-section folio-wrap folio-credentials" data-reveal aria-label="Education and certificates">
+    <section className="folio-section folio-wrap folio-credentials" id="credentials" data-chapter aria-label="Education and certificates">
       <div id="education">
         <h2>Education</h2>
         <CollectionStatus {...schools} count={schools.data.length} label="education records" />
@@ -261,16 +272,22 @@ function Credentials() {
 
 export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
   const [filter, setFilter] = useState(null);
-  const { hash, pathname } = useLocation();
+  const { hash, pathname, key } = useLocation();
+  const previousPath = useRef(null);
+  const navigation = useNavigationType();
   const collection = usePortfolioContent('projects', projects);
 
   useEffect(() => {
-    if (pathname === '/' && hash) {
-      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
-    }
-  }, [hash, pathname]);
+    const samePage = previousPath.current === pathname;
+    previousPath.current = pathname;
+    if (pathname !== '/' || !hash) return;
+
+    const animate = samePage && navigation !== 'POP'
+      && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+    document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: animate ? 'smooth' : 'instant' });
+  }, [hash, pathname, key, navigation]);
   useEffect(() => {
-    if (typeof IntersectionObserver !== 'function' || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    if (!pathname.startsWith('/projects/') || typeof IntersectionObserver !== 'function' || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -278,7 +295,7 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
         observer.unobserve(entry.target);
       });
     }, { threshold: .12 });
-    document.querySelectorAll('.folio [data-reveal]').forEach((node) => observer.observe(node));
+    document.querySelectorAll('.folio-case-page [data-reveal]').forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, [collection.loading, pathname]);
 
@@ -300,8 +317,10 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
       <Routes>
         <Route path="/projects/:projectId/:projectSlug" element={<ProjectDetails collection={collection} />} />
         <Route path="*" element={(
-            <main id="main" tabIndex={-1}>
-              <section className="folio-wrap folio-hero" id="about" aria-labelledby="home-heading">
+          <main className="folio-home" data-theme={darkMode ? 'dark' : 'light'} id="main" tabIndex={-1}>
+            <SignalObject />
+            <div className="folio-chapters">
+              <section className="folio-wrap folio-hero" id="about" data-chapter aria-labelledby="home-heading">
                 <div className="folio-hero-copy">
                   <p className="folio-kicker">Software developer · Android / iOS / Backend</p>
                   <h1 id="home-heading">Jakub<br /><span>Olszewski</span></h1>
@@ -311,14 +330,14 @@ export default function Portfolio({ darkMode, toggleDarkMode, onEasterEgg }) {
                     <a href={Bio.resume}>View résumé</a>
                   </div>
                 </div>
-                <SignalObject />
               </section>
               <Work collection={collection} filter={filter} setFilter={setFilter} />
               <Lab projects={collection.data} />
               <Career />
               <Credentials />
               <Contact />
-            </main>
+            </div>
+          </main>
         )} />
       </Routes>
       <footer className="folio-wrap folio-footer">
