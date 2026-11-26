@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import {
     FaGithub,
     FaExternalLinkAlt,
@@ -13,7 +12,7 @@ import useGithubContributors from '../../hooks/useGithubContributors';
 
 /* ─── Backdrop ─── */
 
-const Container = styled(motion.div)`
+const Container = styled.div`
     position: fixed;
     inset: 0;
     width: 100vw;
@@ -25,18 +24,15 @@ const Container = styled(motion.div)`
     overflow-y: auto;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
 `;
 
 /* ─── Modal shell ─── */
 
-const Wrapper = styled(motion.div)`
+const Wrapper = styled.div`
     max-width: 860px;
     width: 100%;
     margin: 40px auto 60px;
     background: ${({ theme }) => theme.card};
-    border-radius: 20px;
     overflow: hidden;
     position: relative;
     border: 1px solid rgba(148, 163, 184, 0.1);
@@ -53,7 +49,6 @@ const Wrapper = styled(motion.div)`
 
     @media (max-width: 768px) {
         margin: 20px auto 40px;
-        border-radius: 16px;
     }
 `;
 
@@ -447,8 +442,8 @@ const GithubButton = styled(Btn)`
 `;
 
 const LiveButton = styled(Btn)`
-    background: linear-gradient(135deg, #2F81F7, #0EA5E9);
-    color: #fff;
+    background: ${({ theme }) => theme.text_primary};
+    color: ${({ theme }) => theme.bg};
     border: none;
 
     &:hover {
@@ -472,37 +467,22 @@ const ProjectDetails = ({ openModal, setOpenModal }) => {
     const imageSrc = project?.imageUrl || project?.image || '';
     const categoryStr = Array.isArray(project?.category) ? project.category.join(', ') : project?.category;
 
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape') setOpenModal({ state: false, project: null });
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [setOpenModal]);
-
     const close = () => setOpenModal({ state: false, project: null });
 
     return (
         <Modal
             open={true}
-            onClose={() => { setTimeout(() => { document.body.style.overflow = ''; }, 0); close(); }}
-            aria-labelledby="project-details-modal"
+            onClose={close}
             BackdropProps={{ timeout: 250 }}
             hideBackdrop
-            disableScrollLock={true}
         >
             <Container
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
                 onClick={close}
             >
                 <Wrapper
-                    initial={{ opacity: 0, y: 48 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 48 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="project-details-title"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Hero banner */}
@@ -517,7 +497,7 @@ const ProjectDetails = ({ openModal, setOpenModal }) => {
                                 {project?.status && <StatusPill status={project.status}>{project.status}</StatusPill>}
                                 {categoryStr && <CategoryPill>{categoryStr}</CategoryPill>}
                             </HeroMeta>
-                            <HeroTitle>{project?.title}</HeroTitle>
+                            <HeroTitle id="project-details-title">{project?.title}</HeroTitle>
                         </HeroContent>
                     </HeroBanner>
 

@@ -64,3 +64,25 @@ export const lightTheme = {
         }
     }
 }
+
+export const portfolioDarkTheme = {
+    ...darkTheme,
+    bg: "#191a18",
+    primary: "#e1a789",
+    text_primary: "#f2f1e8",
+    text_secondary: "#bdc0b1",
+    card: "#21231f",
+    card_light: "#252722",
+    portfolioRule: "#53554d",
+};
+
+export const portfolioLightTheme = {
+    ...lightTheme,
+    bg: "#f5f4ee",
+    primary: "#923c24",
+    text_primary: "#20231f",
+    text_secondary: "#545850",
+    card: "#f5f4ee",
+    card_light: "#e9e9df",
+    portfolioRule: "#c1c1b4",
+};

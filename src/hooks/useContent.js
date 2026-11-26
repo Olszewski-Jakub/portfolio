@@ -8,6 +8,7 @@ export default function useContent(collectionName, options) {
   const [version, setVersion] = useState(0);
 
   useEffect(() => {
+    if (!collectionName) return;
     let mounted = true;
 
     async function load() {

@@ -19,6 +19,6 @@ const firebaseConfig = {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 // Use default in-memory Firestore (no persistent offline cache)
-const db = getFirestore(app);
+const db = firebaseConfig.projectId ? getFirestore(app) : null;
 
 export { app, db };
